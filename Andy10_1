@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>填空題測驗</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 60px;
+    background: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Nunito', sans-serif;
+    color: #2B3A55;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; }
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #2B3A55;
+    margin: 0 0 8px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2B3A55;
+  }
+  .stat-value.success { color: #4CAF7D; }
+  .stat-value.danger { color: #E24B4A; }
+  
+  .question-container {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .question-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2B3A55;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: 0.5px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    background: white;
+    transition: all 0.2s;
+  }
+  .option-label:hover {
+    background: #f9f9f9;
+    border-color: #999;
+  }
+  .option-label input[type="radio"] {
+    cursor: pointer;
+  }
+  .option-label span {
+    font-size: 14px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: #378ADD;
+    color: white;
+  }
+  .btn-primary:hover {
+    background: #2970c7;
+  }
+  .btn-secondary {
+    background: white;
+    color: #2B3A55;
+    border: 0.5px solid #ddd;
+  }
+  .btn-secondary:hover {
+    background: #f9f9f9;
+  }
+  
+  .feedback {
+    display: none;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .feedback.show {
+    display: block;
+  }
+  .feedback.success {
+    background: #E8F9EF;
+    border: 0.5px solid #4CAF7D;
+    color: #2B6E4F;
+  }
+  .feedback.error {
+    background: #FDE8E8;
+    border: 0.5px solid #E24B4A;
+    color: #8B2323;
+  }
+  .feedback-text {
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .result-container {
+    display: none;
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .result-container.show {
+    display: block;
+  }
+  .result-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2B3A55;
+    margin-bottom: 20px;
+  }
+  .result-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .result-stat {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .result-stat-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+  }
+  .result-stat-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2B3A55;
+  }
+  .result-stat-value.success { color: #4CAF7D; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>填空題測驗</h1>
+  <p class="subtitle">請選擇正確答案</p>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">題目</div>
+      <div class="stat-value" id="progress">1 / 4</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">⏱ 時間</div>
+      <div class="stat-value" id="timer">0:00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">✓ 正確</div>
+      <div class="stat-value success" id="correct">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">✗ 錯誤</div>
+      <div class="stat-value danger" id="incorrect">0</div>
+    </div>
+  </div>
+
+  <div id="questionContainer" class="question-container">
+    <div class="question-text" id="question">1+1=__</div>
+    <div class="options" id="optionsContainer"></div>
+  </div>
+
+  <div class="button-group">
+    <button class="btn-primary" onclick="submitAnswer()">確認答案</button>
+    <button class="btn-secondary" onclick="skipQuestion()">跳過</button>
+  </div>
+
+  <div id="feedbackContainer" class="feedback">
+    <div class="feedback-text" id="feedbackText"></div>
+    <button class="btn-primary" onclick="nextQuestion()">下一題</button>
+  </div>
+
+  <div id="resultContainer" class="result-container">
+    <div class="result-title">答題完成</div>
+    <div class="result-stats">
+      <div class="result-stat">
+        <div class="result-stat-label">正確率</div>
+        <div class="result-stat-value success" id="accuracy">0%</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-label">總花費時間</div>
+        <div class="result-stat-value" id="totalTime">0:00</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="location.reload()">重新開始</button>
+  </div>
+</div>
+
+<script>
+const quizData = [
+  { question: '7+3=__', answer: '10' },
+  { question: '4+5=__', answer: '9' },
+  { question: '2+4=__', answer: '6' },
+  { question: '1+7=__', answer: '8' },
+  { question: '6+4=__', answer: '10' },
+  { question: '2+3=__', answer: '5' },
+];
+
+let currentQuestion = 0;
+let correctCount = 0;
+let incorrectCount = 0;
+let startTime = Date.now();
+let timerInterval = null;
+
+function isNumeric(str) {
+  return !isNaN(str) && !isNaN(parseFloat(str));
+}
+
+function generateOptions(correctAnswer, allAnswers) {
+  let options = [correctAnswer];
+  
+  if (isNumeric(correctAnswer)) {
+    // 數字題：生成相近數字
+    const num = parseInt(correctAnswer);
+    const used = new Set([num]);
+    
+    for (let i = 0; i < 3; i++) {
+      let distractor;
+      do {
+        const offset = Math.floor((Math.random() - 0.5) * 10);
+        distractor = num + offset;
+      } while (used.has(distractor) || distractor < 0);
+      
+      options.push(distractor.toString());
+      used.add(distractor);
+    }
+  } else {
+    // 文字題：只從文字答案中選擇
+    const otherAnswers = allAnswers.filter(a => a !== correctAnswer && !isNumeric(a));
+    for (let i = 0; i < 3 && i < otherAnswers.length; i++) {
+      const randomIdx = Math.floor(Math.random() * otherAnswers.length);
+      options.push(otherAnswers[randomIdx]);
+    }
+  }
+  
+  return options.sort(() => Math.random() - 0.5);
+}
+
+function showQuestion() {
+  const data = quizData[currentQuestion];
+  document.getElementById('question').textContent = data.question;
+  document.getElementById('progress').textContent = (currentQuestion + 1) + ' / ' + quizData.length;
+  
+  const allAnswers = quizData.map(q => q.answer);
+  const options = generateOptions(data.answer, allAnswers);
+  
+  const optionsHTML = options.map((opt, idx) => 
+    `<label class="option-label">
+      <input type="radio" name="answer" value="${opt}">
+      <span>${opt}</span>
+    </label>`
+  ).join('');
+  
+  document.getElementById('optionsContainer').innerHTML = optionsHTML;
+  document.getElementById('feedbackContainer').classList.remove('show');
+}
+
+function submitAnswer() {
+  const selected = document.querySelector('input[name="answer"]:checked');
+  if (!selected) {
+    alert('請選擇一個答案');
+    return;
+  }
+  
+  const answer = selected.value;
+  const correct = answer === quizData[currentQuestion].answer;
+  
+  const feedback = document.getElementById('feedbackContainer');
+  feedback.classList.add('show');
+  
+  if (correct) {
+    correctCount++;
+    document.getElementById('correct').textContent = correctCount;
+    feedback.classList.add('success');
+    feedback.classList.remove('error');
+    document.getElementById('feedbackText').textContent = '✓ 正確';
+  } else {
+    incorrectCount++;
+    document.getElementById('incorrect').textContent = incorrectCount;
+    feedback.classList.add('error');
+    feedback.classList.remove('success');
+    document.getElementById('feedbackText').textContent = '✗ 錯誤，正確答案是：' + quizData[currentQuestion].answer;
+  }
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion >= quizData.length) {
+    showResults();
+  } else {
+    showQuestion();
+  }
+}
+
+function skipQuestion() {
+  incorrectCount++;
+  document.getElementById('incorrect').textContent = incorrectCount;
+  nextQuestion();
+}
+
+function showResults() {
+  document.getElementById('questionContainer').style.display = 'none';
+  document.querySelector('.button-group').style.display = 'none';
+  document.getElementById('feedbackContainer').classList.remove('show');
+  
+  const accuracy = Math.round((correctCount / quizData.length) * 100);
+  document.getElementById('accuracy').textContent = accuracy + '%';
+  
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  document.getElementById('totalTime').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  
+  document.getElementById('resultContainer').classList.add('show');
+}
+
+function updateTimer() {
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    document.getElementById('timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  }, 100);
+}
+
+showQuestion();
+updateTimer();
+</script>
+</body>
+</html>
