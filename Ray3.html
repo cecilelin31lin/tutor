@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>圖案配對遊戲</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px 16px 60px;
+        background: #f5f5f5;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Nunito', sans-serif;
+        color: #2B3A55;
+        min-height: 100vh;
+      }
+      .wrap { max-width: 680px; margin: 0 auto; }
+      h1 {
+        text-align: center;
+        font-size: 28px;
+        color: #2B3A55;
+        margin: 0 0 8px;
+      }
+      .subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 24px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .stat-card {
+        background: white;
+        border: 0.5px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+      }
+      .stat-label {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 6px;
+      }
+      .stat-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2B3A55;
+      }
+
+      .instruction {
+        background: white;
+        border: 0.5px solid #ddd;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 16px;
+        font-size: 13px;
+        color: #666;
+      }
+
+      .image-buttons {
+        background: white;
+        border: 0.5px solid #ddd;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .image-btn {
+        width: 80px;
+        height: 80px;
+        border: 0.5px solid #ccc;
+        border-radius: 6px;
+        padding: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .image-btn:hover {
+        border-color: #999;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .image-btn img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+      .image-btn[data-selected="true"] {
+        border: 2px solid #378ADD;
+        box-shadow: 0 0 0 2px rgba(55, 138, 221, 0.2);
+      }
+
+      .sentences {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .sentence-btn {
+        background: white;
+        border: 0.5px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #2B3A55;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.2s;
+      }
+      .sentence-btn:hover {
+        border-color: #999;
+        background: #f9f9f9;
+      }
+      .sentence-btn[data-selected="true"] {
+        background: #FFF4E6;
+        border-color: #D9860E;
+        color: #D9860E;
+        font-weight: 500;
+      }
+
+      .sentence-btn.correct {
+        background: #E8F9EF;
+        border-color: #4CAF7D;
+        color: #2B6E4F;
+        cursor: default;
+      }
+
+      .sentence-btn.incorrect {
+        background: #FDE8E8;
+        border-color: #E24B4A;
+        color: #8B2323;
+      }
+
+      .result-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .result-overlay.show {
+        display: flex;
+      }
+
+      .result-modal {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .result-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2B3A55;
+        margin-bottom: 12px;
+      }
+
+      .result-stat {
+        margin-bottom: 16px;
+      }
+
+      .result-stat-label {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 4px;
+      }
+
+      .result-stat-value {
+        font-size: 24px;
+        font-weight: 600;
+        color: #378ADD;
+      }
+
+      .images-list {
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+
+      .images-list-label {
+        font-size: 12px;
+        color: #999;
+        margin-bottom: 8px;
+      }
+
+      .images-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+
+      .image-tag {
+        width: 100%;
+        aspect-ratio: 1;
+        border: 0.5px solid #4CAF7D;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #E8F9EF;
+      }
+
+      .image-tag img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 2px;
+      }
+
+      .result-button {
+        background: #378ADD;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .result-button:hover {
+        background: #2970c7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>找出正確的單字</h1>
+      <p class="subtitle">點擊圖片，再點擊對應的單字</p>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label">⏱ 時間</div>
+          <div class="stat-value" id="timer">0:00</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">✓ 配對</div>
+          <div class="stat-value" id="matched">0/6</div>
+        </div>
+      </div>
+
+      <div class="instruction">描述天氣</div>
+
+      <div class="image-buttons" id="imageButtonsContainer"></div>
+
+      <div class="sentences" id="sentencesContainer"></div>
+
+      <div class="result-overlay" id="resultOverlay">
+        <div class="result-modal">
+          <div class="result-title">🎉 完成！</div>
+
+          <div class="result-stat">
+            <div class="result-stat-label">答題時間</div>
+            <div class="result-stat-value" id="finalTime">0:00</div>
+          </div>
+
+          <div class="images-list">
+            <div class="images-list-label">成功配對的圖片</div>
+            <div class="images-grid" id="finalImages"></div>
+          </div>
+
+          <button class="result-button" onclick="location.reload()">重新開始</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+            const pairs = [
+        { image: 'https://raw.githubusercontent.com/cecilelin31lin/pic/main/sunny.png', sentence: 'sunny' },
+        { image: 'https://raw.githubusercontent.com/cecilelin31lin/pic/main/dry.png', sentence: 'dry' },
+        { image: 'https://raw.githubusercontent.com/cecilelin31lin/pic/main/windy.png', sentence: 'windy' },
+        { image: 'https://raw.githubusercontent.com/cecilelin31lin/pic/main/cloudy.png', sentence: 'cloudy' },
+        { image: 'https://raw.githubusercontent.com/cecilelin31lin/pic/main/rainy.png', sentence: 'rainy' },
+        { image: 'https://raw.githubusercontent.com/cecilelin31lin/pic/main/snowy.png', sentence: 'snowy' },
+      ];
+
+            let selectedImageIdx = null;
+            let matchedCount = 0;
+            let matchedImages = [];
+            let startTime = Date.now();
+            let timerInterval = null;
+
+            function initGame() {
+              const shuffled = [...pairs].sort(() => Math.random() - 0.5);
+
+              // 更新配對計數顯示
+              document.getElementById('matched').textContent = '0/' + pairs.length;
+
+              // 生成圖片按鈕
+              const imageButtonsContainer = document.getElementById('imageButtonsContainer');
+              pairs.forEach((item, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'image-btn';
+                btn.dataset.index = idx;
+                btn.innerHTML = '<img src="' + item.image + '" alt="image">';
+                btn.onclick = () => selectImage(btn, idx);
+                imageButtonsContainer.appendChild(btn);
+              });
+
+              // 生成句子按鈕
+              const sentencesContainer = document.getElementById('sentencesContainer');
+              shuffled.forEach((item, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'sentence-btn';
+                btn.textContent = item.sentence;
+                btn.setAttribute('data-image-idx', pairs.findIndex(p => p.image === item.image));
+                btn.onclick = () => selectSentence(btn);
+                sentencesContainer.appendChild(btn);
+              });
+
+              startTimer();
+            }
+
+            function selectImage(btn, idx) {
+              const prevSelected = document.querySelector('.image-btn[data-selected="true"]');
+              if (prevSelected) {
+                prevSelected.removeAttribute('data-selected');
+              }
+
+              selectedImageIdx = idx;
+              btn.setAttribute('data-selected', 'true');
+            }
+
+            function selectSentence(btn) {
+              if (selectedImageIdx === null) return;
+
+              const correctImageIdx = parseInt(btn.getAttribute('data-image-idx'));
+
+              if (selectedImageIdx === correctImageIdx) {
+                btn.classList.add('correct');
+                btn.onclick = null;
+
+                matchedImages.push(pairs[selectedImageIdx].image);
+                matchedCount++;
+                document.getElementById('matched').textContent = matchedCount + '/' + pairs.length;
+
+                const selectedBtn = document.querySelector('.image-btn[data-selected="true"]');
+                if (selectedBtn) {
+                  selectedBtn.style.opacity = '0.5';
+                  selectedBtn.onclick = null;
+                }
+
+                selectedImageIdx = null;
+
+                if (matchedCount === pairs.length) {
+                  showResults();
+                }
+              } else {
+                btn.classList.add('incorrect');
+                setTimeout(() => {
+                  btn.classList.remove('incorrect');
+                }, 500);
+              }
+            }
+
+            function startTimer() {
+              startTime = Date.now();
+              timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const mins = Math.floor(elapsed / 60);
+                const secs = elapsed % 60;
+                document.getElementById('timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+              }, 100);
+            }
+
+            function showResults() {
+              clearInterval(timerInterval);
+
+              const elapsed = Math.floor((Date.now() - startTime) / 1000);
+              const mins = Math.floor(elapsed / 60);
+              const secs = elapsed % 60;
+              const timeStr = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+              document.getElementById('finalTime').textContent = timeStr;
+
+              const imagesHTML = matchedImages.map(image =>
+                `<div class="image-tag"><img src="${image}" alt="image"></div>`
+              ).join('');
+              document.getElementById('finalImages').innerHTML = imagesHTML;
+
+              document.getElementById('resultOverlay').classList.add('show');
+            }
+
+            initGame();
+    </script>
+  </body>
+</html>
