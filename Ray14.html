@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單字配對</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 60px;
+    background: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Nunito', sans-serif;
+    color: #2B3A55;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; }
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #2B3A55;
+    margin: 0 0 8px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2B3A55;
+  }
+  
+  .instruction {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #666;
+  }
+  
+  .word-buttons {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .word-btn {
+    background: white;
+    border: 0.5px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #2B3A55;
+  }
+  .word-btn:hover {
+    border-color: #999;
+    background: #f9f9f9;
+  }
+  .word-btn[data-selected="true"] {
+    background: #B0C4DE;
+    color: white;
+    border-color: #B0C4DE;
+  }
+  .word-btn.completed {
+    background: rgba(70,129,137,.14);
+    border-color: #468189;
+    color: #468189;
+    cursor: default;
+    opacity: 0.5;
+  }
+  
+  .sentences {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .sentence-item {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2B3A55;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .sentence-item:hover {
+    border-color: #999;
+    background: #f9f9f9;
+  }
+  
+  .sentence-item.correct {
+    background: rgba(70,129,137,.14);
+    border-color: #468189;
+    color: #468189;
+    cursor: default;
+  }
+  
+  .sentence-item.incorrect {
+    background: rgba(232,130,140,.16);
+    border-color: #E8828C;
+    color: #E8828C;
+  }
+  
+  .sentence-text {
+    flex: 1;
+  }
+  
+  .matched-word {
+    background: #468189;
+    color: white;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 16px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .distractor-note {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    margin-top: 8px;
+  }
+  
+  .result-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .result-overlay.show {
+    display: flex;
+  }
+  
+  .result-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .result-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2B3A55;
+    margin-bottom: 12px;
+  }
+  
+  .result-stat {
+    margin-bottom: 16px;
+  }
+  
+  .result-stat-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  
+  .result-stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #B0C4DE;
+  }
+
+  .result-button-group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .result-button {
+    flex: 1;
+    background: #B0C4DE;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .result-button:hover {
+    background: #9AB3D0;
+  }
+
+  .result-button.secondary {
+    background: white;
+    color: #B0C4DE;
+    border: 1px solid #B0C4DE;
+  }
+  .result-button.secondary:hover {
+    background: rgba(176,196,222,.18);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>單字配對</h1>
+  <p class="subtitle">將上下內容配對</p>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">⏱ 時間</div>
+      <div class="stat-value" id="timer">0:00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">✓ 配對</div>
+      <div class="stat-value" id="matched">0/12</div>
+    </div>
+  </div>
+
+  <div class="instruction">選擇一個上方內容，然後點擊對應的下方內容完成配對。注意：上方有些選項可能是干擾項，沒有對應的句子</div>
+
+  <div class="word-buttons" id="wordButtonsContainer"></div>
+
+  <div class="sentences" id="sentencesContainer"></div>
+
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-modal">
+      <div class="result-title">🎉 完成！</div>
+      
+      <div class="result-stat">
+        <div class="result-stat-label">答題時間</div>
+        <div class="result-stat-value" id="finalTime">0:00</div>
+      </div>
+      
+      <div class="result-button-group">
+        <button class="result-button secondary" onclick="reviewAnswers()">複習</button>
+        <button class="result-button" onclick="location.reload()">重新開始</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// shuffleSentences: 1 = 打亂句子順序顯示，0 = 依照原本順序顯示（不打亂）
+const shuffleSentences = 1;
+
+const pairs = [
+  { word: '在⋯裡面', sentence: 'in' },
+  { word: '在⋯上面', sentence: 'on' },
+  { word: '在⋯（某定點）', sentence: 'at' },
+  { word: '在⋯下面', sentence: 'under' },
+  { word: '在⋯上方', sentence: 'above' },
+  { word: '在⋯下方', sentence: 'below' },
+  { word: '在⋯附近', sentence: 'near' },
+  { word: '在⋯隔壁', sentence: 'next to' },
+  { word: '在⋯（兩者）之間', sentence: 'between' },
+  { word: '在⋯前面', sentence: 'in front of' },
+  { word: '在⋯後面', sentence: 'behind' },
+  { word: '在⋯對面', sentence: 'across from' },
+];
+
+const distractors = [];
+//word是上面的選項，sentence是下方的題目
+// 干擾選項：這些字會出現在上方，但永遠沒有對應句子，點擊配對永遠失敗
+//const distractors = ['干擾1', '干擾2', '干擾3', '干擾4', '干擾5'];
+// 沒有干擾項時保持空陣列 []
+ 
+let selectedWord = null;
+let matchedCount = 0;
+let startTime = Date.now();
+let timerInterval = null;
+
+function initGame() {
+  const displaySentences = shuffleSentences === 1
+    ? [...pairs].sort(() => Math.random() - 0.5)
+    : [...pairs];
+
+  document.getElementById('matched').textContent = '0/' + pairs.length;
+
+  const wordButtonsContainer = document.getElementById('wordButtonsContainer');
+  const allWords = [...pairs.map(p => ({ word: p.word, isDistractor: false })),
+                     ...distractors.map(d => ({ word: d, isDistractor: true }))];
+  const shuffledWords = allWords.sort(() => Math.random() - 0.5);
+
+  shuffledWords.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'word-btn';
+    btn.textContent = item.word;
+    btn.dataset.word = item.word;
+    btn.dataset.distractor = item.isDistractor ? 'true' : 'false';
+    btn.onclick = () => selectWord(btn, item.word);
+    wordButtonsContainer.appendChild(btn);
+  });
+
+  const sentencesContainer = document.getElementById('sentencesContainer');
+  displaySentences.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'sentence-item';
+    div.dataset.word = item.word;
+
+    const text = document.createElement('span');
+    text.className = 'sentence-text';
+    text.textContent = item.sentence;
+
+    div.appendChild(text);
+    div.onclick = () => matchSentence(div);
+    sentencesContainer.appendChild(div);
+  });
+
+  startTimer();
+}
+
+function selectWord(btn, word) {
+  const prevSelected = document.querySelector('.word-btn[data-selected="true"]');
+  if (prevSelected) {
+    prevSelected.removeAttribute('data-selected');
+  }
+
+  selectedWord = word;
+  btn.setAttribute('data-selected', 'true');
+}
+
+function matchSentence(sentenceEl) {
+  if (!selectedWord) return;
+
+  const correctWord = sentenceEl.dataset.word;
+  const selectedBtn = document.querySelector('.word-btn[data-selected="true"]');
+
+  // 若選到的是干擾項，永遠判定錯誤
+  if (selectedBtn && selectedBtn.dataset.distractor === 'true') {
+    sentenceEl.classList.add('incorrect');
+    setTimeout(() => {
+      sentenceEl.classList.remove('incorrect');
+    }, 500);
+    return;
+  }
+
+  if (selectedWord === correctWord) {
+    sentenceEl.classList.add('correct');
+    sentenceEl.onclick = null;
+
+    const matchedWordSpan = document.createElement('span');
+    matchedWordSpan.className = 'matched-word';
+    matchedWordSpan.textContent = selectedWord;
+    sentenceEl.appendChild(matchedWordSpan);
+
+    selectedBtn.classList.add('completed');
+    selectedBtn.onclick = null;
+    selectedBtn.removeAttribute('data-selected');
+
+    matchedCount++;
+    document.getElementById('matched').textContent = matchedCount + '/' + pairs.length;
+
+    selectedWord = null;
+
+    if (matchedCount === pairs.length) {
+      showResults();
+    }
+  } else {
+    sentenceEl.classList.add('incorrect');
+    setTimeout(() => {
+      sentenceEl.classList.remove('incorrect');
+    }, 500);
+  }
+}
+
+function startTimer() {
+  startTime = Date.now();
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    document.getElementById('timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  }, 100);
+}
+
+function showResults() {
+  clearInterval(timerInterval);
+
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  const timeStr = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+  document.getElementById('finalTime').textContent = timeStr;
+  document.getElementById('resultOverlay').classList.add('show');
+}
+
+function reviewAnswers() {
+  document.getElementById('resultOverlay').classList.remove('show');
+}
+
+initGame();
+</script>
+</body>
+</html>
