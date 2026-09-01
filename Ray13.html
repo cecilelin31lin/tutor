@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>單字學習集合</title>
+<title>單字學習遊戲</title>
 <style>
   * { box-sizing: border-box; }
   html, body { overscroll-behavior: none; }
@@ -424,11 +424,48 @@
     color: #666;
     font-size: 12px;
   }
+
+  .wrong-detail-box {
+    margin-top: 14px;
+    text-align: left;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .wrong-detail-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2B3A55;
+    margin-bottom: 8px;
+  }
+  .wrong-detail-stage {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2B3A55;
+  }
+  .wrong-detail-item {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+  }
+  .total-time-row {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: rgba(176,196,222,.22);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    color: #2B3A55;
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>單字學習集合</h1>
+  <h1>單字學習遊戲</h1>
   <p class="subtitle">依序破關：選擇題 → 單字找一找 → 問答題</p>
 
   <div class="stage-indicator" id="stageIndicator"></div>
@@ -438,7 +475,7 @@
     <div class="stats">
       <div class="stat-card">
         <div class="stat-label">題目</div>
-        <div class="stat-value" id="s1progress">1/5</div>
+        <div class="stat-value" id="s1progress">1/—</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">⏱ 時間</div>
@@ -465,7 +502,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-label">✓ 找到</div>
-        <div class="stat-value" id="s2found">0/5</div>
+        <div class="stat-value" id="s2found">0/—</div>
       </div>
     </div>
     <div class="instruction">第二關：單字找一找。依序點擊字母格拼出單字，點擊已選的格子可以取消，選好後按「確認」送出</div>
@@ -488,7 +525,7 @@
     <div class="stats">
       <div class="stat-card">
         <div class="stat-label">題目</div>
-        <div class="stat-value" id="s3progress">1/5</div>
+        <div class="stat-value" id="s3progress">1/—</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">⏱ 時間</div>
@@ -535,6 +572,7 @@
       <div id="allCompleteStats" style="text-align:left; margin-bottom:16px;"></div>
       <div class="result-button-group">
         <button class="result-button" onclick="showReview()">複習</button>
+        <button class="result-button" onclick="location.reload()">重新開始</button>
       </div>
     </div>
   </div>
@@ -555,15 +593,18 @@ const words = [
   { word: 'spoon', meaning: '湯匙' },
 ];
 
+// 每次遊戲使用完整題庫，並隨機打亂順序；三關都使用同一組單字
+const gameWords = [...words].sort(() => Math.random() - 0.5);
+
 const palette = ['#FFE135', '#E6D89C', '#B0C4DE', '#E8828C', '#DDA0DD', '#A8D5BA'];
 
 let currentStage = 1;
 let stageStartTime = Date.now();
 let stageTimerInterval = null;
 let stageStats = {
-  stage1: { time: 0, wrongCount: 0 },
-  stage2: { time: 0, wrongCount: 0 },
-  stage3: { time: 0, wrongCount: 0 }
+  stage1: { time: 0, wrongCount: 0, wrongItems: [] },
+  stage2: { time: 0, wrongCount: 0, wrongItems: [] },
+  stage3: { time: 0, wrongCount: 0, wrongItems: [] }
 };
 
 function hexToRgba(hex, alpha) {
@@ -577,6 +618,15 @@ function formatTime(sec) {
   const mins = Math.floor(sec / 60);
   const secs = sec % 60;
   return mins + ':' + (secs < 10 ? '0' : '') + secs;
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function renderStageIndicator() {
@@ -631,10 +681,10 @@ let s1Answered = false;
 let s1WrongSet = new Set();
 
 function initStage1() {
-  s1Questions = words.map(w => {
+  s1Questions = gameWords.map(w => {
     const isZhToEn = Math.random() < 0.5; // true: 給中文選英文, false: 給英文選中文
     const correctDisplay = isZhToEn ? w.word : w.meaning;
-    const distractorsPool = words.filter(x => x.word !== w.word);
+    const distractorsPool = gameWords.filter(x => x.word !== w.word);
     const shuffledPool = [...distractorsPool].sort(() => Math.random() - 0.5).slice(0, 3);
     const options = [correctDisplay, ...shuffledPool.map(d => isZhToEn ? d.word : d.meaning)];
     return {
@@ -715,6 +765,10 @@ function s1submit() {
         const elapsed = Math.floor((Date.now() - stageStartTime) / 1000);
         stageStats.stage1.time = elapsed;
         stageStats.stage1.wrongCount = s1WrongSet.size;
+        stageStats.stage1.wrongItems = [...s1WrongSet].map(i => {
+          const q = s1Questions[i];
+          return q.question + ' → ' + q.answer;
+        });
         document.removeEventListener('keypress', s1EnterHandler);
         showStageComplete('🎉 第一關過關！', () => {
           currentStage = 2;
@@ -763,7 +817,7 @@ function buildHintFromMeaning(word) {
 }
 
 function initStage2() {
-  const upperWords = words.map(w => w.word.toUpperCase().replace(/\s+/g, ''));
+  const upperWords = gameWords.map(w => w.word.toUpperCase().replace(/\s+/g, ''));
   const longest = Math.max(...upperWords.map(w => w.length));
   const totalLetters = upperWords.reduce((s,w)=>s+w.length,0);
   s2GridSize = Math.max(longest + 2, Math.ceil(Math.sqrt(totalLetters * 2.6)));
@@ -774,8 +828,9 @@ function initStage2() {
   s2Found = new Set();
   s2Selected = [];
   s2WrongCount = 0;
+  stageStats.stage2.wrongItems = [];
 
-  const sorted = [...words].sort((a,b)=> b.word.replace(/\s+/g,'').length - a.word.replace(/\s+/g,'').length);
+  const sorted = [...gameWords].sort((a,b)=> b.word.replace(/\s+/g,'').length - a.word.replace(/\s+/g,'').length);
 
   sorted.forEach((original, idx) => {
     const w = original.word.toUpperCase().replace(/\s+/g, '');
@@ -930,6 +985,9 @@ function s2confirm() {
   }
   s2showFeedback(false, '✗ 這不是正確的單字，再試一次');
   s2WrongCount++;
+  if (selectedLetters && !stageStats.stage2.wrongItems.includes(selectedLetters)) {
+    stageStats.stage2.wrongItems.push(selectedLetters);
+  }
   s2Selected = [];
   s2updateSelectedDisplay();
 }
@@ -982,7 +1040,7 @@ let s3Answered = false;
 let s3WrongSet = new Set();
 
 function initStage3() {
-  s3Questions = [...words].sort(() => Math.random() - 0.5);
+  s3Questions = [...gameWords].sort(() => Math.random() - 0.5);
   s3Index = 0;
   s3WrongSet = new Set();
   showS3Question();
@@ -1058,6 +1116,10 @@ function s3finish() {
   const elapsed = Math.floor((Date.now() - stageStartTime) / 1000);
   stageStats.stage3.time = elapsed;
   stageStats.stage3.wrongCount = s3WrongSet.size;
+  stageStats.stage3.wrongItems = [...s3WrongSet].map(i => {
+    const q = s3Questions[i];
+    return q.meaning + ' → ' + q.word;
+  });
 
   document.getElementById('stage3').style.display = 'none';
 
@@ -1069,9 +1131,27 @@ function s3finish() {
     const stat = stageStats[key];
     html += '<div class="stage-summary-row">' +
       '<span class="ssr-name">' + stageNames[key] + '</span>' +
-      '<span class="ssr-detail">用時 ' + formatTime(stat.time) + '　答錯 ' + stat.wrongCount + '題</span>' +
+      '<span class="ssr-detail">用時 ' + formatTime(stat.time) + '　答錯 ' + stat.wrongCount + (key === 'stage2' ? '次' : '題') + '</span>' +
       '</div>';
   });
+
+  const totalTime = stageStats.stage1.time + stageStats.stage2.time + stageStats.stage3.time;
+  html += '<div class="total-time-row"><span>總時間</span><span>' + formatTime(totalTime) + '</span></div>';
+
+  html += '<div class="wrong-detail-box"><div class="wrong-detail-title">答錯內容</div>';
+  ['stage1', 'stage2', 'stage3'].forEach(key => {
+    const stat = stageStats[key];
+    html += '<div class="wrong-detail-stage">' + stageNames[key] + '</div>';
+    if (!stat.wrongItems || stat.wrongItems.length === 0) {
+      html += '<div class="wrong-detail-item">無</div>';
+    } else {
+      stat.wrongItems.forEach(item => {
+        html += '<div class="wrong-detail-item">• ' + escapeHtml(item) + '</div>';
+      });
+    }
+  });
+  html += '</div>';
+
   statsContainer.innerHTML = html;
 
   document.getElementById('allCompleteOverlay').classList.add('show');
@@ -1084,7 +1164,7 @@ function showReview() {
   document.getElementById('allCompleteOverlay').classList.remove('show');
   const reviewList = document.getElementById('reviewList');
   reviewList.innerHTML = '';
-  words.forEach(w => {
+  gameWords.forEach(w => {
     const item = document.createElement('div');
     item.className = 'review-item';
     item.innerHTML = '<span class="rword">' + w.word + '</span><span class="rmeaning">' + w.meaning + '</span>';
