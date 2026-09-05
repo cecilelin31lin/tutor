@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單字配對</title>
+<style>
+* { box-sizing: border-box; }
+html, body { overscroll-behavior: none; }
+body { margin:0; padding:24px 16px 60px; background:#f5f5f5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Nunito',sans-serif; color:#2B3A55; min-height:100vh; }
+.wrap { max-width:680px; margin:0 auto; }
+h1 { text-align:center; font-size:28px; margin:0 0 8px; }
+.subtitle { text-align:center; font-size:14px; color:#666; margin-bottom:24px; }
+.stage-indicator { display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+.stage-dot { width:32px; height:32px; border-radius:50%; background:white; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:#999; }
+.stage-dot.active { border-color:#B0C4DE; background:rgba(176,196,222,.30); color:#2B3A55; }
+.stage-dot.done { border-color:#468189; background:rgba(70,129,137,.14); color:#468189; }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+.stat-card { background:white; border:.5px solid #ddd; border-radius:8px; padding:12px; text-align:center; }
+.stat-label { font-size:12px; color:#999; margin-bottom:6px; }
+.stat-value { font-size:18px; font-weight:600; }
+.instruction { background:white; border:.5px solid #ddd; border-radius:12px; padding:12px; margin-bottom:16px; font-size:13px; color:#666; line-height:1.6; }
+.word-buttons { background:white; border:.5px solid #ddd; border-radius:12px; padding:12px; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:8px; }
+.word-btn { background:white; border:.5px solid #ccc; border-radius:6px; padding:8px 12px; font-size:16px; cursor:pointer; color:#2B3A55; }
+.word-btn:hover { border-color:#999; background:#f9f9f9; }
+.word-btn[data-selected="true"] { background:rgba(176,196,222,.30); border-color:#B0C4DE; }
+.word-btn.completed { background:rgba(70,129,137,.14); border-color:#468189; color:#468189; cursor:default; opacity:.55; }
+.sentences { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+.sentence-item { background:white; border:.5px solid #ddd; border-radius:8px; padding:12px; font-size:16px; line-height:1.6; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.sentence-item:hover { border-color:#999; background:#f9f9f9; }
+.sentence-item.correct { background:rgba(70,129,137,.14); border-color:#468189; color:#468189; cursor:default; }
+.sentence-item.incorrect { background:rgba(232,130,140,.16); border-color:#E8828C; color:#E8828C; }
+.sentence-text { flex:1; }
+.matched-word { background:#468189; color:white; border-radius:6px; padding:6px 10px; font-size:16px; font-weight:500; flex-shrink:0; }
+.question-container { background:white; border:.5px solid #ddd; border-radius:12px; padding:24px; margin-bottom:20px; }
+.question-text { font-size:18px; font-weight:500; text-align:center; margin-bottom:20px; }
+.input-row { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+.input-field { flex:1; padding:12px; border:.5px solid #ddd; border-radius:8px; font-size:16px; text-align:center; }
+.feedback { display:none; padding:8px 12px; border-radius:8px; font-weight:500; white-space:nowrap; }
+.feedback.show { display:inline-block; }
+.feedback.success { background:rgba(70,129,137,.14); border:.5px solid #468189; color:#468189; }
+.feedback.error { background:rgba(232,130,140,.16); border:.5px solid #E8828C; color:#E8828C; }
+.button-group { display:flex; justify-content:center; }
+.nav-btn { border:none; border-radius:8px; padding:10px 24px; font-size:14px; font-weight:500; cursor:pointer; background:#B0C4DE; color:#2B3A55; }
+.nav-btn:hover { background:#9AB3D0; }
+.result-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.3); align-items:center; justify-content:center; z-index:1000; }
+.result-overlay.show { display:flex; }
+.result-modal { background:white; border-radius:12px; padding:24px; max-width:400px; width:90%; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,.15); }
+.result-title { font-size:18px; font-weight:600; margin-bottom:12px; }
+.result-stat { margin-bottom:16px; }
+.result-stat-label { font-size:12px; color:#999; margin-bottom:4px; }
+.result-stat-value { font-size:24px; font-weight:600; color:#B0C4DE; }
+.result-button-group { display:flex; gap:10px; }
+.result-button { flex:1; background:#B0C4DE; color:#2B3A55; border:none; border-radius:6px; padding:10px 20px; font-size:14px; font-weight:500; cursor:pointer; }
+.result-button:hover { background:#9AB3D0; }
+.review-container { display:none; margin-top:20px; }
+.review-container.show { display:block; }
+.review-item { background:white; border:.5px solid #ddd; border-radius:8px; padding:12px 16px; margin-bottom:8px; display:flex; justify-content:space-between; gap:12px; font-size:14px; }
+.rword { font-weight:700; }
+.rmeaning { color:#666; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>單字配對</h1>
+<p class="subtitle">依序破關：單一配對 → 問中文回答英文</p>
+<div class="stage-indicator" id="stageIndicator"></div>
+
+<div id="stage1">
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">⏱ 時間</div><div class="stat-value" id="s1timer">0:00</div></div>
+    <div class="stat-card"><div class="stat-label">✓ 配對</div><div class="stat-value" id="matched">0/0</div></div>
+  </div>
+  <div class="instruction">第一關：選擇一個上方內容，然後點擊對應的下方內容完成配對。</div>
+  <div class="word-buttons" id="wordButtonsContainer"></div>
+  <div class="sentences" id="sentencesContainer"></div>
+</div>
+
+<div id="stage2" style="display:none;">
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">題目</div><div class="stat-value" id="s2progress">1/1</div></div>
+    <div class="stat-card"><div class="stat-label">⏱ 時間</div><div class="stat-value" id="s2timer">0:00</div></div>
+  </div>
+  <div class="instruction">第二關：看中文意思，寫出正確的英文</div>
+  <div class="question-container">
+    <div class="question-text" id="s2question"></div>
+    <div class="input-row">
+      <input type="text" class="input-field" id="s2input" placeholder="輸入英文">
+      <span class="feedback" id="s2feedback"></span>
+    </div>
+  </div>
+  <div class="button-group"><button class="nav-btn" id="s2submitBtn">確認答案</button></div>
+</div>
+
+<div class="review-container" id="reviewContainer"><div id="reviewList"></div></div>
+
+<div class="result-overlay" id="stageCompleteOverlay">
+  <div class="result-modal">
+    <div class="result-title">🎉 第一關過關！</div>
+    <div class="result-stat"><div class="result-stat-label">用時</div><div class="result-stat-value" id="stageCompleteTime">0:00</div></div>
+    <div class="result-button-group"><button class="result-button" id="nextStageBtn">下一關</button></div>
+  </div>
+</div>
+
+<div class="result-overlay" id="allCompleteOverlay">
+  <div class="result-modal">
+    <div class="result-title">🏆 全部過關！</div>
+    <div class="result-stat"><div class="result-stat-label">第二關用時</div><div class="result-stat-value" id="finalTime">0:00</div></div>
+    <div class="result-button-group">
+      <button class="result-button" id="reviewBtn">複習</button>
+      <button class="result-button" onclick="location.reload()">重新開始</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const shuffleSentences = 1;
+
+const pairs = [
+  { word: '晴朗的', sentence: 'sunny' },
+  { word: '多雲的', sentence: 'cloudy' },
+  { word: '下雨的', sentence: 'rainy' },
+  { word: '有風的', sentence: 'windy' },
+  { word: '下雪的', sentence: 'snowy' },
+  { word: '溫暖的', sentence: 'warm' },
+  { word: '涼爽的', sentence: 'cool' },
+  { word: '潮濕的', sentence: 'wet' },
+  { word: '春季', sentence: 'spring' },
+  { word: '夏季', sentence: 'summer' },
+  { word: '秋季', sentence: 'fall' },
+  { word: '冬季', sentence: 'winter' },
+];
+
+const distractors = [];
+
+let currentStage = 1;
+let selectedWord = null;
+let matchedCount = 0;
+let stageStartTime = Date.now();
+let timerInterval = null;
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function formatTime(sec) {
+  const mins = Math.floor(sec / 60), secs = sec % 60;
+  return mins + ':' + (secs < 10 ? '0' : '') + secs;
+}
+function renderStageIndicator() {
+  const el = document.getElementById('stageIndicator');
+  el.innerHTML = '';
+  for (let i=1;i<=2;i++) {
+    const dot=document.createElement('div');
+    dot.className='stage-dot';
+    if(i<currentStage) dot.classList.add('done');
+    if(i===currentStage) dot.classList.add('active');
+    dot.textContent=i;
+    el.appendChild(dot);
+  }
+}
+function startTimer(id) {
+  stageStartTime=Date.now();
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    document.getElementById(id).textContent=formatTime(Math.floor((Date.now()-stageStartTime)/1000));
+  },100);
+}
+function initStage1() {
+  document.getElementById('matched').textContent='0/'+pairs.length;
+  const displaySentences=shuffleSentences===1?shuffleArray(pairs):[...pairs];
+  const allWords=shuffleArray([...pairs.map(p=>({word:p.word,isDistractor:false})),...distractors.map(d=>({word:d,isDistractor:true}))]);
+  const wc=document.getElementById('wordButtonsContainer');
+  allWords.forEach(item=>{
+    const btn=document.createElement('button');
+    btn.className='word-btn'; btn.textContent=item.word; btn.dataset.distractor=item.isDistractor?'true':'false';
+    btn.addEventListener('click',()=>selectWord(btn,item.word)); wc.appendChild(btn);
+  });
+  const sc=document.getElementById('sentencesContainer');
+  displaySentences.forEach(item=>{
+    const div=document.createElement('div'); div.className='sentence-item'; div.dataset.word=item.word;
+    const text=document.createElement('span'); text.className='sentence-text'; text.textContent=item.sentence;
+    div.appendChild(text); div.addEventListener('click',()=>matchSentence(div)); sc.appendChild(div);
+  });
+  startTimer('s1timer');
+}
+function selectWord(btn,word) {
+  const prev=document.querySelector('.word-btn[data-selected="true"]');
+  if(prev) prev.removeAttribute('data-selected');
+  selectedWord=word; btn.setAttribute('data-selected','true');
+}
+function matchSentence(el) {
+  if(!selectedWord) return;
+  const selectedBtn=document.querySelector('.word-btn[data-selected="true"]');
+  if(selectedBtn && selectedBtn.dataset.distractor==='true') { flashWrong(el); return; }
+  if(selectedWord===el.dataset.word) {
+    el.classList.add('correct'); el.style.pointerEvents='none';
+    const span=document.createElement('span'); span.className='matched-word'; span.textContent=selectedWord; el.appendChild(span);
+    selectedBtn.classList.add('completed'); selectedBtn.style.pointerEvents='none'; selectedBtn.removeAttribute('data-selected');
+    selectedWord=null; matchedCount++; document.getElementById('matched').textContent=matchedCount+'/'+pairs.length;
+    if(matchedCount===pairs.length) {
+      clearInterval(timerInterval);
+      document.getElementById('stageCompleteTime').textContent=formatTime(Math.floor((Date.now()-stageStartTime)/1000));
+      document.getElementById('stageCompleteOverlay').classList.add('show');
+    }
+  } else flashWrong(el);
+}
+function flashWrong(el) { el.classList.add('incorrect'); setTimeout(()=>el.classList.remove('incorrect'),500); }
+
+const qaWords = pairs.map(p => ({ word: p.sentence, meaning: p.word }));
+let s2Questions=[], s2Index=0, s2Answered=false;
+
+function initStage2() {
+  currentStage=2; renderStageIndicator();
+  document.getElementById('stage1').style.display='none';
+  document.getElementById('stage2').style.display='block';
+  s2Questions=shuffleArray(qaWords); s2Index=0;
+  showS2Question(); startTimer('s2timer');
+}
+function showS2Question() {
+  s2Answered=false;
+  const q=s2Questions[s2Index];
+  document.getElementById('s2progress').textContent=(s2Index+1)+'/'+s2Questions.length;
+  document.getElementById('s2question').textContent=q.meaning;
+  const input=document.getElementById('s2input'); input.value=''; input.disabled=false; input.focus();
+  document.getElementById('s2feedback').className='feedback';
+  const btn=document.getElementById('s2submitBtn'); btn.textContent='確認答案'; btn.onclick=s2submit;
+}
+function s2submit() {
+  if(s2Answered) return;
+  const q=s2Questions[s2Index], input=document.getElementById('s2input'), ans=input.value.trim();
+  if(!ans) return;
+  const ok=ans.toLowerCase().replace(/\s+/g,'')===q.word.toLowerCase().replace(/\s+/g,'');
+  const fb=document.getElementById('s2feedback');
+  if(ok) {
+    s2Answered=true; input.disabled=true; fb.className='feedback show success'; fb.textContent='✓ 正確';
+    const btn=document.getElementById('s2submitBtn');
+    if(s2Index===s2Questions.length-1) { btn.textContent='完成第二關'; btn.onclick=finishGame; }
+    else { btn.textContent='下一題'; btn.onclick=()=>{s2Index++;showS2Question();}; }
+  } else {
+    fb.className='feedback show error'; fb.textContent='✗ 錯誤，再試一次'; input.value=''; input.focus();
+  }
+}
+function finishGame() {
+  clearInterval(timerInterval);
+  document.getElementById('finalTime').textContent=formatTime(Math.floor((Date.now()-stageStartTime)/1000));
+  document.getElementById('allCompleteOverlay').classList.add('show');
+}
+function showReview() {
+  document.getElementById('allCompleteOverlay').classList.remove('show');
+  document.getElementById('stage2').style.display='none';
+  document.getElementById('stageIndicator').style.display='none';
+  const list=document.getElementById('reviewList'); list.innerHTML='';
+  qaWords.forEach(w=>{
+    const item=document.createElement('div'); item.className='review-item';
+    item.innerHTML='<span class="rword">'+w.word+'</span><span class="rmeaning">'+w.meaning+'</span>';
+    list.appendChild(item);
+  });
+  document.getElementById('reviewContainer').classList.add('show');
+}
+document.getElementById('nextStageBtn').addEventListener('click',()=>{
+  document.getElementById('stageCompleteOverlay').classList.remove('show'); initStage2();
+});
+document.getElementById('reviewBtn').addEventListener('click',showReview);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && currentStage===2) {
+    if(s2Answered) document.getElementById('s2submitBtn').click();
+    else s2submit();
+  }
+});
+renderStageIndicator();
+initStage1();
+</script>
+</body>
+</html>
