@@ -538,7 +538,7 @@ h1::after{
       <div class="btn-row"><button class="secondary" onclick="selectAllStages()">六關全選</button><button class="secondary" onclick="clearAllStages()">全部清除</button></div>
     </div>
 
-    <div class="btn-row center-row">
+    <div class="btn-row center-row" style="margin-top:24px">
       <button class="primary" id="startBtn" onclick="onStartClick()">開始練習</button>
     </div>
   </div>
@@ -1682,6 +1682,7 @@ function showReview() {
 }
 
 function restartPractice(newWords) {
+  applyRandomTheme();
   stats = {};
   distractorWords = new Map();
   hintRecords = [];
@@ -1794,6 +1795,62 @@ document.addEventListener('keypress', (e) => {
   const btn = document.getElementById('s' + currentStage + 'submitBtn');
   if (btn) btn.click();
 });
+
+const blueThemes=[
+{main:'#B0C4DE',hover:'#9AB3D0',rgb:'176,196,222'},
+{main:'#A9C6D9',hover:'#8FB2C9',rgb:'169,198,217'},
+{main:'#9FBAD0',hover:'#86A7C1',rgb:'159,186,208'},
+{main:'#AFCBE3',hover:'#94B6D3',rgb:'175,203,227'},
+{main:'#8FAFC8',hover:'#769BB8',rgb:'143,175,200'},
+{main:'#C7B8EA',hover:'#B4A2DE',rgb:'199,184,234'},
+{main:'#D2B7E5',hover:'#C09FD8',rgb:'210,183,229'},
+{main:'#E3B8D8',hover:'#D39BC6',rgb:'227,184,216'},
+{main:'#E9B9C8',hover:'#DD9FB3',rgb:'233,185,200'},
+{main:'#F0C2B8',hover:'#E3A99D',rgb:'240,194,184'},
+{main:'#E8C7A7',hover:'#D9B48C',rgb:'232,199,167'},
+{main:'#E6D89C',hover:'#D6C47F',rgb:'230,216,156'},
+{main:'#D8D6A8',hover:'#C5C381',rgb:'216,214,168'},
+{main:'#C4D6A4',hover:'#ADC588',rgb:'196,214,164'},
+{main:'#A8D5BA',hover:'#8FC5A5',rgb:'168,213,186'},
+{main:'#A9D8CF',hover:'#8FC8BC',rgb:'169,216,207'},
+{main:'#A7D5DB',hover:'#8AC3CB',rgb:'167,213,219'},
+{main:'#B8DCE8',hover:'#9BC9DB',rgb:'184,220,232'},
+{main:'#C6D8F0',hover:'#A9C1E2',rgb:'198,216,240'},
+{main:'#D0D1ED',hover:'#B8BAE2',rgb:'208,209,237'},
+{main:'#D8C9E8',hover:'#C5B1DB',rgb:'216,201,232'},
+{main:'#E7C9D7',hover:'#D8B0C4',rgb:'231,201,215'},
+{main:'#EBCDC0',hover:'#DDB3A4',rgb:'235,205,192'},
+{main:'#EAD5B5',hover:'#DCC197',rgb:'234,213,181'},
+{main:'#D9E0B5',hover:'#C5CF94',rgb:'217,224,181'},
+{main:'#BFDDB8',hover:'#A5CC9D',rgb:'191,221,184'},
+{main:'#B6D8C9',hover:'#9BC7B5',rgb:'182,216,201'},
+{main:'#B9D4D8',hover:'#9FC2C8',rgb:'185,212,216'},
+{main:'#C8D1E3',hover:'#AFBDD5',rgb:'200,209,227'},
+{main:'#D7CBE2',hover:'#C3B4D5',rgb:'215,203,226'},
+{main:'#F2C6C2',hover:'#E5AAA5',rgb:'242,198,194'},
+{main:'#F0D0A8',hover:'#E2B985',rgb:'240,208,168'},
+{main:'#E5D5A3',hover:'#D4C080',rgb:'229,213,163'},
+{main:'#CFE0A6',hover:'#B8CF82',rgb:'207,224,166'},
+{main:'#A6DCC8',hover:'#88CBB2',rgb:'166,220,200'},
+{main:'#A5D9E2',hover:'#86C5D1',rgb:'165,217,226'},
+{main:'#AFC8E8',hover:'#91B1D9',rgb:'175,200,232'},
+{main:'#BDBCE8',hover:'#A3A1D9',rgb:'189,188,232'},
+{main:'#D1B9E6',hover:'#BE9ED8',rgb:'209,185,230'},
+{main:'#E7B9CF',hover:'#D79DBA',rgb:'231,185,207'}
+];
+let lastTheme=-1;
+function applyRandomTheme(){
+  let i=Math.floor(Math.random()*blueThemes.length);
+  if(blueThemes.length>1&&i===lastTheme)i=(i+1+Math.floor(Math.random()*(blueThemes.length-1)))%blueThemes.length;
+  lastTheme=i;
+  const t=blueThemes[i],r=document.documentElement.style;
+  r.setProperty('--theme-main',t.main);
+  r.setProperty('--theme-hover',t.hover);
+  r.setProperty('--theme-soft',`rgba(${t.rgb},.22)`);
+  r.setProperty('--theme-selected',`rgba(${t.rgb},.30)`);
+  r.setProperty('--theme-rgb',t.rgb);
+}
+applyRandomTheme();
 
 renderSourceContainer();
 updateSelectionUI();
