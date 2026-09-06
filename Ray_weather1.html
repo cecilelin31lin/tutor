@@ -74,7 +74,9 @@
   }
   
   .option-btn {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     padding: 14px;
     margin-bottom: 10px;
@@ -106,6 +108,19 @@
     cursor: default;
   }
   
+  .option-marker {
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 12px;
+  }
+  .option-marker.correct {
+    color: #468189;
+  }
+  .option-marker.incorrect {
+    color: #E8828C;
+  }
+  
   .feedback {
     display: none;
     padding: 16px;
@@ -132,11 +147,10 @@
   }
   .explanation {
     font-size: 14px;
-    margin-top: 12px;
+    margin-top: 0;
     display: block;
     line-height: 1.6;
-    padding-top: 12px;
-    border-top: 0.5px solid rgba(0,0,0,0.1);
+    padding-top: 0;
   }
   .explanation-image {
     max-width: 100%;
@@ -396,13 +410,6 @@
     <div class="result-modal">
       <div class="result-title">🎉 測驗完成！</div>
       
-      <div class="result-stats">
-        <div class="result-stat">
-          <div class="result-stat-label">用時</div>
-          <div class="result-stat-value" id="finalTime">0:00</div>
-        </div>
-      </div>
-
       <div id="questionResultsTable" style="margin: 20px 0;"></div>
       
       <div class="result-button-group">
@@ -527,7 +534,17 @@ function showQuestion() {
   shuffledOptions.forEach((opt, idx) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.textContent = opt;
+    
+    // 添加選項文字和標記容器
+    const textSpan = document.createElement('span');
+    textSpan.textContent = opt;
+    btn.appendChild(textSpan);
+    
+    const markerSpan = document.createElement('span');
+    markerSpan.className = 'option-marker';
+    markerSpan.style.display = 'none';
+    btn.appendChild(markerSpan);
+    
     btn.onclick = () => selectOption(btn, opt);
     btn.setAttribute('data-index', idx + 1);
     optionsArea.appendChild(btn);
@@ -569,17 +586,21 @@ function submitAnswer() {
   const selectedBtn = document.querySelector('.option-btn[data-selected="true"]');
 
   const feedback = document.getElementById('feedback');
-  feedback.classList.add('show');
+  feedback.classList.remove('show');
 
   if (isCorrect) {
     answered = true;
     selectedBtn.classList.add('correct');
     selectedBtn.removeAttribute('data-selected');
+    
+    // 在正確答案旁邊顯示✓
+    const marker = selectedBtn.querySelector('.option-marker');
+    marker.textContent = '✓';
+    marker.className = 'option-marker correct';
+    marker.style.display = 'inline';
+    
     correctCount++;
     document.getElementById('correct').textContent = correctCount;
-    feedback.classList.add('success');
-    feedback.classList.remove('error');
-    feedback.innerHTML = '<div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">✓ 正確</div>' + buildExplanationHtml(q.explanation);
 
     const allBtns = document.querySelectorAll('.option-btn');
     allBtns.forEach(b => b.disabled = true);
@@ -589,13 +610,18 @@ function submitAnswer() {
     submitBtn.onclick = nextQuestion;
 
     if (log.firstTryCorrect === null) log.firstTryCorrect = true;
+    
+    // 在下一題按鈕下方只顯示解析
+    feedback.classList.add('show');
+    feedback.classList.add('success');
+    feedback.classList.remove('error');
+    feedback.innerHTML = buildExplanationHtml(q.explanation);
   } else {
     selectedBtn.classList.add('incorrect');
     selectedBtn.disabled = true;
     selectedBtn.removeAttribute('data-selected');
-    feedback.classList.add('error');
-    feedback.classList.remove('success');
-    feedback.innerHTML = '<div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">✗ 錯誤，再試一次</div>';
+
+    feedback.classList.remove('show');
 
     log.wrongAttempts.push(selectedAnswer);
     if (log.firstTryCorrect === null) log.firstTryCorrect = false;
@@ -633,16 +659,19 @@ function showResults() {
   const elapsed = Math.floor((Date.now() - startTime) / 1000);
   const mins = Math.floor(elapsed / 60);
   const secs = elapsed % 60;
-  document.getElementById('finalTime').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  const timeStr = mins + ':' + (secs < 10 ? '0' : '') + secs;
 
-  // 生成題目對錯表格
   const resultsTable = document.getElementById('questionResultsTable');
-  let html = '<div style="text-align: center;">';
+  let html = '<div style="font-size: 14px; line-height: 1.8;">';
+  
+  // 用時在上面
+  html += '<div style="color: #999; margin-bottom: 16px;">用時：' + timeStr + '</div>';
   
   reviewLog.forEach((log, idx) => {
-    const statusClass = log.firstTryCorrect ? 'correct' : 'incorrect';
     const statusSymbol = log.firstTryCorrect ? '✓' : '✗';
-    html += '<div class="question-result-item ' + statusClass + '">' + statusSymbol + '</div>';
+    const statusText = log.firstTryCorrect ? '正確' : '錯誤';
+    const statusColor = log.firstTryCorrect ? '#468189' : '#E8828C';
+    html += '<div style="color: ' + statusColor + ';">第' + (idx + 1) + '題：' + statusSymbol + ' ' + statusText + '</div>';
   });
   
   html += '</div>';
