@@ -1,0 +1,172 @@
+const PLAYERS = ['Zora'];
+
+function setup() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  PropertiesService.getScriptProperties().setProperty('SPREADSHEET_ID', ss.getId());
+
+  let logSheet = ss.getSheetByName('遊戲紀錄');
+  if (!logSheet) logSheet = ss.insertSheet('遊戲紀錄');
+  if (logSheet.getLastRow() === 0) {
+    logSheet.appendRow(['時間','玩家','練習範圍','遊玩關卡','練習單字','遊戲秒數','答錯次數','使用提示單字','錯誤單字','完整紀錄']);
+  }
+
+  let statsSheet = ss.getSheetByName('單字學習紀錄');
+  if (!statsSheet) statsSheet = ss.insertSheet('單字學習紀錄');
+  if (statsSheet.getLastRow() === 0) {
+    statsSheet.appendRow(['玩家','單字','練習次數','答錯次數','提示次數','再看一次次數','最後練習時間','重要','不用再出']);
+  } else {
+    if (!statsSheet.getRange(1,8).getValue()) statsSheet.getRange(1,8).setValue('重要');
+    if (!statsSheet.getRange(1,9).getValue()) statsSheet.getRange(1,9).setValue('不用再出');
+  }
+}
+
+function getSpreadsheet() {
+  const id = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+  if (!id) throw new Error('尚未執行 setup()');
+  return SpreadsheetApp.openById(id);
+}
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents || '{}');
+    if (!PLAYERS.includes(data.player)) return jsonResponse({ ok:false, error:'Invalid player' });
+
+    if (data.action === 'saveSession') {
+      saveSession(data);
+      return jsonResponse({ ok:true });
+    }
+    if (data.action === 'updateWordStats') {
+      updateWordStats(data);
+      return jsonResponse({ ok:true });
+    }
+    if (data.action === 'setWordFlags') {
+      setWordFlags(data);
+      return jsonResponse({ ok:true });
+    }
+    return jsonResponse({ ok:false, error:'Unknown action' });
+  } catch (err) {
+    return jsonResponse({ ok:false, error:String(err) });
+  }
+}
+
+function doGet(e) {
+  try {
+    const action = e.parameter.action;
+    const player = e.parameter.player;
+    if (!PLAYERS.includes(player)) return jsonResponse({ ok:false, error:'Invalid player' });
+
+    if (action === 'getWordStats') {
+      return jsonResponse({ ok:true, player, stats:getWordStats(player) });
+    }
+    if (action === 'getSessionHistory') {
+      return jsonResponse({ ok:true, player, sessions:getSessionHistory(player) });
+    }
+    return jsonResponse({ ok:false, error:'Unknown action' });
+  } catch (err) {
+    return jsonResponse({ ok:false, error:String(err) });
+  }
+}
+
+function saveSession(data) {
+  const sheet = getSpreadsheet().getSheetByName('遊戲紀錄');
+  sheet.appendRow([
+    new Date(), data.player || '', data.mode || '', arrayText(data.stages),
+    arrayText(data.words), Number(data.duration || 0), Number(data.wrongCount || 0),
+    arrayText(data.hintWords), arrayText(data.rewatchWords),
+    JSON.stringify(data.details || {})
+  ]);
+}
+
+function updateWordStats(data) {
+  const sheet = getSpreadsheet().getSheetByName('單字學習紀錄');
+  const player = data.player;
+  const updates = Array.isArray(data.words) ? data.words : [];
+  if (!updates.length) return;
+
+  const values = sheet.getDataRange().getValues();
+  const index = {};
+  for (let i=1; i<values.length; i++) index[values[i][0]+'|||'+values[i][1]] = i+1;
+
+  updates.forEach(item => {
+    if (!item.word) return;
+    const key = player+'|||'+item.word;
+    const row = index[key];
+
+    if (row) {
+      const old = sheet.getRange(row,1,1,9).getValues()[0];
+      sheet.getRange(row,1,1,9).setValues([[
+        player, item.word,
+        Number(old[2]||0)+Number(item.practice||0),
+        Number(old[3]||0)+Number(item.wrong||0),
+        Number(old[4]||0)+Number(item.hint||0),
+        Number(old[5]||0)+Number(item.rewatch||0),
+        new Date(), old[7] === true, old[8] === true
+      ]]);
+    } else {
+      sheet.appendRow([
+        player, item.word, Number(item.practice||0), Number(item.wrong||0),
+        Number(item.hint||0), Number(item.rewatch||0), new Date(), false, false
+      ]);
+    }
+  });
+}
+
+function setWordFlags(data) {
+  const sheet = getSpreadsheet().getSheetByName('單字學習紀錄');
+  const values = sheet.getDataRange().getValues();
+  let row = 0;
+
+  for (let i=1; i<values.length; i++) {
+    if (values[i][0] === data.player && values[i][1] === data.word) {
+      row = i+1;
+      break;
+    }
+  }
+
+  if (row) {
+    sheet.getRange(row,8,1,2).setValues([[!!data.important, !!data.excluded]]);
+  } else {
+    sheet.appendRow([data.player, data.word, 0, 0, 0, 0, '', !!data.important, !!data.excluded]);
+  }
+}
+
+function getWordStats(player) {
+  const sheet = getSpreadsheet().getSheetByName('單字學習紀錄');
+  const values = sheet.getDataRange().getValues();
+  const result = {};
+
+  for (let i=1; i<values.length; i++) {
+    if (values[i][0] !== player) continue;
+    result[values[i][1]] = {
+      practice:Number(values[i][2]||0),
+      wrong:Number(values[i][3]||0),
+      hint:Number(values[i][4]||0),
+      rewatch:Number(values[i][5]||0),
+      lastPlayed:values[i][6]||'',
+      important:values[i][7] === true,
+      excluded:values[i][8] === true
+    };
+  }
+  return result;
+}
+
+function getSessionHistory(player) {
+  const sheet = getSpreadsheet().getSheetByName('遊戲紀錄');
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  const values = sheet.getDataRange().getValues();
+  const result = [];
+  for (let i=1; i<values.length; i++) {
+    if (values[i][1] !== player) continue;
+    result.push({ time: values[i][0] });
+  }
+  result.sort((a,b) => new Date(b.time) - new Date(a.time));
+  return result;
+}
+
+function arrayText(value) {
+  return Array.isArray(value) ? value.join(', ') : (value || '');
+}
+
+function jsonResponse(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
