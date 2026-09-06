@@ -261,6 +261,28 @@
     background: rgba(176,196,222,.25);
   }
 
+  .question-result-item {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin: 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .question-result-item.correct {
+    background: rgba(70,129,137,.15);
+    color: #468189;
+    border: 1px solid #468189;
+  }
+  .question-result-item.incorrect {
+    background: rgba(232,130,140,.15);
+    color: #E8828C;
+    border: 1px solid #E8828C;
+  }
+
   .review-container {
     display: none;
     margin-top: 20px;
@@ -376,14 +398,12 @@
       
       <div class="result-stats">
         <div class="result-stat">
-          <div class="result-stat-label">正確率</div>
-          <div class="result-stat-value" id="accuracy">0%</div>
-        </div>
-        <div class="result-stat">
           <div class="result-stat-label">用時</div>
           <div class="result-stat-value" id="finalTime">0:00</div>
         </div>
       </div>
+
+      <div id="questionResultsTable" style="margin: 20px 0;"></div>
       
       <div class="result-button-group">
         <button class="result-button secondary" onclick="reviewAnswers()">複習</button>
@@ -402,7 +422,7 @@ const questions = [
     explanation: { text: '「What is the weather like...?」是詢問天氣的疑問句，開頭用 What。', image: '' }
   },
   { 
-    question: 'It ___ hot and humid in Taiwan last summer.',
+    question: 'It ___ hot and dry in Taiwan last summer.',
     answer: 'was',
     options: ['is', 'was', 'are', 'be'],
     explanation: { text: '主詞 It（單數）搭配 be 動詞 is，但要使用過去式 was。', image: '' }
@@ -503,13 +523,29 @@ function showQuestion() {
     explanation: q.explanation
   };
 
-  shuffledOptions.forEach((opt) => {
+  const buttons = [];
+  shuffledOptions.forEach((opt, idx) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
     btn.textContent = opt;
     btn.onclick = () => selectOption(btn, opt);
+    btn.setAttribute('data-index', idx + 1);
     optionsArea.appendChild(btn);
+    buttons.push(btn);
   });
+
+  // 移除舊的鍵盤監聽器，添加新的
+  document.removeEventListener('keydown', keyboardSelector);
+  
+  function keyboardSelector(e) {
+    if (answered) return;
+    const key = parseInt(e.key);
+    if (key >= 1 && key <= shuffledOptions.length) {
+      buttons[key - 1].click();
+    }
+  }
+  
+  document.addEventListener('keydown', keyboardSelector);
 }
 
 function selectOption(btn, opt) {
@@ -594,13 +630,23 @@ function startTimer() {
 function showResults() {
   clearInterval(timerInterval);
 
-  const accuracy = Math.round((correctCount / shuffledQuestions.length) * 100);
-  document.getElementById('accuracy').textContent = accuracy + '%';
-
   const elapsed = Math.floor((Date.now() - startTime) / 1000);
   const mins = Math.floor(elapsed / 60);
   const secs = elapsed % 60;
   document.getElementById('finalTime').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+  // 生成題目對錯表格
+  const resultsTable = document.getElementById('questionResultsTable');
+  let html = '<div style="text-align: center;">';
+  
+  reviewLog.forEach((log, idx) => {
+    const statusClass = log.firstTryCorrect ? 'correct' : 'incorrect';
+    const statusSymbol = log.firstTryCorrect ? '✓' : '✗';
+    html += '<div class="question-result-item ' + statusClass + '">' + statusSymbol + '</div>';
+  });
+  
+  html += '</div>';
+  resultsTable.innerHTML = html;
 
   document.getElementById('resultOverlay').classList.add('show');
 }
