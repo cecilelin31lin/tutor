@@ -58,6 +58,12 @@
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 20px;
+    min-height: auto;
+  }
+  
+  .options-area {
+    min-height: 180px;
+    margin-bottom: 20px;
   }
   
   .question-text {
@@ -102,30 +108,35 @@
   
   .feedback {
     display: none;
-    padding: 12px;
+    padding: 16px;
     border-radius: 8px;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 0;
+    text-align: left;
     font-weight: 500;
+    background: white;
+    border: 0.5px solid #ddd;
   }
   .feedback.show {
     display: block;
   }
   .feedback.success {
-    background: rgba(70,129,137,.14);
+    background: rgba(70,129,137,.08);
     border: 0.5px solid #468189;
     color: #468189;
   }
   .feedback.error {
-    background: rgba(232,130,140,.16);
+    background: rgba(232,130,140,.08);
     border: 0.5px solid #E8828C;
     color: #E8828C;
   }
   .explanation {
-    font-size: 13px;
-    margin-top: 8px;
+    font-size: 14px;
+    margin-top: 12px;
     display: block;
     line-height: 1.6;
+    padding-top: 12px;
+    border-top: 0.5px solid rgba(0,0,0,0.1);
   }
   .explanation-image {
     max-width: 100%;
@@ -342,13 +353,14 @@
 
   <div class="question-container" id="questionContainer">
     <div class="question-text" id="questionText"></div>
-    <div id="optionsArea"></div>
-    <div class="feedback" id="feedback"></div>
+    <div id="optionsArea" class="options-area"></div>
   </div>
 
   <div class="button-group">
     <button class="nav-btn" id="submitBtn" onclick="submitAnswer()">確認答案</button>
   </div>
+
+  <div class="feedback" id="feedback"></div>
 
   <div class="review-container" id="reviewContainer">
     <div class="review-header">
@@ -391,7 +403,7 @@ const questions = [
   },
   { 
     question: 'It ___ hot and humid in Taiwan last summer.',
-    answer: 'is',
+    answer: 'was',
     options: ['is', 'was', 'are', 'be'],
     explanation: { text: '主詞 It（單數）搭配 be 動詞 is，但要使用過去式 was。', image: '' }
   },
@@ -531,7 +543,7 @@ function submitAnswer() {
     document.getElementById('correct').textContent = correctCount;
     feedback.classList.add('success');
     feedback.classList.remove('error');
-    feedback.innerHTML = '✓ 正確' + buildExplanationHtml(q.explanation);
+    feedback.innerHTML = '<div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">✓ 正確</div>' + buildExplanationHtml(q.explanation);
 
     const allBtns = document.querySelectorAll('.option-btn');
     allBtns.forEach(b => b.disabled = true);
@@ -547,7 +559,7 @@ function submitAnswer() {
     selectedBtn.removeAttribute('data-selected');
     feedback.classList.add('error');
     feedback.classList.remove('success');
-    feedback.textContent = '✗ 錯誤，再試一次';
+    feedback.innerHTML = '<div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">✗ 錯誤，再試一次</div>';
 
     log.wrongAttempts.push(selectedAnswer);
     if (log.firstTryCorrect === null) log.firstTryCorrect = false;
