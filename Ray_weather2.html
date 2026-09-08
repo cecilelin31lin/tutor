@@ -221,31 +221,6 @@
     margin-bottom: 20px;
   }
   
-  .result-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  
-  .result-stat {
-    background: #f9f9f9;
-    border-radius: 8px;
-    padding: 12px;
-  }
-  
-  .result-stat-label {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 4px;
-  }
-  
-  .result-stat-value {
-    font-size: 20px;
-    font-weight: 600;
-    color: #B0C4DE;
-  }
-
   .result-button-group {
     display: flex;
     gap: 10px;
@@ -273,28 +248,6 @@
   }
   .result-button.secondary:hover {
     background: rgba(176,196,222,.25);
-  }
-
-  .question-result-item {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    margin: 6px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 16px;
-  }
-  .question-result-item.correct {
-    background: rgba(70,129,137,.15);
-    color: #468189;
-    border: 1px solid #468189;
-  }
-  .question-result-item.incorrect {
-    background: rgba(232,130,140,.15);
-    color: #E8828C;
-    border: 1px solid #E8828C;
   }
 
   .review-container {
@@ -335,9 +288,6 @@
   }
   .review-your-answer.wrong {
     color: #E8828C;
-  }
-  .review-your-answer.right {
-    color: #468189;
   }
   .review-correct-answer {
     color: #468189;
@@ -425,7 +375,7 @@ const questions = [
   { 
     question: "___ the weather like in Australia in summer last year?",
     answer: 'What was',
-    options: ['What was', 'How was', 'How's', 'What's'],
+    options: ['What was', 'How was', "How's", "What's"],
     explanation: { text: '「What was the weather like...?」是詢問天氣的疑問句，且為過去式，故搭配 was。', image: '' }
   },
   { 
@@ -435,7 +385,7 @@ const questions = [
     explanation: { text: '主詞 It（單數）搭配 be 動詞 is，但要使用過去式 was。', image: '' }
   },
   { 
-    question: 'It ___ a lot in the city esterday.',
+    question: 'It ___ a lot in the city yesterday.',
     answer: 'rained',
     options: ['rains', 'was rain', 'rained', 'rain'],
     explanation: { text: 'rain 作動詞時，主詞 It 搭配 rains，但時態為過去式，故用 rained。', image: '' }
@@ -472,11 +422,6 @@ const questions = [
   },
 ];
 
-/*
-資料格式說明：
-explanation: { text: '解析文字（沒有就填空字串）', image: '圖片網址（沒有就填空字串）' }
-*/
-
 let currentQuestion = 0;
 let correctCount = 0;
 let startTime = Date.now();
@@ -484,9 +429,9 @@ let timerInterval = null;
 let answered = false;
 let selectedAnswer = null;
 let shuffledQuestions = [];
-let reviewLog = []; // 記錄每題：question, correctAnswer, wrongAttempts(使用者答錯過的選項), gotCorrect
-let questionTimings = []; // 記錄每題的時間
-let questionStartTimes = []; // 記錄每題開始時間
+let reviewLog = [];
+let questionTimings = [];
+let questionStartTimes = [];
 
 function shuffle(arr) {
   const result = [...arr];
@@ -533,12 +478,11 @@ function showQuestion() {
 
   const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
 
-  // 本題的答題紀錄物件
   reviewLog[currentQuestion] = {
     question: q.question,
     correctAnswer: q.answer,
     wrongAttempts: [],
-    firstTryCorrect: null, // 是否第一次就答對
+    firstTryCorrect: null,
     explanation: q.explanation
   };
 
@@ -547,7 +491,6 @@ function showQuestion() {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
     
-    // 添加選項文字和標記容器
     const textSpan = document.createElement('span');
     textSpan.textContent = opt;
     btn.appendChild(textSpan);
@@ -562,19 +505,6 @@ function showQuestion() {
     optionsArea.appendChild(btn);
     buttons.push(btn);
   });
-
-  // 移除舊的鍵盤監聽器，添加新的
-  document.removeEventListener('keydown', keyboardSelector);
-  
-  function keyboardSelector(e) {
-    if (answered) return;
-    const key = parseInt(e.key);
-    if (key >= 1 && key <= shuffledOptions.length) {
-      buttons[key - 1].click();
-    }
-  }
-  
-  document.addEventListener('keydown', keyboardSelector);
 }
 
 function selectOption(btn, opt) {
@@ -605,7 +535,6 @@ function submitAnswer() {
     selectedBtn.classList.add('correct');
     selectedBtn.removeAttribute('data-selected');
     
-    // 在正確答案旁邊顯示✓
     const marker = selectedBtn.querySelector('.option-marker');
     marker.textContent = '✓';
     marker.className = 'option-marker correct';
@@ -623,7 +552,6 @@ function submitAnswer() {
 
     if (log.firstTryCorrect === null) log.firstTryCorrect = true;
     
-    // 在下一題按鈕下方只顯示解析
     feedback.classList.add('show');
     feedback.classList.add('success');
     feedback.classList.remove('error');
@@ -676,7 +604,6 @@ function showResults() {
   const resultsTable = document.getElementById('questionResultsTable');
   let html = '<div style="font-size: 14px; line-height: 1.8;">';
   
-  // 用時在上面
   html += '<div style="color: #999; margin-bottom: 16px;">用時：' + timeStr + '</div>';
   
   reviewLog.forEach((log, idx) => {
@@ -704,7 +631,6 @@ function reviewAnswers() {
     const item = document.createElement('div');
     item.className = 'review-item ' + (log.firstTryCorrect ? 'correct' : 'incorrect');
 
-    // 題號、對錯、用時
     const headerDiv = document.createElement('div');
     headerDiv.className = 'review-header';
     const statusEmoji = log.firstTryCorrect ? '✓' : '✗';
@@ -764,7 +690,8 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
-initGame();
+// 確保 DOM 載入後才初始化遊戲
+window.addEventListener('DOMContentLoaded', initGame);
 </script>
 </body>
 </html>
