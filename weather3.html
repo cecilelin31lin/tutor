@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天氣英文文法練習(二)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 60px;
+    background: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Nunito', sans-serif;
+    color: #2B3A55;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; }
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #2B3A55;
+    margin: 0 0 8px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2B3A55;
+  }
+  
+  .question-container {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    min-height: auto;
+  }
+  
+  .options-area {
+    min-height: 180px;
+    margin-bottom: 20px;
+  }
+  
+  .question-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2B3A55;
+    margin-bottom: 20px;
+  }
+  
+  .option-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 0.5px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+    transition: all 0.2s;
+  }
+  .option-btn:hover {
+    border-color: #999;
+    background: #f9f9f9;
+  }
+  .option-btn[data-selected="true"] {
+    background: rgba(176,196,222,.30);
+    border-color: #B0C4DE;
+  }
+  .option-btn.correct {
+    background: rgba(70,129,137,.14);
+    border-color: #468189;
+  }
+  .option-btn.incorrect {
+    background: rgba(232,130,140,.16);
+    border-color: #E8828C;
+  }
+  .option-btn:disabled {
+    cursor: default;
+  }
+  
+  .option-marker {
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 12px;
+  }
+  .option-marker.correct {
+    color: #468189;
+  }
+  .option-marker.incorrect {
+    color: #E8828C;
+  }
+  
+  .feedback {
+    display: none;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    text-align: left;
+    font-weight: 500;
+    background: white;
+    border: 0.5px solid #ddd;
+  }
+  .feedback.show {
+    display: block;
+  }
+  .feedback.success {
+    background: rgba(70,129,137,.08);
+    border: 0.5px solid #468189;
+    color: #468189;
+  }
+  .feedback.error {
+    background: rgba(232,130,140,.08);
+    border: 0.5px solid #E8828C;
+    color: #E8828C;
+  }
+  .explanation {
+    font-size: 14px;
+    margin-top: 0;
+    display: block;
+    line-height: 1.6;
+    padding-top: 0;
+  }
+  .explanation-image {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 8px;
+    display: block;
+  }
+  .review-explanation {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  
+  button.nav-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #B0C4DE;
+    color: white;
+    transition: all 0.2s;
+  }
+  button.nav-btn:hover {
+    background: #9AB3D0;
+  }
+  
+  .result-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .result-overlay.show {
+    display: flex;
+  }
+  
+  .result-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .result-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2B3A55;
+    margin-bottom: 20px;
+  }
+  
+  .result-button-group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .result-button {
+    flex: 1;
+    background: #B0C4DE;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .result-button:hover {
+    background: #9AB3D0;
+  }
+  .result-button.secondary {
+    background: white;
+    color: #B0C4DE;
+    border: 1px solid #B0C4DE;
+  }
+  .result-button.secondary:hover {
+    background: rgba(176,196,222,.25);
+  }
+
+  .review-container {
+    display: none;
+    margin-top: 20px;
+  }
+  .review-container.show {
+    display: block;
+  }
+
+  .review-item {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+  .review-item.correct {
+    border-left: 4px solid #468189;
+  }
+  .review-item.incorrect {
+    border-left: 4px solid #E8828C;
+  }
+  .review-question {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2B3A55;
+    margin-bottom: 10px;
+  }
+  .review-answer-row {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .review-answer-row .label {
+    color: #999;
+    margin-right: 6px;
+  }
+  .review-your-answer.wrong {
+    color: #E8828C;
+  }
+  .review-correct-answer {
+    color: #468189;
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .review-header h2 {
+    font-size: 20px;
+    margin: 0;
+  }
+  .back-btn {
+    background: white;
+    color: #B0C4DE;
+    border: 1px solid #B0C4DE;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .back-btn:hover {
+    background: rgba(176,196,222,.25);
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="mainWrap">
+  <h1>天氣英文文法練習(二)</h1>
+  <p class="subtitle">Book III Lesson 1 - 描述天氣的句型</p>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">題目</div>
+      <div class="stat-value" id="progress">1/3</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">⏱ 時間</div>
+      <div class="stat-value" id="timer">0:00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">✓ 正確</div>
+      <div class="stat-value" id="correct">0</div>
+    </div>
+  </div>
+
+  <div class="question-container" id="questionContainer">
+    <div class="question-text" id="questionText"></div>
+    <div id="optionsArea" class="options-area"></div>
+  </div>
+
+  <div class="button-group">
+    <button class="nav-btn" id="submitBtn" onclick="submitAnswer()">確認答案</button>
+  </div>
+
+  <div class="feedback" id="feedback"></div>
+
+  <div class="review-container" id="reviewContainer">
+    <div class="review-header">
+      <h2>📋 答題複習</h2>
+      <button class="back-btn" onclick="location.reload()">重新開始</button>
+    </div>
+    <div id="reviewList"></div>
+  </div>
+
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-modal">
+      <div class="result-title">🎉 測驗完成！</div>
+      
+      <div id="questionResultsTable" style="margin: 20px 0;"></div>
+      
+      <div class="result-button-group">
+        <button class="result-button secondary" onclick="reviewAnswers()">複習</button>
+        <button class="result-button" onclick="location.reload()">重新開始</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  { 
+    question: "___ the weather in the USA in summer?",
+    answer: "How's",
+    options: ['What was', 'How was', "How's", "What's"],
+    explanation: { text: '「How is the weather...?」是詢問天氣的疑問句。', image: '' }
+  },
+  { 
+    question: 'There ___ a lot of rain.',
+    answer: 'is',
+    options: ['is', 'are', 'be', 'am'],
+    explanation: { text: 'rain 是不可數名詞，用 is。', image: '' }
+  },
+  { 
+    question: '___ it rain often?',
+    answer: 'Does',
+    options: ['Does', 'Do', 'Is', 'Was'],
+    explanation: { text: '修飾動詞 rain Yes/NO 問句前要找好朋友助動詞。', image: '' }
+  },
+  { 
+    question: 'We have a lot of wind here. 該句是用什麼詞描述天氣？',
+    answer: '名詞',
+    options: ['名詞', '動詞', '形容詞', '副詞'],
+    explanation: { text: 'have 表示「有」，接名詞。', image: '' }
+  },
+  { 
+    question: 'It was snowy in Taiwan yesterday. 該句是用什麼詞描述天氣？',
+    answer: '形容詞',
+    options: ['名詞', '動詞', '形容詞', '副詞'],
+    explanation: { text: 'it is + 形容詞', image: '' }
+  },
+  { 
+    question: 'There is little rain in spring. 該句是用什麼詞描述天氣？',
+    answer: '名詞',
+    options: ['名詞', '動詞', '形容詞', '副詞'],
+    explanation: { text: 'There is 表示「有」，接名詞。', image: '' }
+  },
+  { 
+    question: 'It snows in Japan in winter. 該句是用什麼詞描述天氣？',
+    answer: '動詞',
+    options: ['名詞', '動詞', '形容詞', '副詞'],
+    explanation: { text: '該句的動詞為snow', image: '' }
+  },
+];
+
+let currentQuestion = 0;
+let correctCount = 0;
+let startTime = Date.now();
+let timerInterval = null;
+let answered = false;
+let selectedAnswer = null;
+let shuffledQuestions = [];
+let reviewLog = [];
+let questionTimings = [];
+let questionStartTimes = [];
+
+function shuffle(arr) {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function initGame() {
+  shuffledQuestions = shuffle(questions);
+  questionStartTimes = new Array(shuffledQuestions.length).fill(0);
+  questionTimings = new Array(shuffledQuestions.length).fill(0);
+  questionStartTimes[0] = Date.now();
+  showQuestion();
+  startTimer();
+
+  document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      if (answered) {
+        nextQuestion();
+      } else {
+        submitAnswer();
+      }
+    }
+  });
+}
+
+function showQuestion() {
+  answered = false;
+  selectedAnswer = null;
+  const q = shuffledQuestions[currentQuestion];
+  document.getElementById('progress').textContent = (currentQuestion + 1) + '/' + shuffledQuestions.length;
+  document.getElementById('questionText').textContent = q.question;
+  document.getElementById('feedback').classList.remove('show');
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.textContent = '確認答案';
+  submitBtn.onclick = submitAnswer;
+
+  const optionsArea = document.getElementById('optionsArea');
+  optionsArea.innerHTML = '';
+
+  const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+  reviewLog[currentQuestion] = {
+    question: q.question,
+    correctAnswer: q.answer,
+    wrongAttempts: [],
+    firstTryCorrect: null,
+    explanation: q.explanation
+  };
+
+  const buttons = [];
+  shuffledOptions.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    
+    const textSpan = document.createElement('span');
+    textSpan.textContent = opt;
+    btn.appendChild(textSpan);
+    
+    const markerSpan = document.createElement('span');
+    markerSpan.className = 'option-marker';
+    markerSpan.style.display = 'none';
+    btn.appendChild(markerSpan);
+    
+    btn.onclick = () => selectOption(btn, opt);
+    btn.setAttribute('data-index', idx + 1);
+    optionsArea.appendChild(btn);
+    buttons.push(btn);
+  });
+}
+
+function selectOption(btn, opt) {
+  if (answered) return;
+  const prev = document.querySelector('.option-btn[data-selected="true"]');
+  if (prev) prev.removeAttribute('data-selected');
+  btn.setAttribute('data-selected', 'true');
+  selectedAnswer = opt;
+}
+
+function submitAnswer() {
+  if (answered) return;
+  if (selectedAnswer === null) {
+    alert('請先選擇一個答案');
+    return;
+  }
+
+  const q = shuffledQuestions[currentQuestion];
+  const isCorrect = selectedAnswer === q.answer;
+  const log = reviewLog[currentQuestion];
+  const selectedBtn = document.querySelector('.option-btn[data-selected="true"]');
+
+  const feedback = document.getElementById('feedback');
+  feedback.classList.remove('show');
+
+  if (isCorrect) {
+    answered = true;
+    selectedBtn.classList.add('correct');
+    selectedBtn.removeAttribute('data-selected');
+    
+    const marker = selectedBtn.querySelector('.option-marker');
+    marker.textContent = '✓';
+    marker.className = 'option-marker correct';
+    marker.style.display = 'inline';
+    
+    correctCount++;
+    document.getElementById('correct').textContent = correctCount;
+
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true);
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? '查看結果' : '下一題';
+    submitBtn.onclick = nextQuestion;
+
+    if (log.firstTryCorrect === null) log.firstTryCorrect = true;
+    
+    feedback.classList.add('show');
+    feedback.classList.add('success');
+    feedback.classList.remove('error');
+    feedback.innerHTML = buildExplanationHtml(q.explanation);
+  } else {
+    selectedBtn.classList.add('incorrect');
+    selectedBtn.disabled = true;
+    selectedBtn.removeAttribute('data-selected');
+
+    feedback.classList.remove('show');
+
+    log.wrongAttempts.push(selectedAnswer);
+    if (log.firstTryCorrect === null) log.firstTryCorrect = false;
+
+    selectedAnswer = null;
+  }
+}
+
+function nextQuestion() {
+  const currentTime = Date.now();
+  questionTimings[currentQuestion] = Math.floor((currentTime - questionStartTimes[currentQuestion]) / 1000);
+  
+  currentQuestion++;
+  if (currentQuestion >= shuffledQuestions.length) {
+    showResults();
+  } else {
+    questionStartTimes[currentQuestion] = Date.now();
+    showQuestion();
+  }
+}
+
+function startTimer() {
+  startTime = Date.now();
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    document.getElementById('timer').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  }, 100);
+}
+
+function showResults() {
+  clearInterval(timerInterval);
+
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  const timeStr = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+  const resultsTable = document.getElementById('questionResultsTable');
+  let html = '<div style="font-size: 14px; line-height: 1.8;">';
+  
+  html += '<div style="color: #999; margin-bottom: 16px;">用時：' + timeStr + '</div>';
+  
+  reviewLog.forEach((log, idx) => {
+    const statusSymbol = log.firstTryCorrect ? '✓' : '✗';
+    const statusText = log.firstTryCorrect ? '正確' : '錯誤';
+    const statusColor = log.firstTryCorrect ? '#468189' : '#E8828C';
+    html += '<div style="color: ' + statusColor + ';">第' + (idx + 1) + '題：' + statusSymbol + ' ' + statusText + '</div>';
+  });
+  
+  html += '</div>';
+  resultsTable.innerHTML = html;
+
+  document.getElementById('resultOverlay').classList.add('show');
+}
+
+function reviewAnswers() {
+  document.getElementById('resultOverlay').classList.remove('show');
+  document.getElementById('questionContainer').style.display = 'none';
+  document.querySelector('.button-group').style.display = 'none';
+
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+
+  reviewLog.forEach((log, idx) => {
+    const item = document.createElement('div');
+    item.className = 'review-item ' + (log.firstTryCorrect ? 'correct' : 'incorrect');
+
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'review-header';
+    const statusEmoji = log.firstTryCorrect ? '✓' : '✗';
+    const statusColor = log.firstTryCorrect ? '#468189' : '#E8828C';
+    const timeStr = questionTimings[idx] ? questionTimings[idx] + '秒' : '---';
+    headerDiv.innerHTML = '<span style="color: ' + statusColor + '; font-weight: bold; margin-right: 8px;">' + statusEmoji + '</span><span style="color: #999; font-size: 14px;">' + timeStr + '</span>';
+    item.appendChild(headerDiv);
+
+    const qDiv = document.createElement('div');
+    qDiv.className = 'review-question';
+    qDiv.textContent = (idx + 1) + '. ' + log.question;
+    item.appendChild(qDiv);
+
+    if (log.wrongAttempts.length > 0) {
+      const wrongRow = document.createElement('div');
+      wrongRow.className = 'review-answer-row';
+      wrongRow.innerHTML = '<span class="label">你曾答錯：</span><span class="review-your-answer wrong">' + log.wrongAttempts.map(escapeHtml).join('、') + '</span>';
+      item.appendChild(wrongRow);
+    }
+
+    const correctRow = document.createElement('div');
+    correctRow.className = 'review-answer-row';
+    correctRow.innerHTML = '<span class="label">正確答案：</span><span class="review-correct-answer">' + escapeHtml(String(log.correctAnswer)) + '</span>';
+    item.appendChild(correctRow);
+
+    const expHtml = buildExplanationHtml(log.explanation);
+    if (expHtml) {
+      const expRow = document.createElement('div');
+      expRow.className = 'review-answer-row review-explanation';
+      expRow.innerHTML = '<span class="label">解析：</span>' + expHtml;
+      item.appendChild(expRow);
+    }
+
+    reviewList.appendChild(item);
+  });
+
+  document.getElementById('reviewContainer').classList.add('show');
+}
+
+function buildExplanationHtml(explanation) {
+  if (!explanation) return '';
+  const text = explanation.text || '';
+  const image = explanation.image || '';
+  if (!text && !image) return '';
+  let html = '';
+  if (text) html += '<span class="explanation">' + escapeHtml(text) + '</span>';
+  if (image) html += '<img class="explanation-image" src="' + escapeHtml(image) + '" alt="解析圖片">';
+  return html;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// 確保 DOM 載入後才初始化遊戲
+window.addEventListener('DOMContentLoaded', initGame);
+</script>
+</body>
+</html>
