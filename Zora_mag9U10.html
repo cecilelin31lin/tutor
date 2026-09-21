@@ -115,18 +115,18 @@ h1 { text-align:center; font-size:28px; margin:0 0 8px; }
 const shuffleSentences = 1;
 
 const pairs = [
-  { word: '驚訝', sentence: 'surprise' },
-  { word: '懷疑', sentence: 'disbelief' },
-  { word: '愉快', sentence: 'delight' },
-  { word: '失望', sentence: 'disappointment' },
-  { word: '後悔', sentence: 'regret' },
-  { word: '悲傷', sentence: 'sorrow' },
-  { word: '鬆一口氣', sentence: 'relief' },
-  { word: '激動', sentence: 'excitement' },
-  { word: '滿足', sentence: 'satisfaction' },
-  { word: '難堪', sentence: 'embarrassment' },
-  { word: '生氣', sentence: 'anger' },
-  { word: '恐懼', sentence: 'horror' },
+  { word: 'surprise', sentence: '驚訝' },
+  { word: 'disbelief', sentence: '懷疑' },
+  { word: 'delight', sentence: '愉快' },
+  { word: 'disappointment', sentence: '失望' },
+  { word: 'regret', sentence: '後悔' },
+  { word: 'sorrow', sentence: '悲傷' },
+  { word: 'relief', sentence: '鬆一口氣' },
+  { word: 'excitement', sentence: '激動' },
+  { word: 'satisfaction', sentence: '滿足' },
+  { word: 'embarrassment', sentence: '難堪' },
+  { word: 'anger', sentence: '生氣' },
+  { word: 'horror', sentence: '恐懼' },
 ];
 
 const distractors = [];
@@ -201,7 +201,7 @@ function matchSentence(el) {
 }
 function flashWrong(el) { el.classList.add('incorrect'); setTimeout(()=>el.classList.remove('incorrect'),500); }
 
-const qaWords = pairs.map(p => ({ word: p.sentence, meaning: p.word }));
+const qaWords = pairs.map(p => ({ word: p.word, meaning: p.sentence }));
 let s2Questions=[], s2Index=0, s2Answered=false;
 
 function initStage2() {
