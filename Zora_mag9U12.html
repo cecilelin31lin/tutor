@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mag09U12文法：介系詞與從屬連接詞</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg);
+            color: #334155;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #cbd5e1;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .game-card {
+            display: none;
+            width: 100%;
+            max-width: 650px;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .game-card.active {
+            display: block;
+        }
+
+        .status {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .q-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .opt-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .opt-btn {
+            padding: 12px;
+            font-size: 15px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .opt-btn:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .msg {
+            font-weight: bold;
+            min-height: 24px;
+            margin-bottom: 15px;
+        }
+
+        .msg.correct { color: var(--success); }
+        .msg.wrong { color: var(--danger); }
+
+        .btn-action {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* 遊戲二專用：重組區域 */
+        .build-area, .pool-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 48px;
+            padding: 10px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .build-area { background: #f8fafc; border-color: var(--primary); }
+
+        .chip {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #64748b;
+            border-radius: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>📝 純文法特訓小遊戲</h2>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="showGame(1)">關卡 1：介系詞「除了…」專練</button>
+        <button class="tab-btn" onclick="showGame(2)">關卡 2：Although/Though 句型拼圖</button>
+    </div>
+
+    <!-- 遊戲一 -->
+    <div id="g1" class="game-card active">
+        <div class="status">
+            <span>關卡：<span id="g1-q">1</span>/5</span>
+            <span>得分：<span id="g1-s">0</span></span>
+        </div>
+        <div class="q-text" id="g1-text">填空載入中...</div>
+        <div class="opt-grid" id="g1-opts"></div>
+        <div class="msg" id="g1-msg"></div>
+        <button class="btn-action" id="g1-next" style="display:none;" onclick="nextG1()">下一題 ➔</button>
+    </div>
+
+    <!-- 遊戲二 -->
+    <div id="g2" class="game-card">
+        <div class="status">
+            <span>關卡：<span id="g2-q">1</span>/5</span>
+            <span>得分：<span id="g2-s">0</span></span>
+        </div>
+        <div class="q-text" id="g2-target">目標句型載入中...</div>
+        <p>點擊單字進行重組（注意從屬子句與逗號位置）：</p>
+        <div class="build-area" id="g2-build"></div>
+        <div class="pool-area" id="g2-pool"></div>
+        <div class="msg" id="g2-msg"></div>
+        <button class="btn-action" id="g2-check" onclick="checkG2()">檢查句型</button>
+        <button class="btn-action" id="g2-next" style="display:none;" onclick="nextG2()">下一題 ➔</button>
+    </div>
+
+    <script>
+        function showGame(num) {
+            document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === num-1));
+            document.querySelectorAll('.game-card').forEach((c, i) => c.classList.toggle('active', i === num-1));
+        }
+
+        /* ----- 遊戲一：介系詞資料與邏輯 ----- */
+        const g1Data = [
+            {
+                q: "_______ mathematics, Mark is also interested in computer programming.",
+                opts: ["Besides", "Except for", "Without", "Instead of"],
+                ans: "Besides",
+                expl: "句意為「除了數學外，他『也』對程式設計感興趣」，表示包含概念，選 Besides。"
+            },
+            {
+                q: "The library is open every day _______ Sundays.",
+                opts: ["in addition to", "except for", "besides", "along with"],
+                ans: "except for",
+                expl: "句意為「除了星期日以外，每天都開」，表示排除概念，選 except for。"
+            },
+            {
+                q: "_______ one minor mistake, your sentence structures are completely correct.",
+                opts: ["In addition to", "Apart from", "Besides", "As well as"],
+                ans: "Apart from",
+                expl: "Apart from 可表「排除」，句意為「除了那一個小錯外，其餘皆正確」。"
+            },
+            {
+                q: "_______ learning French, Sophia is also studying German this semester.",
+                opts: ["Besides", "Except", "Aside", "Instead"],
+                ans: "Besides",
+                expl: "「除了學習法文之外，索菲亞這學期『也』在學習德文」，屬於包含／附加用法，後接動名詞 learning，故選 Besides。"
+            },
+            {
+                q: "He likes all sports _______ boxing.",
+                opts: ["besides", "except for", "in addition to", "plus"],
+                ans: "except for",
+                expl: "句意為「除了拳擊外，他喜歡『所有』運動」，表排除，選 except for。"
+            }
+        ];
+
+        let g1Idx = 0, g1Score = 0;
+
+        function loadG1() {
+            const item = g1Data[g1Idx];
+            document.getElementById('g1-q').innerText = g1Idx + 1;
+            document.getElementById('g1-text').innerText = item.q;
+            document.getElementById('g1-msg').innerText = "";
+            document.getElementById('g1-next').style.display = "none";
+            
+            const box = document.getElementById('g1-opts');
+            box.innerHTML = "";
+            item.opts.forEach(o => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.innerText = o;
+                b.onclick = () => {
+                    document.querySelectorAll('.opt-btn').forEach(btn => btn.disabled = true);
+                    if(o === item.ans) {
+                        document.getElementById('g1-msg').className = "msg correct";
+                        document.getElementById('g1-msg').innerText = "✅ 正確！" + item.expl;
+                        g1Score += 20;
+                        document.getElementById('g1-s').innerText = g1Score;
+                    } else {
+                        document.getElementById('g1-msg').className = "msg wrong";
+                        document.getElementById('g1-msg').innerText = "❌ 錯誤！" + item.expl;
+                    }
+                    document.getElementById('g1-next').style.display = "block";
+                };
+                box.appendChild(b);
+            });
+        }
+
+        function nextG1() {
+            g1Idx++;
+            if(g1Idx < g1Data.length) loadG1();
+            else {
+                document.getElementById('g1-text').innerText = `🎉 練習完成！總分：${g1Score}`;
+                document.getElementById('g1-opts').innerHTML = "";
+                document.getElementById('g1-next').style.display = "none";
+            }
+        }
+
+        /* ----- 遊戲二：Although/Though 資料與邏輯 ----- */
+        const g2Data = [
+            {
+                target: "目標：用 Although 置於句首連接兩句（雖然天下雨，我們還是去爬山。）",
+                words: ["Although", "it", "rained,", "we", "went", "hiking."],
+                ans: "Although it rained, we went hiking."
+            },
+            {
+                target: "目標：將 although 放句中（他雖然很累，還是通過了考試。）",
+                words: ["He", "passed", "the", "exam", "although", "he", "was", "tired."],
+                ans: "He passed the exam although he was tired."
+            },
+            {
+                target: "目標：將 though 放句尾表示轉折（這項任務很難。不過，他成功了。）",
+                words: ["The", "task", "was", "hard.", "He", "succeeded,", "though."],
+                ans: "The task was hard. He succeeded, though."
+            },
+            {
+                target: "目標：注意句首 Although 子句後方的逗號（雖然他很年輕，但他很聰明。）",
+                words: ["Although", "he", "is", "young,", "he", "is", "very", "smart."],
+                ans: "Although he is young, he is very smart."
+            },
+            {
+                target: "目標：用 Though 放句首（儘管價格昂貴，她還是買了那本書。）",
+                words: ["Though", "it", "was", "expensive,", "she", "bought", "the", "book."],
+                ans: "Though it was expensive, she bought the book."
+            }
+        ];
+
+        let g2Idx = 0, g2Score = 0, myArr = [];
+
+        function loadG2() {
+            const item = g2Data[g2Idx];
+            document.getElementById('g2-q').innerText = g2Idx + 1;
+            document.getElementById('g2-target').innerText = item.target;
+            document.getElementById('g2-msg').innerText = "";
+            document.getElementById('g2-check').style.display = "block";
+            document.getElementById('g2-next').style.display = "none";
+            myArr = [];
+            renderBuildArea();
+
+            const pool = document.getElementById('g2-pool');
+            pool.innerHTML = "";
+            let randWords = [...item.words].sort(() => Math.random() - 0.5);
+            randWords.forEach(w => {
+                const c = document.createElement('div');
+                c.className = 'chip';
+                c.innerText = w;
+                c.onclick = () => {
+                    myArr.push(w);
+                    c.style.visibility = 'hidden';
+                    renderBuildArea();
+                };
+                pool.appendChild(c);
+            });
+        }
+
+        function renderBuildArea() {
+            const bArea = document.getElementById('g2-build');
+            bArea.innerHTML = "";
+            myArr.forEach((w, idx) => {
+                const c = document.createElement('div');
+                c.className = 'chip';
+                c.innerText = w;
+                c.onclick = () => {
+                    myArr.splice(idx, 1);
+                    renderBuildArea();
+                    document.querySelectorAll('#g2-pool .chip').forEach(chip => {
+                        if(chip.innerText === w && chip.style.visibility === 'hidden') {
+                            chip.style.visibility = 'visible';
+                        }
+                    });
+                };
+                bArea.appendChild(c);
+            });
+        }
+
+        function checkG2() {
+            const userSentence = myArr.join(' ');
+            const item = g2Data[g2Idx];
+            const msg = document.getElementById('g2-msg');
+
+            if(userSentence === item.ans) {
+                msg.className = "msg correct";
+                msg.innerText = "✨ 完全正確！順序與標點皆正確！";
+                g2Score += 20;
+                document.getElementById('g2-s').innerText = g2Score;
+                document.getElementById('g2-check').style.display = "none";
+                document.getElementById('g2-next').style.display = "block";
+            } else {
+                msg.className = "msg wrong";
+                msg.innerText = "❌ 排列或標點有誤，請點選字詞重新調整！";
+            }
+        }
+
+        function nextG2() {
+            g2Idx++;
+            if(g2Idx < g2Data.length) loadG2();
+            else {
+                document.getElementById('g2-target').innerText = `🎉 重組訓練完成！總分：${g2Score}`;
+                document.getElementById('g2-build').style.display = "none";
+                document.getElementById('g2-pool').style.display = "none";
+                document.getElementById('g2-check').style.display = "none";
+                document.getElementById('g2-next').style.display = "none";
+            }
+        }
+
+        loadG1();
+        loadG2();
+    </script>
+</body>
+</html>
