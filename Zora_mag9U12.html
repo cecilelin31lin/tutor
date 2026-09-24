@@ -139,16 +139,24 @@ const g1Data = [
   { q: "The library is open every day _______ Sundays.", opts: ["in addition to", "except for", "besides", "along with"], ans: "except for", expl: "句意為「除了星期日以外，每天都開」，表示排除概念，選 except for。" },
   { q: "_______ one minor mistake, your sentence structures are completely correct.", opts: ["In addition to", "Apart from", "Besides", "As well as"], ans: "Apart from", expl: "Apart from 可表「排除」，句意為「除了那一個小錯外，其餘皆正確」。" },
   { q: "_______ learning French, Sophia is also studying German this semester.", opts: ["Besides", "Except", "Aside", "Instead"], ans: "Besides", expl: "「除了學習法文之外，索菲亞這學期『也』在學習德文」，屬於包含／附加用法，後接動名詞 learning，故選 Besides。" },
-  { q: "He likes all sports _______ boxing.", opts: ["besides", "except for", "in addition to", "plus"], ans: "except for", expl: "句意為「除了拳擊外，他喜歡『所有』運動」，表排除，選 except for。" }
+  { q: "He likes all sports _______ boxing.", opts: ["besides", "except for", "in addition to", "plus"], ans: "except for", expl: "句意為「除了拳擊外，他喜歡『所有』運動」，表排除，選 except for。" },
+  { type: 'fill', q: "_______ working as a nurse, she volunteers at the animal shelter every weekend.", ans: "Besides", expl: "「除了當護理師的工作外，她『也』在動物收容所當志工」，表示包含／附加，用 Besides。" },
+  { type: 'fill', q: "All the students passed the test _______ Kevin, who was absent that day.", ans: "except for", expl: "「除了那天缺席的Kevin外，全班都通過了測驗」，表示排除，用 except for。" },
+  { type: 'fill', q: "_______ her busy schedule, she still finds time to exercise every day.", ans: "Despite", expl: "「儘管行程繁忙，她仍每天抽空運動」，表示『儘管』的讓步語氣，後接名詞片語，用 Despite（注意：Despite 後面不可接 of）。" }
 ];
+g1Data.forEach(item => { if (!item.type) item.type = 'mc'; });
 
 const g2Data = [
   { target: "目標：用 Although 置於句首連接兩句（雖然天下雨，我們還是去爬山。）", words: ["Although", "it", "rained,", "we", "went", "hiking."], ans: "Although it rained, we went hiking." },
   { target: "目標：將 although 放句中（他雖然很累，還是通過了考試。）", words: ["He", "passed", "the", "exam", "although", "he", "was", "tired."], ans: "He passed the exam although he was tired." },
   { target: "目標：用 though 放句尾（這項任務很難。不過，他成功了。）", words: ["The", "task", "was", "hard.", "He", "succeeded,", "though."], ans: "The task was hard. He succeeded, though." },
   { target: "目標：用 Although 置於句首連接兩句（雖然他很年輕，但他很聰明。）", words: ["Although", "he", "is", "young,", "he", "is", "very", "smart."], ans: "Although he is young, he is very smart." },
-  { target: "目標：用 Though 放句首（儘管價格昂貴，她還是買了那本書。）", words: ["Though", "it", "was", "expensive,", "she", "bought", "the", "book."], ans: "Though it was expensive, she bought the book." }
+  { target: "目標：用 Though 放句首（儘管價格昂貴，她還是買了那本書。）", words: ["Though", "it", "was", "expensive,", "she", "bought", "the", "book."], ans: "Though it was expensive, she bought the book." },
+  { type: 'choice', target: "選出正確的句子（雖然他很努力，但還是失敗了。）", opts: ["Although he tried hard, he failed.", "Despite he tried hard, he failed.", "Although he tried hard he failed.", "Even he tried hard, he failed."], ans: "Although he tried hard, he failed.", expl: "although 可直接連接兩個子句，句首子句後需加逗號；despite 後面不可直接接子句（需接名詞/動名詞）；even 不能單獨作連接詞使用（須用 even though/even if）；句首子句後漏逗號也是常見錯誤。" },
+  { type: 'choice', target: "選出正確的句子（儘管下著雨，他們仍決定露營。）", opts: ["Though it was raining, they decided to go camping.", "Despite it was raining, they decided to go camping.", "Though it raining, they decided to go camping.", "It was raining, but they was decided to go camping."], ans: "Though it was raining, they decided to go camping.", expl: "though 可連接完整子句；despite 後面不可直接加子句（應改成 despite the rain）；第三句缺少動詞 was；第四句主詞動詞不一致（they was應改為they decided）。" },
+  { type: 'choice', target: "選出正確的句子（這道題目很難，不過我還是解出來了。）", opts: ["The question was hard. I solved it, though.", "The question was hard. I solved it, although.", "The question was hard though I solved it.", "Though the question was hard, I solved it though."], ans: "The question was hard. I solved it, though.", expl: "though 可放句尾作副詞使用，表轉折語氣；although 沒有這種句尾副詞用法；第三句語意不通順；第四句同一句重複使用though，用法錯誤。" }
 ];
+g2Data.forEach(item => { if (!item.type) item.type = 'reorder'; });
 
 /* ============================================================
    小工具
@@ -188,7 +196,7 @@ let s1Questions = [], s1Index = 0, s1Selected = null, s1Answered = false;
 let s1WrongLog = []; // 記錄每題答錯過的選項
 
 function initStage1() {
-  s1Questions = shuffle(g1Data.map(item => ({ ...item, options: shuffle(item.opts) })));
+  s1Questions = shuffle(g1Data.map(item => item.type === 'mc' ? { ...item, options: shuffle(item.opts) } : { ...item }));
   s1Index = 0;
   s1WrongLog = s1Questions.map(() => []);
   stats[1].startedAt = Date.now();
@@ -203,28 +211,61 @@ function showS1Question() {
   document.getElementById('s1feedback').className = 'feedback';
   const box = document.getElementById('s1options');
   box.innerHTML = '';
-  q.options.forEach(opt => {
-    const b = document.createElement('button');
-    b.className = 'option-btn';
-    b.innerHTML = `<span class="choice-line"><span class="choice-text">${opt}</span><span class="choice-mark"></span></span>`;
-    b.onclick = () => {
-      if (s1Answered) return;
-      document.querySelectorAll('#s1options .option-btn').forEach(x => x.removeAttribute('data-selected'));
-      b.dataset.selected = 'true';
-      s1Selected = opt;
-    };
-    box.appendChild(b);
-  });
+
+  if (q.type === 'fill') {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'input-field';
+    input.placeholder = '輸入答案（英文）';
+    input.autocomplete = 'off';
+    input.addEventListener('input', () => s1Selected = input.value.trim());
+    box.appendChild(input);
+    setTimeout(() => input.focus(), 30);
+  } else {
+    q.options.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'option-btn';
+      b.innerHTML = `<span class="choice-line"><span class="choice-text">${opt}</span><span class="choice-mark"></span></span>`;
+      b.onclick = () => {
+        if (s1Answered) return;
+        document.querySelectorAll('#s1options .option-btn').forEach(x => x.removeAttribute('data-selected'));
+        b.dataset.selected = 'true';
+        s1Selected = opt;
+      };
+      box.appendChild(b);
+    });
+  }
+
   const btn = document.getElementById('s1submitBtn');
   btn.textContent = '確認答案';
   btn.onclick = s1submit;
 }
 function s1submit() {
   if (s1Answered) return;
-  if (!s1Selected) { alert('請先選擇答案'); return; }
   const q = s1Questions[s1Index];
-  const b = document.querySelector('#s1options .option-btn[data-selected="true"]');
   const f = document.getElementById('s1feedback');
+
+  if (q.type === 'fill') {
+    const input = document.querySelector('#s1options .input-field');
+    const val = (input?.value || '').trim();
+    if (!val) return;
+    if (val.toLowerCase() === q.ans.toLowerCase()) {
+      s1Answered = true;
+      input.disabled = true;
+      f.className = 'feedback show success';
+      f.textContent = '✓ 正確　' + q.expl;
+      advanceS1();
+    } else {
+      f.className = 'feedback show error';
+      f.textContent = '✗ 錯誤，再試一次';
+      s1WrongLog[s1Index].push(val);
+      input.value = ''; input.focus();
+    }
+    return;
+  }
+
+  if (!s1Selected) { alert('請先選擇答案'); return; }
+  const b = document.querySelector('#s1options .option-btn[data-selected="true"]');
 
   if (s1Selected === q.ans) {
     s1Answered = true;
@@ -234,14 +275,7 @@ function s1submit() {
     document.querySelectorAll('#s1options .option-btn').forEach(x => x.disabled = true);
     f.className = 'feedback show success';
     f.textContent = q.expl;
-    const btn = document.getElementById('s1submitBtn');
-    if (s1Index === s1Questions.length - 1) {
-      btn.textContent = '完成第一關';
-      btn.onclick = finishStage1;
-    } else {
-      btn.textContent = '下一題';
-      btn.onclick = () => { s1Index++; showS1Question(); };
-    }
+    advanceS1();
   } else {
     b.classList.add('incorrect');
     b.disabled = true;
@@ -252,6 +286,16 @@ function s1submit() {
     f.textContent = '✗ 錯誤，再試一次';
     s1WrongLog[s1Index].push(s1Selected);
     s1Selected = null;
+  }
+}
+function advanceS1() {
+  const btn = document.getElementById('s1submitBtn');
+  if (s1Index === s1Questions.length - 1) {
+    btn.textContent = '完成第一關';
+    btn.onclick = finishStage1;
+  } else {
+    btn.textContent = '下一題';
+    btn.onclick = () => { s1Index++; showS1Question(); };
   }
 }
 function finishStage1() {
@@ -276,28 +320,50 @@ function initStage2() {
   showS2Question();
   startTimer('s2timer');
 }
+let s2Selected = null;
 function showS2Question() {
   const q = s2Questions[s2Index];
   document.getElementById('s2progress').textContent = (s2Index + 1) + '/' + s2Questions.length;
   document.getElementById('s2target').textContent = q.target;
   document.getElementById('s2feedback').className = 'feedback';
-  s2Built = [];
-  renderS2Build();
+  s2Selected = null;
 
+  const build = document.getElementById('s2build');
   const pool = document.getElementById('s2pool');
-  pool.innerHTML = '';
-  shuffle(q.words).forEach(w => {
-    const chip = document.createElement('div');
-    chip.className = 'chip';
-    chip.textContent = w;
-    chip.onclick = () => {
-      s2Built.push(w);
-      chip.classList.add('placeholder');
-      chip.style.pointerEvents = 'none';
-      renderS2Build();
-    };
-    pool.appendChild(chip);
-  });
+
+  if (q.type === 'choice') {
+    build.style.display = 'none';
+    pool.innerHTML = '';
+    shuffle(q.opts).forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'option-btn';
+      b.style.width = '100%';
+      b.innerHTML = `<span class="choice-line"><span class="choice-text">${opt}</span><span class="choice-mark"></span></span>`;
+      b.onclick = () => {
+        document.querySelectorAll('#s2pool .option-btn').forEach(x => x.removeAttribute('data-selected'));
+        b.dataset.selected = 'true';
+        s2Selected = opt;
+      };
+      pool.appendChild(b);
+    });
+  } else {
+    build.style.display = 'flex';
+    s2Built = [];
+    renderS2Build();
+    pool.innerHTML = '';
+    shuffle(q.words).forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.textContent = w;
+      chip.onclick = () => {
+        s2Built.push(w);
+        chip.classList.add('placeholder');
+        chip.style.pointerEvents = 'none';
+        renderS2Build();
+      };
+      pool.appendChild(chip);
+    });
+  }
 
   const btn = document.getElementById('s2submitBtn');
   btn.textContent = '確認答案';
@@ -327,15 +393,52 @@ function restorePoolChip(word) {
 }
 function s2clear() {
   const q = s2Questions[s2Index];
+  if (q.type === 'choice') return;
   s2Built = [];
   renderS2Build();
   document.querySelectorAll('#s2pool .chip').forEach(c => { c.classList.remove('placeholder'); c.style.pointerEvents = 'auto'; });
   document.getElementById('s2feedback').className = 'feedback';
 }
+function advanceS2() {
+  const btn = document.getElementById('s2submitBtn');
+  if (s2Index === s2Questions.length - 1) {
+    btn.textContent = '完成第二關';
+    btn.onclick = finishStage2;
+  } else {
+    btn.textContent = '下一題';
+    btn.onclick = () => { s2Index++; showS2Question(); };
+  }
+}
 function s2submit() {
   const q = s2Questions[s2Index];
-  const userSentence = s2Built.join(' ');
   const f = document.getElementById('s2feedback');
+
+  if (q.type === 'choice') {
+    if (!s2Selected) { alert('請先選擇答案'); return; }
+    const b = document.querySelector('#s2pool .option-btn[data-selected="true"]');
+    if (s2Selected === q.ans) {
+      b.classList.add('correct');
+      b.querySelector('.choice-mark').textContent = '✓ 正確';
+      b.querySelector('.choice-mark').classList.add('ok');
+      document.querySelectorAll('#s2pool .option-btn').forEach(x => x.disabled = true);
+      f.className = 'feedback show success';
+      f.textContent = q.expl;
+      advanceS2();
+    } else {
+      b.classList.add('incorrect');
+      b.disabled = true;
+      b.removeAttribute('data-selected');
+      b.querySelector('.choice-mark').textContent = '✗ 錯誤';
+      b.querySelector('.choice-mark').classList.add('bad');
+      f.className = 'feedback show error';
+      f.textContent = '✗ 錯誤，再試一次';
+      s2WrongLog[s2Index]++;
+      s2Selected = null;
+    }
+    return;
+  }
+
+  const userSentence = s2Built.join(' ');
   if (!s2Built.length) return;
 
   if (userSentence === q.ans) {
@@ -343,14 +446,7 @@ function s2submit() {
     f.textContent = '✓ 正確！順序與標點皆正確';
     document.querySelectorAll('#s2pool .chip').forEach(c => c.style.pointerEvents = 'none');
     document.querySelectorAll('#s2build .chip').forEach(c => c.style.pointerEvents = 'none');
-    const btn = document.getElementById('s2submitBtn');
-    if (s2Index === s2Questions.length - 1) {
-      btn.textContent = '完成第二關';
-      btn.onclick = finishStage2;
-    } else {
-      btn.textContent = '下一題';
-      btn.onclick = () => { s2Index++; showS2Question(); };
-    }
+    advanceS2();
   } else {
     f.className = 'feedback show error';
     f.textContent = '✗ 排列或標點有誤，請點選詞塊重新調整';
@@ -409,7 +505,8 @@ function showReview() {
     item.className = 'review-item ' + (wrongCount ? 'wrong' : 'correct-first');
     item.innerHTML = `<div class="review-q">${q.target}</div>` +
       (wrongCount ? `<div style="color:#E8828C;font-size:13px">答錯次數：${wrongCount}</div>` : '') +
-      `<div class="review-ans">${q.ans}</div>`;
+      `<div class="review-ans">${q.ans}</div>` +
+      (q.expl ? `<div class="review-expl">${q.expl}</div>` : '');
     list.appendChild(item);
   });
 
