@@ -142,7 +142,7 @@ const g1Data = [
   { q: "He likes all sports _______ boxing.", opts: ["besides", "except for", "in addition to", "plus"], ans: "except for", expl: "句意為「除了拳擊外，他喜歡『所有』運動」，表排除，選 except for。" },
   { type: 'fill', q: "_______ working as a nurse, she volunteers at the animal shelter every weekend.", ans: "Besides", expl: "「除了當護理師的工作外，她『也』在動物收容所當志工」，表示包含／附加，用 Besides。" },
   { type: 'fill', q: "All the students passed the test _______ Kevin, who was absent that day.", ans: "except for", expl: "「除了那天缺席的Kevin外，全班都通過了測驗」，表示排除，用 except for。" },
-  { type: 'fill', q: "_______ her busy schedule, she still finds time to exercise every day.", ans: "Despite", expl: "「儘管行程繁忙，她仍每天抽空運動」，表示『儘管』的讓步語氣，後接名詞片語，用 Despite（注意：Despite 後面不可接 of）。" }
+  { type: 'fill', q: "_______ her outstanding grades, she is also active in student council.", ans: "In addition to", expl: "「除了成績優異，她『也』積極參與學生會」，表示包含／附加，後接名詞 grades，用 In addition to。" }
 ];
 g1Data.forEach(item => { if (!item.type) item.type = 'mc'; });
 
@@ -152,8 +152,8 @@ const g2Data = [
   { target: "目標：用 though 放句尾（這項任務很難。不過，他成功了。）", words: ["The", "task", "was", "hard.", "He", "succeeded,", "though."], ans: "The task was hard. He succeeded, though." },
   { target: "目標：用 Although 置於句首連接兩句（雖然他很年輕，但他很聰明。）", words: ["Although", "he", "is", "young,", "he", "is", "very", "smart."], ans: "Although he is young, he is very smart." },
   { target: "目標：用 Though 放句首（儘管價格昂貴，她還是買了那本書。）", words: ["Though", "it", "was", "expensive,", "she", "bought", "the", "book."], ans: "Though it was expensive, she bought the book." },
-  { type: 'choice', target: "選出正確的句子（雖然他很努力，但還是失敗了。）", opts: ["Although he tried hard, he failed.", "Despite he tried hard, he failed.", "Although he tried hard he failed.", "Even he tried hard, he failed."], ans: "Although he tried hard, he failed.", expl: "although 可直接連接兩個子句，句首子句後需加逗號；despite 後面不可直接接子句（需接名詞/動名詞）；even 不能單獨作連接詞使用（須用 even though/even if）；句首子句後漏逗號也是常見錯誤。" },
-  { type: 'choice', target: "選出正確的句子（儘管下著雨，他們仍決定露營。）", opts: ["Though it was raining, they decided to go camping.", "Despite it was raining, they decided to go camping.", "Though it raining, they decided to go camping.", "It was raining, but they was decided to go camping."], ans: "Though it was raining, they decided to go camping.", expl: "though 可連接完整子句；despite 後面不可直接加子句（應改成 despite the rain）；第三句缺少動詞 was；第四句主詞動詞不一致（they was應改為they decided）。" },
+  { type: 'choice', target: "選出正確的句子（雖然他很努力，但還是失敗了。）", opts: ["Although he tried hard, he failed.", "Although tried hard, he failed.", "Although he tried hard he failed.", "Even he tried hard, he failed."], ans: "Although he tried hard, he failed.", expl: "although 可直接連接兩個子句，句首子句後需加逗號；第二句漏了主詞 he；第三句漏了逗號；even 不能單獨作連接詞使用（須用 even though/even if）。" },
+  { type: 'choice', target: "選出正確的句子（儘管下著雨，他們仍決定露營。）", opts: ["Though it was raining, they decided to go camping.", "Though raining, they decided to go camping.", "Though it raining, they decided to go camping.", "It was raining, but they was decided to go camping."], ans: "Though it was raining, they decided to go camping.", expl: "though 可連接完整子句，須包含主詞與動詞；第二句漏了主詞與動詞 it was；第三句缺少動詞 was；第四句主詞動詞不一致（they was應改為they decided）。" },
   { type: 'choice', target: "選出正確的句子（這道題目很難，不過我還是解出來了。）", opts: ["The question was hard. I solved it, though.", "The question was hard. I solved it, although.", "The question was hard though I solved it.", "Though the question was hard, I solved it though."], ans: "The question was hard. I solved it, though.", expl: "though 可放句尾作副詞使用，表轉折語氣；although 沒有這種句尾副詞用法；第三句語意不通順；第四句同一句重複使用though，用法錯誤。" }
 ];
 g2Data.forEach(item => { if (!item.type) item.type = 'reorder'; });
