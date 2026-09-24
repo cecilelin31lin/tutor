@@ -1326,7 +1326,233 @@ const voc_B1_U5 = [
       {en:"Most of the clothes in my closet are black.", zh:'我衣櫥裡大部分的衣服是黑色的。'}
     ] }
 ];
-const allWords = [].concat(voc_B1_U3, voc_B1_U4, voc_B1_U5);
+const voc_B1_U1 = [
+  // ===== Part 1 =====
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'1', word:'unite', pos:'vt., vi.', meaning:'使聯合；團結', note:'',
+    sentences:[
+      {en:"Our goal is to unite the labor unions to oppose the new policy.", zh:'我們的目標是聯合這些勞工團體反對這項新政策。'},
+      {en:"We should unite, or we'll be defeated by the enemy.", zh:'我們要團結，否則會被敵人擊敗。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'1.1', word:'unity', pos:'n.', meaning:'一致；團結', note:'不可數',
+    sentences:[
+      {en:"The plot of the drama lacks unity.", zh:'這齣戲的劇情缺乏一致性。'},
+      {en:"The political party lost the election due to lack of unity.", zh:'該政黨選舉失敗是因為不團結。'},
+      {en:"Without unity, we'll face failure.", zh:'我們若不團結，就會面臨失敗。'},
+      {en:"In unity there is strength.", zh:'團結就是力量。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'1.2', word:'union', pos:'n.', meaning:'工會；聯合', note:'',
+    sentences:[
+      {en:"The union decided to go on strike due to the low wages.", zh:'由於薪資偏低，因此該工會決定罷工。'},
+      {en:"This car is a perfect union of beauty and technology.", zh:'這輛車子是美與科技的完美結合。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'2', word:'remain', pos:'vi.', meaning:'繼續存在；仍是', note:'之後接名詞或形容詞作補語',
+    sentences:[
+      {en:"No one remained in the hall soon after the concert was over.", zh:'音樂會結束沒多久，大廳裡一個人影都不剩了。'},
+      {en:"Though divorced, Anna and David still remain friends.", zh:'雖然離婚了，安娜和大衛仍是朋友。'},
+      {en:"The problem still remains unsolved.", zh:'這個問題仍然一直被解決。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'3', word:'probable', pos:'a.', meaning:'很可能的', note:'',
+    sentences:[
+      {en:"It seems probable that this accident is the result of the driver's carelessness.", zh:'看來意外很可能是因為駕駛的粗心所致。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'3.1', word:'probability', pos:'n.', meaning:'可能性', note:'',
+    sentences:[
+      {en:"The probability is that the match will be postponed.", zh:'這場比賽很有可能會延期。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'4', word:'situation', pos:'n.', meaning:'處境，情勢', note:'',
+    sentences:[
+      {en:"What would you do in such a situation?", zh:'在那種情況下你會怎麼做？'},
+      {en:"This company's financial situation is getting more and more difficult.", zh:'這家公司的財務狀況越來越吃緊。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'5', word:'determine', pos:'vt.', meaning:'決定；確定', note:'',
+    sentences:[
+      {en:"Lilly determined to leave for the hospital at once.", zh:'莉莉決定馬上動身去醫院。'},
+      {en:"The police were finally able to determine the cause of the accident.", zh:'警方終於能確定這起意外的肇因了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'6', word:'rate', pos:'n., vt.', meaning:'比率；評比為', note:'',
+    sentences:[
+      {en:"The rate of unemployment has been rising in recent years.", zh:'近年來的失業率逐漸上升。'},
+      {en:"This resort is rated as the most beautiful place in the country.", zh:'這個觀光勝地被評為該國最美的地方。'},
+      {en:"At any rate, their performance did not live up to our expectations.", zh:'無論如何，他們的表現並不如我們預期。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'7', word:'political', pos:'a.', meaning:'政治的', note:'',
+    sentences:[
+      {en:"The writer fled abroad seeking political asylum.", zh:'這位作家逃到國外尋求政治庇護。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'7.1', word:'politics', pos:'n.', meaning:'政治', note:'',
+    sentences:[
+      {en:"Most youngsters are not interested in politics.", zh:'多數的年輕人都不熱衷政治。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:1, id:'7.2', word:'politician', pos:'n.', meaning:'政客', note:'',
+    sentences:[
+      {en:"I'd rather trust a hungry wolf than a politician.", zh:'我寧願相信一匹餓狼也不願相信政客。'}
+    ] },
+
+  // ===== Part 2 =====
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'8', word:'process', pos:'n., vt.', meaning:'過程；處理', note:'',
+    sentences:[
+      {en:"I'm afraid getting things changed will be a slow process.", zh:'事情要改變恐怕會是一個緩慢的過程。'},
+      {en:"We're still in the process of conducting a market survey.", zh:'我們尚在做市場調查中。'},
+      {en:"It will take about 3 weeks to process your application.", zh:'處理您的申請約要 3 星期的時間。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'9', word:'majority', pos:'n.', meaning:'大部分', note:'',
+    sentences:[
+      {en:"The majority of residents on the island can only speak their own dialect.", zh:'這島上大部分的居民只會說他們自己的方言。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'10', word:'property', pos:'n.', meaning:'財產；特性', note:'不可數指財產；可數指特性',
+    sentences:[
+      {en:"They lost all their property in the fire.", zh:'他們在這場大火中失去了所有財產。'},
+      {en:"One property of diamonds is hardness.", zh:'堅硬是鑽石的一項特性。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'11', word:'opportunity', pos:'n.', meaning:'機會，良機', note:'',
+    sentences:[
+      {en:"This trip is a great opportunity to broaden your horizons and practice your English.", zh:'這趟旅行是個拓展視野以及練習英文的好機會。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'12', word:'actually', pos:'adv.', meaning:'事實上，實際上', note:'= in fact',
+    sentences:[
+      {en:"Nick likes to act like a teenager, but actually he's more than 30 years old.", zh:'尼克喜歡裝作青少年的樣子，但他事實上已經 30 多歲了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'13', word:'recognize', pos:'vt.', meaning:'認出；承認，認可', note:'',
+    sentences:[
+      {en:"After being separated for twenty years, Jack cannot recognize his daughter.", zh:'失散 20 年後，傑克認不出他的女兒來了。'},
+      {en:"Professor Rollins is recognized as one of the best educators in the country.", zh:'羅林斯教授是該國公認為最優秀的教育家之一。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'14', word:'enjoyable', pos:'a.', meaning:'愉快的', note:'',
+    sentences:[
+      {en:"The party we had last Friday night was really enjoyable.", zh:'我們上星期五晚上那場派對實在愉快極了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:2, id:'14.1', word:'joyful', pos:'a.', meaning:'喜悅的', note:'',
+    sentences:[
+      {en:"We were excited and joyful, knowing that our team had won the game.", zh:'獲知我隊贏了比賽時，我們既興奮又高興。'}
+    ] },
+
+  // ===== Part 3 =====
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'15', word:'unique', pos:'a.', meaning:'與眾不同的；獨有的', note:'',
+    sentences:[
+      {en:"Every person's fingerprints are unique. No two people's are alike.", zh:'每個人的指紋都是獨一無二的。沒有人是相同的。'},
+      {en:"Kiwi birds are unique to New Zealand. Nowhere else can you find them.", zh:'鷸鴕為紐西蘭所獨有，其他地方都找不到。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'15.1', word:'terrific', pos:'a.', meaning:'很棒的', note:'',
+    sentences:[
+      {en:"The restaurant on the corner serves terrific food.", zh:'轉角那間餐廳的餐點棒極了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'16', word:'wed', pos:'vt., vi.', meaning:'結婚', note:'',
+    sentences:[
+      {en:"Ken wedded his lover without his parents' consent.", zh:'肯未經父母同意便娶了他的情人。'},
+      {en:"They wedded on a beautiful autumn day.", zh:'他們在一個美麗的秋日結為連理。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'17', word:'tough', pos:'a.', meaning:'堅韌的；嚴厲的；艱苦的，困難的', note:'',
+    sentences:[
+      {en:"This meat is too tough, Mom. I think you overcooked it.", zh:'媽，這塊肉好硬。我想妳把它煮得太老了。'},
+      {en:"Tom is tough on his son because he thinks his child is a little too naughty.", zh:'湯姆對他兒子很嚴厲，因為他覺得他孩子有點太頑皮。'},
+      {en:"Compared to last month's test, this one wasn't too tough.", zh:'跟上個月的考試比起來，這次的考試不算太難。'},
+      {en:"In comparison with last month's test, this one wasn't too difficult.", zh:'跟上個月的考試比起來，這次的考試不算太難。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'18', word:'hire', pos:'vt., n.', meaning:'僱用；租用', note:'',
+    sentences:[
+      {en:"We hired a consultant to devise a new system for our company.", zh:'我們僱用一位顧問來幫公司設計一套新制度。'},
+      {en:"Tina and her friends hired a limousine to drive them to the prom.", zh:'蒂娜和她朋友租了一輛加長型禮車載她們去學校舞會。'},
+      {en:"The cabins over there are for hire.", zh:'那邊的小木屋可供租用。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'19', word:'homesick', pos:'a.', meaning:'思鄉的', note:'',
+    sentences:[
+      {en:"I couldn't help feeling homesick on sleepless nights.", zh:'夜晚我睡不著時就忍不住會想家。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'20', word:'invitation', pos:'n.', meaning:'邀請；請帖，邀請卡', note:'',
+    sentences:[
+      {en:"Mr. Lee joined the group at the invitation of the government.", zh:'李先生應政府的邀請加入這個小組。'},
+      {en:"Have you received an invitation to the party?", zh:'你收到這次派對的邀請卡了嗎？'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'21', word:'jealous', pos:'a.', meaning:'嫉妒的，吃醋的', note:'',
+    sentences:[
+      {en:"Why are you so jealous of David's promotion?", zh:'為什麼大衛升遷你還會那麼嫉妒？'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:3, id:'21.1', word:'envy', pos:'n., vt.', meaning:'嫉妒；羨慕', note:'',
+    sentences:[
+      {en:"Peter's new cell phone is the envy of everyone in the office.", zh:'彼得的新手機羨煞辦公室內所有人。'},
+      {en:"I sometimes envy the rich and famous whose lives seem so glamorous.", zh:'我有時候羨慕有錢人和名人，他們的生活似乎很迷人。'},
+      {en:"I don't envy Peter his success.", zh:'我不羨慕彼得的成功。'},
+      {en:"I don't envy Peter's success.", zh:'我不羨慕彼得的成功。'}
+    ] },
+
+  // ===== Part 4 =====
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'22', word:'fright', pos:'n.', meaning:'驚嚇', note:'',
+    sentences:[
+      {en:"Andy looked at the barking dog with fright.", zh:'安迪害怕地看著那隻狂吠的狗。'},
+      {en:"Sarah has no stage fright; in fact, she enjoys making public speeches.", zh:'莎拉不會怯場；事實上，她很喜歡上臺演講。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'22.1', word:'frighten', pos:'vt.', meaning:'使驚嚇', note:'',
+    sentences:[
+      {en:"You should not let your son watch that movie because it might frighten him.", zh:'你不應該讓你的兒子看那部電影，因為那有可能會嚇到他。'},
+      {en:"I was frightened to death at the sight of the horrible accident.", zh:'目睹這起可怕的意外時，我嚇死了。'},
+      {en:"Tom frightened Jim into keeping quiet.", zh:'湯姆威脅吉姆保持安靜。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'23', word:'locate', pos:'vt.', meaning:'位於；找到……的位置；設置', note:'位於通常用於被動語態',
+    sentences:[
+      {en:"Our school is located in that area.", zh:'我們學校位於那個區域。'},
+      {en:"The leader was unable to locate the meeting point on the map.", zh:'隊長在地圖上找不到會合點。'},
+      {en:"They located their new store on Second Avenue.", zh:'他們把新的商店設在第二大道上。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'23.1', word:'location', pos:'n.', meaning:'地點；位置', note:'',
+    sentences:[
+      {en:"Please come visit our store at its new location.", zh:'請到我們店的新址參觀。'},
+      {en:"Finding the location of the escaped prisoner was difficult.", zh:'要找到這名逃犯的藏身處還真不容易。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'24', word:'costly', pos:'a.', meaning:'昂貴的；代價高的', note:'',
+    sentences:[
+      {en:"Money is hard to earn, so I never buy costly clothes.", zh:'錢很難賺，因此我絕不買昂貴的衣服。'},
+      {en:"George made a costly mistake by investing all his money in that project.", zh:'喬治把所有的錢全部投入那項企畫，犯了一個代價很高的錯誤。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'25', word:'mostly', pos:'adv.', meaning:'主要地', note:'',
+    sentences:[
+      {en:"John succeeded mostly because he worked hard and had great ambition.", zh:'約翰能夠成功主要是因為他努力工作又有強烈的企圖心。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'26', word:'lately', pos:'adv.', meaning:'最近', note:'',
+    sentences:[
+      {en:"Have you seen James lately?", zh:'你最近見到詹姆士了嗎？'},
+      {en:"What have you been doing lately / of late?", zh:'你最近都在做什麼？'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:4, id:'27', word:'besides', pos:'prep., adv.', meaning:'除……之外；此外', note:'= additionally',
+    sentences:[
+      {en:"Besides math, Lucy is good at music.", zh:'露西除了精通數學以外，也精通音樂。'},
+      {en:"I've seen the movie before. Besides, it isn't that good.", zh:'我以前看過那部電影。而且，它也沒那麼棒。'}
+    ] },
+
+  // ===== Part 5 =====
+  { source:'VOC', book:'B1', unit:'U1', part:5, id:'28', word:'career', pos:'n., a.', meaning:'職業；職業的', note:'尤指終身職業',
+    sentences:[
+      {en:"Ms. Wilson took up photography as her career.", zh:'魏爾遜女士以攝影作為她的終身職業。'},
+      {en:"Though a career woman, Jane never ignores her duty as a mother.", zh:'阿珍雖然是職業婦女，卻從未忽略她身兼母親的責任。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:5, id:'29', word:'painter', pos:'n.', meaning:'畫家；油漆匠', note:'',
+    sentences:[
+      {en:"My father used to be a painter but gave it up later.", zh:'我父親曾經是位畫家，不過後來放棄了。'},
+      {en:"Michael worked as a house painter in the US.", zh:'麥可在美國時當過房屋的油漆工。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:5, id:'30', word:'banker', pos:'n.', meaning:'銀行家', note:'',
+    sentences:[
+      {en:"Mr. Emery is a successful banker, but he leads a simple life.", zh:'艾默瑞先生是成功的銀行家，卻過著簡樸的生活。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:5, id:'31', word:'captain', pos:'n.', meaning:'船長；機長；連長；隊長', note:'',
+    sentences:[
+      {en:"The captain told the sailors to raise the sails.", zh:'船長要水手們將帆升起。'},
+      {en:"The captain said that the plane would be landing soon.", zh:'機長宣布飛機即將著陸。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:5, id:'32', word:'photographer', pos:'n.', meaning:'照相師；攝影記者', note:'',
+    sentences:[
+      {en:"The photographer won an award for his photos of war.", zh:'這名攝影記者因戰爭照片而獲獎。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:5, id:'33', word:'producer', pos:'n.', meaning:'生產者；製作人', note:'',
+    sentences:[
+      {en:"The firm is one of the main producers of laptop computers.", zh:'這家公司是筆記型電腦的主要製造商之一。'},
+      {en:"Tina's ex-husband is a famous film producer.", zh:'提娜的前夫是有名的電影製作人。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U1', part:5, id:'34', word:'professor', pos:'n.', meaning:'(大學) 教授', note:'',
+    sentences:[
+      {en:"Mr. Stevens is a professor of psychology.", zh:'史蒂芬先生是心理系的教授。'}
+    ] }
+];
+const allWords = [].concat(voc_B1_U1, voc_B1_U3, voc_B1_U4, voc_B1_U5);
 /* ============================================================
    小工具
    ============================================================ */
