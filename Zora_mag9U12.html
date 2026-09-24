@@ -1,373 +1,436 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mag09U12文法：介系詞與從屬連接詞</title>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --bg: #f1f5f9;
-            --card: #ffffff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9月雜誌U12文法：介系詞與從屬連接詞</title>
+<style>
+* { box-sizing: border-box; }
+html, body { overscroll-behavior: none; }
+body { margin:0; padding:24px 16px 60px; background:#f5f5f5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Nunito',sans-serif; color:#2B3A55; min-height:100vh; }
+.wrap { max-width:680px; margin:0 auto; }
+h1 { text-align:center; font-size:26px; margin:0 0 8px; }
+.subtitle { text-align:center; font-size:14px; color:#666; margin-bottom:24px; }
+.stage-indicator { display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+.stage-dot { width:32px; height:32px; border-radius:50%; background:white; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:#999; }
+.stage-dot.active { border-color:#B0C4DE; background:rgba(176,196,222,.30); color:#2B3A55; }
+.stage-dot.done { border-color:#468189; background:rgba(70,129,137,.14); color:#468189; }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+.stat-card { background:white; border:.5px solid #ddd; border-radius:8px; padding:12px; text-align:center; }
+.stat-label { font-size:12px; color:#999; margin-bottom:6px; }
+.stat-value { font-size:18px; font-weight:600; }
+.instruction { background:white; border:.5px solid #ddd; border-radius:12px; padding:12px; margin-bottom:16px; font-size:13px; color:#666; line-height:1.6; }
+.question-container { background:white; border:.5px solid #ddd; border-radius:12px; padding:24px; margin-bottom:20px; }
+.question-text { font-size:18px; font-weight:500; margin-bottom:20px; line-height:1.6; }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--bg);
-            color: #334155;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.option-btn { display:block; width:100%; padding:13px 16px; margin-bottom:9px; border:1px solid #ddd; border-radius:10px; background:#fff; cursor:pointer; text-align:left; font-size:15px; transition:all .2s; }
+.option-btn:hover { border-color:#B0C4DE; background:#fafcff; }
+.option-btn[data-selected="true"] { background:rgba(176,196,222,.30); border-color:#B0C4DE; }
+.option-btn.correct { background:rgba(70,129,137,.14); border-color:#468189; }
+.option-btn.incorrect { background:rgba(232,130,140,.16); border-color:#E8828C; }
+.option-btn:disabled { cursor:default; }
+.choice-line { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.choice-mark { font-size:12px; font-weight:700; flex-shrink:0; }
+.choice-mark.ok { color:#468189; }
+.choice-mark.bad { color:#E8828C; }
 
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+.feedback { display:none; padding:12px; border-radius:8px; margin-bottom:16px; text-align:center; font-weight:500; font-size:13px; line-height:1.6; }
+.feedback.show { display:block; }
+.feedback.success { background:rgba(70,129,137,.14); border:.5px solid #468189; color:#468189; }
+.feedback.error { background:rgba(232,130,140,.16); border:.5px solid #E8828C; color:#E8828C; }
 
-        .tab-btn {
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background-color: #cbd5e1;
-            transition: 0.2s;
-        }
+.build-area, .pool-area { display:flex; flex-wrap:wrap; gap:8px; min-height:48px; padding:12px; border:1.5px dashed #ccc; border-radius:10px; margin-bottom:14px; }
+.build-area { background:rgba(176,196,222,.10); border-color:#B0C4DE; }
+.chip { padding:8px 14px; background:#fff; border:1px solid #ccc; border-radius:999px; cursor:pointer; user-select:none; font-size:14px; transition:all .15s; }
+.chip:hover { border-color:#B0C4DE; }
+.chip.placeholder { color:#ccc; background:#fafafa; }
 
-        .tab-btn.active {
-            background-color: var(--primary);
-            color: white;
-        }
+.btn-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+button.primary, button.secondary { border:none; border-radius:10px; padding:12px 26px; font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; min-width:120px; }
+button.primary { background:#B0C4DE; color:#2B3A55; }
+button.primary:hover { background:#9AB3D0; }
+button.secondary { background:#fff; color:#2B3A55; border:1px solid #ccc; }
+button.secondary:hover { background:#f5f5f5; }
 
-        .game-card {
-            display: none;
-            width: 100%;
-            max-width: 650px;
-            background: var(--card);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
+.result-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.3); align-items:center; justify-content:center; z-index:1000; padding:20px; }
+.result-overlay.show { display:flex; }
+.result-modal { background:white; border-radius:12px; padding:26px; max-width:440px; width:100%; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,.15); max-height:85vh; overflow-y:auto; }
+.result-title { font-size:19px; font-weight:700; margin-bottom:16px; }
+.stage-summary-row { display:flex; justify-content:space-between; align-items:center; background:#fafafa; border-radius:8px; padding:10px 14px; margin-bottom:8px; font-size:13px; text-align:left; }
+.summary-name { font-weight:600; }
+.summary-detail { color:#666; font-size:12px; }
 
-        .game-card.active {
-            display: block;
-        }
-
-        .status {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            margin-bottom: 15px;
-            background: #e2e8f0;
-            padding: 8px 12px;
-            border-radius: 6px;
-        }
-
-        .q-text {
-            font-size: 18px;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        .opt-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .opt-btn {
-            padding: 12px;
-            font-size: 15px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            background: white;
-            cursor: pointer;
-        }
-
-        .opt-btn:hover {
-            border-color: var(--primary);
-            background: #eff6ff;
-        }
-
-        .msg {
-            font-weight: bold;
-            min-height: 24px;
-            margin-bottom: 15px;
-        }
-
-        .msg.correct { color: var(--success); }
-        .msg.wrong { color: var(--danger); }
-
-        .btn-action {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        /* 遊戲二專用：重組區域 */
-        .build-area, .pool-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            min-height: 48px;
-            padding: 10px;
-            border: 2px dashed #cbd5e1;
-            border-radius: 6px;
-            margin-bottom: 12px;
-        }
-
-        .build-area { background: #f8fafc; border-color: var(--primary); }
-
-        .chip {
-            padding: 6px 12px;
-            background: white;
-            border: 1px solid #64748b;
-            border-radius: 16px;
-            cursor: pointer;
-            user-select: none;
-        }
-    </style>
+.review-container { display:none; margin-top:20px; }
+.review-container.show { display:block; }
+.review-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.review-header h2 { margin:0; font-size:20px; }
+.review-item { background:white; border:.5px solid #ddd; border-radius:8px; padding:14px 16px; margin-bottom:10px; font-size:14px; line-height:1.6; }
+.review-item.wrong { border-left:4px solid #E8828C; }
+.review-item.correct-first { border-left:4px solid #468189; }
+.review-q { font-weight:700; margin-bottom:6px; }
+.review-ans { color:#468189; }
+.review-expl { color:#666; font-size:13px; margin-top:4px; }
+</style>
 </head>
 <body>
+<div class="wrap">
+  <h1>📝 Mag09U12文法：介系詞與從屬連接詞</h1>
+  <p class="subtitle">依序破關：介系詞「除了…」→ Although/Though 句型重組</p>
+  <div class="stage-indicator" id="stageIndicator"></div>
 
-    <h2>📝 純文法特訓小遊戲</h2>
-
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="showGame(1)">關卡 1：介系詞「除了…」專練</button>
-        <button class="tab-btn" onclick="showGame(2)">關卡 2：Although/Though 句型拼圖</button>
+  <div id="stage1">
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">題目</div><div class="stat-value" id="s1progress">1/5</div></div>
+      <div class="stat-card"><div class="stat-label">⏱ 時間</div><div class="stat-value" id="s1timer">0:00</div></div>
     </div>
-
-    <!-- 遊戲一 -->
-    <div id="g1" class="game-card active">
-        <div class="status">
-            <span>關卡：<span id="g1-q">1</span>/5</span>
-            <span>得分：<span id="g1-s">0</span></span>
-        </div>
-        <div class="q-text" id="g1-text">填空載入中...</div>
-        <div class="opt-grid" id="g1-opts"></div>
-        <div class="msg" id="g1-msg"></div>
-        <button class="btn-action" id="g1-next" style="display:none;" onclick="nextG1()">下一題 ➔</button>
+    <div class="instruction">第一關｜介系詞「除了…」專練：選出正確的介系詞或片語。</div>
+    <div class="question-container">
+      <div class="question-text" id="s1question"></div>
+      <div id="s1options"></div>
+      <div class="feedback" id="s1feedback"></div>
     </div>
+    <div class="btn-row"><button class="primary" id="s1submitBtn" onclick="s1submit()">確認答案</button></div>
+  </div>
 
-    <!-- 遊戲二 -->
-    <div id="g2" class="game-card">
-        <div class="status">
-            <span>關卡：<span id="g2-q">1</span>/5</span>
-            <span>得分：<span id="g2-s">0</span></span>
-        </div>
-        <div class="q-text" id="g2-target">目標句型載入中...</div>
-        <p>點擊單字進行重組（注意從屬子句與逗號位置）：</p>
-        <div class="build-area" id="g2-build"></div>
-        <div class="pool-area" id="g2-pool"></div>
-        <div class="msg" id="g2-msg"></div>
-        <button class="btn-action" id="g2-check" onclick="checkG2()">檢查句型</button>
-        <button class="btn-action" id="g2-next" style="display:none;" onclick="nextG2()">下一題 ➔</button>
+  <div id="stage2" class="hidden" style="display:none;">
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">題目</div><div class="stat-value" id="s2progress">1/5</div></div>
+      <div class="stat-card"><div class="stat-label">⏱ 時間</div><div class="stat-value" id="s2timer">0:00</div></div>
     </div>
+    <div class="instruction">第二關｜Although/Though 句型拼圖：點擊下方詞塊依正確順序組成句子（注意逗號與標點是詞塊的一部分）。</div>
+    <div class="question-container">
+      <div class="question-text" id="s2target"></div>
+      <div class="build-area" id="s2build"></div>
+      <div class="pool-area" id="s2pool"></div>
+      <div class="feedback" id="s2feedback"></div>
+    </div>
+    <div class="btn-row">
+      <button class="secondary" onclick="s2clear()">清除重排</button>
+      <button class="primary" id="s2submitBtn" onclick="s2submit()">確認答案</button>
+    </div>
+  </div>
 
-    <script>
-        function showGame(num) {
-            document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === num-1));
-            document.querySelectorAll('.game-card').forEach((c, i) => c.classList.toggle('active', i === num-1));
-        }
+  <div class="result-overlay" id="finalOverlay">
+    <div class="result-modal">
+      <div class="result-title">🎉 練習完成！</div>
+      <div id="finalStats"></div>
+      <div class="stat-card" style="margin-top:14px"><div class="stat-label">總時間</div><div class="stat-value" id="totalTime">0:00</div></div>
+      <div class="btn-row" style="margin-top:16px">
+        <button class="primary" onclick="showReview()">查看解析</button>
+      </div>
+    </div>
+  </div>
 
-        /* ----- 遊戲一：介系詞資料與邏輯 ----- */
-        const g1Data = [
-            {
-                q: "_______ mathematics, Mark is also interested in computer programming.",
-                opts: ["Besides", "Except for", "Without", "Instead of"],
-                ans: "Besides",
-                expl: "句意為「除了數學外，他『也』對程式設計感興趣」，表示包含概念，選 Besides。"
-            },
-            {
-                q: "The library is open every day _______ Sundays.",
-                opts: ["in addition to", "except for", "besides", "along with"],
-                ans: "except for",
-                expl: "句意為「除了星期日以外，每天都開」，表示排除概念，選 except for。"
-            },
-            {
-                q: "_______ one minor mistake, your sentence structures are completely correct.",
-                opts: ["In addition to", "Apart from", "Besides", "As well as"],
-                ans: "Apart from",
-                expl: "Apart from 可表「排除」，句意為「除了那一個小錯外，其餘皆正確」。"
-            },
-            {
-                q: "_______ learning French, Sophia is also studying German this semester.",
-                opts: ["Besides", "Except", "Aside", "Instead"],
-                ans: "Besides",
-                expl: "「除了學習法文之外，索菲亞這學期『也』在學習德文」，屬於包含／附加用法，後接動名詞 learning，故選 Besides。"
-            },
-            {
-                q: "He likes all sports _______ boxing.",
-                opts: ["besides", "except for", "in addition to", "plus"],
-                ans: "except for",
-                expl: "句意為「除了拳擊外，他喜歡『所有』運動」，表排除，選 except for。"
-            }
-        ];
+  <div class="review-container" id="reviewContainer">
+    <div class="review-header">
+      <h2>📋 查看解析</h2>
+      <button class="secondary" onclick="location.reload()">重新開始</button>
+    </div>
+    <div id="reviewList"></div>
+  </div>
+</div>
 
-        let g1Idx = 0, g1Score = 0;
+<script>
+/* ============================================================
+   題目資料（保留原始內容）
+   ============================================================ */
+const g1Data = [
+  { q: "_______ mathematics, Mark is also interested in computer programming.", opts: ["Besides", "Except for", "Without", "Instead of"], ans: "Besides", expl: "句意為「除了數學外，他『也』對程式設計感興趣」，表示包含概念，選 Besides。" },
+  { q: "The library is open every day _______ Sundays.", opts: ["in addition to", "except for", "besides", "along with"], ans: "except for", expl: "句意為「除了星期日以外，每天都開」，表示排除概念，選 except for。" },
+  { q: "_______ one minor mistake, your sentence structures are completely correct.", opts: ["In addition to", "Apart from", "Besides", "As well as"], ans: "Apart from", expl: "Apart from 可表「排除」，句意為「除了那一個小錯外，其餘皆正確」。" },
+  { q: "_______ learning French, Sophia is also studying German this semester.", opts: ["Besides", "Except", "Aside", "Instead"], ans: "Besides", expl: "「除了學習法文之外，索菲亞這學期『也』在學習德文」，屬於包含／附加用法，後接動名詞 learning，故選 Besides。" },
+  { q: "He likes all sports _______ boxing.", opts: ["besides", "except for", "in addition to", "plus"], ans: "except for", expl: "句意為「除了拳擊外，他喜歡『所有』運動」，表排除，選 except for。" }
+];
 
-        function loadG1() {
-            const item = g1Data[g1Idx];
-            document.getElementById('g1-q').innerText = g1Idx + 1;
-            document.getElementById('g1-text').innerText = item.q;
-            document.getElementById('g1-msg').innerText = "";
-            document.getElementById('g1-next').style.display = "none";
-            
-            const box = document.getElementById('g1-opts');
-            box.innerHTML = "";
-            item.opts.forEach(o => {
-                const b = document.createElement('button');
-                b.className = 'opt-btn';
-                b.innerText = o;
-                b.onclick = () => {
-                    document.querySelectorAll('.opt-btn').forEach(btn => btn.disabled = true);
-                    if(o === item.ans) {
-                        document.getElementById('g1-msg').className = "msg correct";
-                        document.getElementById('g1-msg').innerText = "✅ 正確！" + item.expl;
-                        g1Score += 20;
-                        document.getElementById('g1-s').innerText = g1Score;
-                    } else {
-                        document.getElementById('g1-msg').className = "msg wrong";
-                        document.getElementById('g1-msg').innerText = "❌ 錯誤！" + item.expl;
-                    }
-                    document.getElementById('g1-next').style.display = "block";
-                };
-                box.appendChild(b);
-            });
-        }
+const g2Data = [
+  { target: "目標：用 Although 置於句首連接兩句（雖然天下雨，我們還是去爬山。）", words: ["Although", "it", "rained,", "we", "went", "hiking."], ans: "Although it rained, we went hiking." },
+  { target: "目標：將 although 放句中（他雖然很累，還是通過了考試。）", words: ["He", "passed", "the", "exam", "although", "he", "was", "tired."], ans: "He passed the exam although he was tired." },
+  { target: "目標：將 though 放句尾表示轉折（這項任務很難。不過，他成功了。）", words: ["The", "task", "was", "hard.", "He", "succeeded,", "though."], ans: "The task was hard. He succeeded, though." },
+  { target: "目標：注意句首 Although 子句後方的逗號（雖然他很年輕，但他很聰明。）", words: ["Although", "he", "is", "young,", "he", "is", "very", "smart."], ans: "Although he is young, he is very smart." },
+  { target: "目標：用 Though 放句首（儘管價格昂貴，她還是買了那本書。）", words: ["Though", "it", "was", "expensive,", "she", "bought", "the", "book."], ans: "Though it was expensive, she bought the book." }
+];
 
-        function nextG1() {
-            g1Idx++;
-            if(g1Idx < g1Data.length) loadG1();
-            else {
-                document.getElementById('g1-text').innerText = `🎉 練習完成！總分：${g1Score}`;
-                document.getElementById('g1-opts').innerHTML = "";
-                document.getElementById('g1-next').style.display = "none";
-            }
-        }
+/* ============================================================
+   小工具
+   ============================================================ */
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+function formatTime(sec) { const m = Math.floor(sec / 60), s = sec % 60; return m + ':' + (s < 10 ? '0' : '') + s; }
 
-        /* ----- 遊戲二：Although/Though 資料與邏輯 ----- */
-        const g2Data = [
-            {
-                target: "目標：用 Although 置於句首連接兩句（雖然天下雨，我們還是去爬山。）",
-                words: ["Although", "it", "rained,", "we", "went", "hiking."],
-                ans: "Although it rained, we went hiking."
-            },
-            {
-                target: "目標：將 although 放句中（他雖然很累，還是通過了考試。）",
-                words: ["He", "passed", "the", "exam", "although", "he", "was", "tired."],
-                ans: "He passed the exam although he was tired."
-            },
-            {
-                target: "目標：將 though 放句尾表示轉折（這項任務很難。不過，他成功了。）",
-                words: ["The", "task", "was", "hard.", "He", "succeeded,", "though."],
-                ans: "The task was hard. He succeeded, though."
-            },
-            {
-                target: "目標：注意句首 Although 子句後方的逗號（雖然他很年輕，但他很聰明。）",
-                words: ["Although", "he", "is", "young,", "he", "is", "very", "smart."],
-                ans: "Although he is young, he is very smart."
-            },
-            {
-                target: "目標：用 Though 放句首（儘管價格昂貴，她還是買了那本書。）",
-                words: ["Though", "it", "was", "expensive,", "she", "bought", "the", "book."],
-                ans: "Though it was expensive, she bought the book."
-            }
-        ];
+let currentStage = 1;
+let stats = { 1: { time: 0, wrongCount: 0 }, 2: { time: 0, wrongCount: 0 } };
+let totalStart = Date.now();
+let currentTimerInterval = null;
 
-        let g2Idx = 0, g2Score = 0, myArr = [];
+function startTimer(displayId) {
+  if (currentTimerInterval) clearInterval(currentTimerInterval);
+  const start = Date.now();
+  currentTimerInterval = setInterval(() => {
+    const el = document.getElementById(displayId);
+    if (!el) { clearInterval(currentTimerInterval); return; }
+    el.textContent = formatTime(Math.floor((Date.now() - start) / 1000));
+  }, 200);
+}
+function stopTimer() { if (currentTimerInterval) { clearInterval(currentTimerInterval); currentTimerInterval = null; } }
 
-        function loadG2() {
-            const item = g2Data[g2Idx];
-            document.getElementById('g2-q').innerText = g2Idx + 1;
-            document.getElementById('g2-target').innerText = item.target;
-            document.getElementById('g2-msg').innerText = "";
-            document.getElementById('g2-check').style.display = "block";
-            document.getElementById('g2-next').style.display = "none";
-            myArr = [];
-            renderBuildArea();
+function renderStageIndicator() {
+  const el = document.getElementById('stageIndicator');
+  el.innerHTML = '';
+  for (let i = 1; i <= 2; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'stage-dot' + (i < currentStage ? ' done' : '') + (i === currentStage ? ' active' : '');
+    dot.textContent = i;
+    el.appendChild(dot);
+  }
+}
 
-            const pool = document.getElementById('g2-pool');
-            pool.innerHTML = "";
-            let randWords = [...item.words].sort(() => Math.random() - 0.5);
-            randWords.forEach(w => {
-                const c = document.createElement('div');
-                c.className = 'chip';
-                c.innerText = w;
-                c.onclick = () => {
-                    myArr.push(w);
-                    c.style.visibility = 'hidden';
-                    renderBuildArea();
-                };
-                pool.appendChild(c);
-            });
-        }
+/* ===================== Stage 1｜介系詞選擇 ===================== */
+let s1Questions = [], s1Index = 0, s1Selected = null, s1Answered = false;
+let s1WrongLog = []; // 記錄每題答錯過的選項
 
-        function renderBuildArea() {
-            const bArea = document.getElementById('g2-build');
-            bArea.innerHTML = "";
-            myArr.forEach((w, idx) => {
-                const c = document.createElement('div');
-                c.className = 'chip';
-                c.innerText = w;
-                c.onclick = () => {
-                    myArr.splice(idx, 1);
-                    renderBuildArea();
-                    document.querySelectorAll('#g2-pool .chip').forEach(chip => {
-                        if(chip.innerText === w && chip.style.visibility === 'hidden') {
-                            chip.style.visibility = 'visible';
-                        }
-                    });
-                };
-                bArea.appendChild(c);
-            });
-        }
+function initStage1() {
+  s1Questions = shuffle(g1Data.map(item => ({ ...item, options: shuffle(item.opts) })));
+  s1Index = 0;
+  s1WrongLog = s1Questions.map(() => []);
+  stats[1].startedAt = Date.now();
+  showS1Question();
+  startTimer('s1timer');
+}
+function showS1Question() {
+  s1Answered = false; s1Selected = null;
+  const q = s1Questions[s1Index];
+  document.getElementById('s1progress').textContent = (s1Index + 1) + '/' + s1Questions.length;
+  document.getElementById('s1question').textContent = q.q;
+  document.getElementById('s1feedback').className = 'feedback';
+  const box = document.getElementById('s1options');
+  box.innerHTML = '';
+  q.options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'option-btn';
+    b.innerHTML = `<span class="choice-line"><span class="choice-text">${opt}</span><span class="choice-mark"></span></span>`;
+    b.onclick = () => {
+      if (s1Answered) return;
+      document.querySelectorAll('#s1options .option-btn').forEach(x => x.removeAttribute('data-selected'));
+      b.dataset.selected = 'true';
+      s1Selected = opt;
+    };
+    box.appendChild(b);
+  });
+  const btn = document.getElementById('s1submitBtn');
+  btn.textContent = '確認答案';
+  btn.onclick = s1submit;
+}
+function s1submit() {
+  if (s1Answered) return;
+  if (!s1Selected) { alert('請先選擇答案'); return; }
+  const q = s1Questions[s1Index];
+  const b = document.querySelector('#s1options .option-btn[data-selected="true"]');
+  const f = document.getElementById('s1feedback');
 
-        function checkG2() {
-            const userSentence = myArr.join(' ');
-            const item = g2Data[g2Idx];
-            const msg = document.getElementById('g2-msg');
+  if (s1Selected === q.ans) {
+    s1Answered = true;
+    b.classList.add('correct');
+    b.querySelector('.choice-mark').textContent = '✓ 正確';
+    b.querySelector('.choice-mark').classList.add('ok');
+    document.querySelectorAll('#s1options .option-btn').forEach(x => x.disabled = true);
+    f.className = 'feedback show success';
+    f.textContent = q.expl;
+    const btn = document.getElementById('s1submitBtn');
+    if (s1Index === s1Questions.length - 1) {
+      btn.textContent = '完成第一關';
+      btn.onclick = finishStage1;
+    } else {
+      btn.textContent = '下一題';
+      btn.onclick = () => { s1Index++; showS1Question(); };
+    }
+  } else {
+    b.classList.add('incorrect');
+    b.disabled = true;
+    b.removeAttribute('data-selected');
+    b.querySelector('.choice-mark').textContent = '✗ 錯誤';
+    b.querySelector('.choice-mark').classList.add('bad');
+    f.className = 'feedback show error';
+    f.textContent = '✗ 錯誤，再試一次';
+    s1WrongLog[s1Index].push(s1Selected);
+    s1Selected = null;
+  }
+}
+function finishStage1() {
+  stats[1].time = Math.floor((Date.now() - stats[1].startedAt) / 1000);
+  stats[1].wrongCount = s1WrongLog.reduce((n, arr) => n + (arr.length > 0 ? 1 : 0), 0);
+  currentStage = 2;
+  renderStageIndicator();
+  document.getElementById('stage1').style.display = 'none';
+  document.getElementById('stage2').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  initStage2();
+}
 
-            if(userSentence === item.ans) {
-                msg.className = "msg correct";
-                msg.innerText = "✨ 完全正確！順序與標點皆正確！";
-                g2Score += 20;
-                document.getElementById('g2-s').innerText = g2Score;
-                document.getElementById('g2-check').style.display = "none";
-                document.getElementById('g2-next').style.display = "block";
-            } else {
-                msg.className = "msg wrong";
-                msg.innerText = "❌ 排列或標點有誤，請點選字詞重新調整！";
-            }
-        }
+/* ===================== Stage 2｜句子重組 ===================== */
+let s2Questions = [], s2Index = 0, s2Built = [], s2WrongLog = [];
 
-        function nextG2() {
-            g2Idx++;
-            if(g2Idx < g2Data.length) loadG2();
-            else {
-                document.getElementById('g2-target').innerText = `🎉 重組訓練完成！總分：${g2Score}`;
-                document.getElementById('g2-build').style.display = "none";
-                document.getElementById('g2-pool').style.display = "none";
-                document.getElementById('g2-check').style.display = "none";
-                document.getElementById('g2-next').style.display = "none";
-            }
-        }
+function initStage2() {
+  s2Questions = shuffle([...g2Data]);
+  s2Index = 0;
+  s2WrongLog = s2Questions.map(() => 0);
+  stats[2].startedAt = Date.now();
+  showS2Question();
+  startTimer('s2timer');
+}
+function showS2Question() {
+  const q = s2Questions[s2Index];
+  document.getElementById('s2progress').textContent = (s2Index + 1) + '/' + s2Questions.length;
+  document.getElementById('s2target').textContent = q.target;
+  document.getElementById('s2feedback').className = 'feedback';
+  s2Built = [];
+  renderS2Build();
 
-        loadG1();
-        loadG2();
-    </script>
+  const pool = document.getElementById('s2pool');
+  pool.innerHTML = '';
+  shuffle(q.words).forEach(w => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = w;
+    chip.onclick = () => {
+      s2Built.push(w);
+      chip.classList.add('placeholder');
+      chip.style.pointerEvents = 'none';
+      renderS2Build();
+    };
+    pool.appendChild(chip);
+  });
+
+  const btn = document.getElementById('s2submitBtn');
+  btn.textContent = '確認答案';
+  btn.onclick = s2submit;
+  btn.disabled = false;
+}
+function renderS2Build() {
+  const area = document.getElementById('s2build');
+  area.innerHTML = '';
+  s2Built.forEach((w, idx) => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = w;
+    chip.onclick = () => {
+      s2Built.splice(idx, 1);
+      renderS2Build();
+      restorePoolChip(w);
+    };
+    area.appendChild(chip);
+  });
+}
+function restorePoolChip(word) {
+  const chips = document.querySelectorAll('#s2pool .chip.placeholder');
+  for (const c of chips) {
+    if (c.textContent === word) { c.classList.remove('placeholder'); c.style.pointerEvents = 'auto'; return; }
+  }
+}
+function s2clear() {
+  const q = s2Questions[s2Index];
+  s2Built = [];
+  renderS2Build();
+  document.querySelectorAll('#s2pool .chip').forEach(c => { c.classList.remove('placeholder'); c.style.pointerEvents = 'auto'; });
+  document.getElementById('s2feedback').className = 'feedback';
+}
+function s2submit() {
+  const q = s2Questions[s2Index];
+  const userSentence = s2Built.join(' ');
+  const f = document.getElementById('s2feedback');
+  if (!s2Built.length) return;
+
+  if (userSentence === q.ans) {
+    f.className = 'feedback show success';
+    f.textContent = '✓ 正確！順序與標點皆正確';
+    document.querySelectorAll('#s2pool .chip').forEach(c => c.style.pointerEvents = 'none');
+    document.querySelectorAll('#s2build .chip').forEach(c => c.style.pointerEvents = 'none');
+    const btn = document.getElementById('s2submitBtn');
+    if (s2Index === s2Questions.length - 1) {
+      btn.textContent = '完成第二關';
+      btn.onclick = finishStage2;
+    } else {
+      btn.textContent = '下一題';
+      btn.onclick = () => { s2Index++; showS2Question(); };
+    }
+  } else {
+    f.className = 'feedback show error';
+    f.textContent = '✗ 排列或標點有誤，請點選詞塊重新調整';
+    s2WrongLog[s2Index]++;
+  }
+}
+function finishStage2() {
+  stats[2].time = Math.floor((Date.now() - stats[2].startedAt) / 1000);
+  stats[2].wrongCount = s2WrongLog.filter(n => n > 0).length;
+  showFinal();
+}
+
+/* ============================================================
+   完成總覽 + 解析
+   ============================================================ */
+function showFinal() {
+  stopTimer();
+  document.getElementById('stage2').style.display = 'none';
+  const names = { 1: '介系詞專練', 2: '句型拼圖' };
+  let h = '';
+  [1, 2].forEach(i => {
+    h += `<div class="stage-summary-row"><div class="summary-name">${names[i]}</div><div class="summary-detail">用時 ${formatTime(stats[i].time)}　答錯 ${stats[i].wrongCount} 題</div></div>`;
+  });
+  document.getElementById('finalStats').innerHTML = h;
+  document.getElementById('totalTime').textContent = formatTime(Math.floor((Date.now() - totalStart) / 1000));
+  document.getElementById('finalOverlay').classList.add('show');
+}
+function showReview() {
+  document.getElementById('finalOverlay').classList.remove('show');
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+
+  const title1 = document.createElement('div');
+  title1.className = 'review-header';
+  title1.innerHTML = '<h2 style="font-size:16px">第一關｜介系詞專練</h2>';
+  list.appendChild(title1);
+  s1Questions.forEach((q, idx) => {
+    const wrong = s1WrongLog[idx];
+    const item = document.createElement('div');
+    item.className = 'review-item ' + (wrong.length ? 'wrong' : 'correct-first');
+    item.innerHTML = `<div class="review-q">${q.q}</div>` +
+      (wrong.length ? `<div style="color:#E8828C;font-size:13px">你曾答錯：${wrong.join('、')}</div>` : '') +
+      `<div class="review-ans">正確答案：${q.ans}</div>` +
+      `<div class="review-expl">${q.expl}</div>`;
+    list.appendChild(item);
+  });
+
+  const title2 = document.createElement('div');
+  title2.className = 'review-header';
+  title2.style.marginTop = '22px';
+  title2.innerHTML = '<h2 style="font-size:16px">第二關｜句型拼圖</h2>';
+  list.appendChild(title2);
+  s2Questions.forEach((q, idx) => {
+    const wrongCount = s2WrongLog[idx];
+    const item = document.createElement('div');
+    item.className = 'review-item ' + (wrongCount ? 'wrong' : 'correct-first');
+    item.innerHTML = `<div class="review-q">${q.target}</div>` +
+      (wrongCount ? `<div style="color:#E8828C;font-size:13px">答錯次數：${wrongCount}</div>` : '') +
+      `<div class="review-ans">${q.ans}</div>`;
+    list.appendChild(item);
+  });
+
+  document.getElementById('reviewContainer').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   Enter 鍵支援
+   ============================================================ */
+document.addEventListener('keypress', (e) => {
+  if (e.key !== 'Enter') return;
+  if (currentStage === 1) document.getElementById('s1submitBtn').click();
+  else if (currentStage === 2) document.getElementById('s2submitBtn').click();
+});
+
+/* ============================================================
+   初始化
+   ============================================================ */
+renderStageIndicator();
+initStage1();
+</script>
 </body>
 </html>
