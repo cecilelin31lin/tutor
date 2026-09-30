@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3U2VOC5</title>
+<style>
+* { box-sizing: border-box; }
+html, body { overscroll-behavior: none; }
+body { margin:0; padding:24px 16px 60px; background:#f5f5f5; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Nunito',sans-serif; color:#2B3A55; min-height:100vh; }
+.wrap { max-width:680px; margin:0 auto; }
+h1 { text-align:center; font-size:28px; margin:0 0 8px; }
+.subtitle { text-align:center; font-size:14px; color:#666; margin-bottom:24px; }
+.stage-indicator { display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+.stage-dot { width:32px; height:32px; border-radius:50%; background:white; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:#999; }
+.stage-dot.active { border-color:#B0C4DE; background:rgba(176,196,222,.30); color:#2B3A55; }
+.stage-dot.done { border-color:#468189; background:rgba(70,129,137,.14); color:#468189; }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+.stat-card { background:white; border:.5px solid #ddd; border-radius:8px; padding:12px; text-align:center; }
+.stat-label { font-size:12px; color:#999; margin-bottom:6px; }
+.stat-value { font-size:18px; font-weight:600; }
+.instruction { background:white; border:.5px solid #ddd; border-radius:12px; padding:12px; margin-bottom:16px; font-size:13px; color:#666; line-height:1.6; }
+.word-buttons { background:white; border:.5px solid #ddd; border-radius:12px; padding:12px; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:8px; }
+.word-btn { background:white; border:.5px solid #ccc; border-radius:6px; padding:8px 12px; font-size:16px; cursor:pointer; color:#2B3A55; }
+.word-btn:hover { border-color:#999; background:#f9f9f9; }
+.word-btn[data-selected="true"] { background:rgba(176,196,222,.30); border-color:#B0C4DE; }
+.word-btn.completed { background:rgba(70,129,137,.14); border-color:#468189; color:#468189; cursor:default; opacity:.55; }
+.sentences { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+.sentence-item { background:white; border:.5px solid #ddd; border-radius:8px; padding:12px; font-size:16px; line-height:1.6; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.sentence-item:hover { border-color:#999; background:#f9f9f9; }
+.sentence-item.correct { background:rgba(70,129,137,.14); border-color:#468189; color:#468189; cursor:default; }
+.sentence-item.incorrect { background:rgba(232,130,140,.16); border-color:#E8828C; color:#E8828C; }
+.sentence-text { flex:1; }
+.matched-word { background:#468189; color:white; border-radius:6px; padding:6px 10px; font-size:16px; font-weight:500; flex-shrink:0; }
+.question-container { background:white; border:.5px solid #ddd; border-radius:12px; padding:24px; margin-bottom:20px; }
+.question-text { font-size:18px; font-weight:500; text-align:center; margin-bottom:20px; }
+.option-btn { display:block; width:100%; padding:13px 16px; margin-bottom:9px; border:1px solid #ddd; border-radius:10px; background:#fff; cursor:pointer; text-align:left; font-size:15px; transition:all .2s; }
+.option-btn:hover { border-color:#B0C4DE; background:#fafcff; }
+.option-btn[data-selected="true"] { background:rgba(176,196,222,.30); border-color:#B0C4DE; }
+.option-btn.correct { background:rgba(70,129,137,.14); border-color:#468189; }
+.option-btn.incorrect { background:rgba(232,130,140,.16); border-color:#E8828C; }
+.option-btn:disabled { cursor:default; }
+.choice-line { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.choice-mark { font-size:12px; font-weight:700; flex-shrink:0; }
+.choice-mark.ok { color:#468189; }
+.choice-mark.bad { color:#E8828C; }
+.input-field { width:100%; padding:12px; border:.5px solid #ddd; border-radius:8px; font-size:16px; text-align:center; margin-bottom:16px; }
+.feedback { display:none; padding:12px; border-radius:8px; margin-bottom:20px; text-align:center; font-weight:500; }
+.feedback.show { display:block; }
+.feedback.success { background:rgba(70,129,137,.14); border:.5px solid #468189; color:#468189; }
+.feedback.error { background:rgba(232,130,140,.16); border:.5px solid #E8828C; color:#E8828C; }
+.button-group { display:flex; justify-content:center; }
+.nav-btn { border:none; border-radius:8px; padding:10px 24px; font-size:14px; font-weight:500; cursor:pointer; background:#B0C4DE; color:#2B3A55; }
+.nav-btn:hover { background:#9AB3D0; }
+.result-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.3); align-items:center; justify-content:center; z-index:1000; }
+.result-overlay.show { display:flex; }
+.result-modal { background:white; border-radius:12px; padding:24px; max-width:400px; width:90%; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,.15); }
+.result-title { font-size:18px; font-weight:600; margin-bottom:12px; }
+.result-stat { margin-bottom:16px; }
+.result-stat-label { font-size:12px; color:#999; margin-bottom:4px; }
+.result-stat-value { font-size:24px; font-weight:600; color:#B0C4DE; }
+.result-button-group { display:flex; gap:10px; }
+.result-button { flex:1; background:#B0C4DE; color:#2B3A55; border:none; border-radius:6px; padding:10px 20px; font-size:14px; font-weight:500; cursor:pointer; }
+.result-button:hover { background:#9AB3D0; }
+.review-container { display:none; margin-top:20px; }
+.review-container.show { display:block; }
+.review-item { background:white; border:.5px solid #ddd; border-radius:8px; padding:12px 16px; margin-bottom:8px; display:flex; justify-content:space-between; gap:12px; font-size:14px; }
+.rword { font-weight:700; }
+.rmeaning { color:#666; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>B3U2VOC5</h1>
+<p class="subtitle">依序破關：單一配對 → 問中文回答英文</p>
+<div class="stage-indicator" id="stageIndicator"></div>
+
+<div id="stage1">
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">題目</div><div class="stat-value" id="s1progress">1/1</div></div>
+    <div class="stat-card"><div class="stat-label">⏱ 時間</div><div class="stat-value" id="s1timer">0:00</div></div>
+  </div>
+  <div class="instruction">第一關：看英文單字，選出正確的中文意思。</div>
+  <div class="question-container">
+    <div class="question-text" id="s1question"></div>
+    <div id="s1options"></div>
+    <div class="feedback" id="s1feedback"></div>
+  </div>
+  <div class="button-group"><button class="nav-btn" id="s1submitBtn">確認答案</button></div>
+</div>
+
+<div id="stage2" style="display:none;">
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">題目</div><div class="stat-value" id="s2progress">1/1</div></div>
+    <div class="stat-card"><div class="stat-label">⏱ 時間</div><div class="stat-value" id="s2timer">0:00</div></div>
+  </div>
+  <div class="instruction">第二關：看中文意思，寫出正確的英文</div>
+  <div class="question-container">
+    <div class="question-text" id="s2question"></div>
+    <input type="text" class="input-field" id="s2input" placeholder="輸入英文">
+    <div class="feedback" id="s2feedback"></div>
+  </div>
+  <div class="button-group"><button class="nav-btn" id="s2submitBtn">確認答案</button></div>
+</div>
+
+<div class="review-container" id="reviewContainer"><div id="reviewList"></div></div>
+
+<div class="result-overlay" id="stageCompleteOverlay">
+  <div class="result-modal">
+    <div class="result-title">🎉 第一關過關！</div>
+    <div class="result-stat"><div class="result-stat-label">用時</div><div class="result-stat-value" id="stageCompleteTime">0:00</div></div>
+    <div class="result-button-group"><button class="result-button" id="nextStageBtn">下一關</button></div>
+  </div>
+</div>
+
+<div class="result-overlay" id="allCompleteOverlay">
+  <div class="result-modal">
+    <div class="result-title">🏆 全部過關！</div>
+    <div class="result-stat"><div class="result-stat-label">第二關用時</div><div class="result-stat-value" id="finalTime">0:00</div></div>
+    <div class="result-button-group">
+      <button class="result-button" id="reviewBtn">複習</button>
+      <button class="result-button" onclick="location.reload()">重新開始</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const shuffleSentences = 1;
+
+const pairs = [
+  { word: 'serious', sentence: '嚴重的；認真的' },
+  { word: 'send / sent', sentence: '寄；送' },
+  { word: 'coat', sentence: '大衣' },
+  { word: 'head', sentence: '頭' },
+  { word: 'so', sentence: '所以' },
+  { word: 'neck', sentence: '脖子' },
+  { word: 'health', sentence: '健康' },
+];
+
+const distractors = [];
+
+let currentStage = 1;
+let selectedWord = null;
+let matchedCount = 0;
+let stageStartTime = Date.now();
+let timerInterval = null;
+
+function formatTime(sec) {
+  const mins = Math.floor(sec / 60), secs = sec % 60;
+  return mins + ':' + (secs < 10 ? '0' : '') + secs;
+}
+function renderStageIndicator() {
+  const el = document.getElementById('stageIndicator');
+  el.innerHTML = '';
+  for (let i=1;i<=2;i++) {
+    const dot=document.createElement('div');
+    dot.className='stage-dot';
+    if(i<currentStage) dot.classList.add('done');
+    if(i===currentStage) dot.classList.add('active');
+    dot.textContent=i;
+    el.appendChild(dot);
+  }
+}
+function startTimer(id) {
+  stageStartTime=Date.now();
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    document.getElementById(id).textContent=formatTime(Math.floor((Date.now()-stageStartTime)/1000));
+  },100);
+}
+let s1Questions = [], s1Index = 0, s1Selected = null, s1Answered = false;
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function initStage1() {
+  s1Questions = shuffle(pairs.map(p => {
+    const pool = shuffle(pairs.filter(x => x.word !== p.word)).slice(0, 3);
+    return { word: p.word, answer: p.sentence, options: shuffle([p.sentence, ...pool.map(x => x.sentence)]) };
+  }));
+  s1Index = 0;
+  showS1Question();
+  startTimer('s1timer');
+}
+function showS1Question() {
+  s1Answered = false; s1Selected = null;
+  const q = s1Questions[s1Index];
+  document.getElementById('s1progress').textContent = (s1Index + 1) + '/' + s1Questions.length;
+  document.getElementById('s1question').textContent = q.word;
+  document.getElementById('s1feedback').className = 'feedback';
+  const box = document.getElementById('s1options');
+  box.innerHTML = '';
+  q.options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'option-btn';
+    b.innerHTML = `<span class="choice-line"><span class="choice-text">${opt}</span><span class="choice-mark"></span></span>`;
+    b.onclick = () => {
+      if (s1Answered) return;
+      document.querySelectorAll('#s1options .option-btn').forEach(x => x.removeAttribute('data-selected'));
+      b.dataset.selected = 'true';
+      s1Selected = opt;
+    };
+    box.appendChild(b);
+  });
+  const btn = document.getElementById('s1submitBtn');
+  btn.textContent = '確認答案';
+  btn.onclick = s1submit;
+}
+function s1submit() {
+  if (s1Answered) return;
+  if (!s1Selected) { alert('請先選擇答案'); return; }
+  const q = s1Questions[s1Index];
+  const b = document.querySelector('#s1options .option-btn[data-selected="true"]');
+  const f = document.getElementById('s1feedback');
+  f.classList.add('show');
+
+  if (s1Selected === q.answer) {
+    s1Answered = true;
+    b.classList.add('correct');
+    b.querySelector('.choice-mark').textContent = '✓ 正確';
+    b.querySelector('.choice-mark').classList.add('ok');
+    document.querySelectorAll('#s1options .option-btn').forEach(x => x.disabled = true);
+    f.className = 'feedback show success';
+    f.textContent = '✓ 正確';
+    const btn = document.getElementById('s1submitBtn');
+    if (s1Index === s1Questions.length - 1) {
+      btn.textContent = '完成第一關';
+      btn.onclick = () => {
+        clearInterval(timerInterval);
+        document.getElementById('stageCompleteTime').textContent = formatTime(Math.floor((Date.now() - stageStartTime) / 1000));
+        document.getElementById('stageCompleteOverlay').classList.add('show');
+      };
+    } else {
+      btn.textContent = '下一題';
+      btn.onclick = () => { s1Index++; showS1Question(); };
+    }
+  } else {
+    b.classList.add('incorrect');
+    b.disabled = true;
+    b.removeAttribute('data-selected');
+    b.querySelector('.choice-mark').textContent = '✗ 錯誤';
+    b.querySelector('.choice-mark').classList.add('bad');
+    f.className = 'feedback show error';
+    f.textContent = '✗ 錯誤，再試一次';
+    s1Selected = null;
+  }
+}
+
+const qaWords = pairs.map(p => ({ word: p.word, meaning: p.sentence }));
+let s2Questions=[], s2Index=0, s2Answered=false;
+
+function initStage2() {
+  currentStage=2; renderStageIndicator();
+  document.getElementById('stage1').style.display='none';
+  document.getElementById('stage2').style.display='block';
+  s2Questions=[...qaWords].sort(()=>Math.random()-.5); s2Index=0;
+  showS2Question(); startTimer('s2timer');
+}
+function showS2Question() {
+  s2Answered=false;
+  const q=s2Questions[s2Index];
+  document.getElementById('s2progress').textContent=(s2Index+1)+'/'+s2Questions.length;
+  document.getElementById('s2question').textContent=q.meaning;
+  const input=document.getElementById('s2input'); input.value=''; input.disabled=false; input.focus();
+  document.getElementById('s2feedback').className='feedback';
+  const btn=document.getElementById('s2submitBtn'); btn.textContent='確認答案'; btn.onclick=s2submit;
+}
+function s2submit() {
+  if(s2Answered) return;
+  const q=s2Questions[s2Index], input=document.getElementById('s2input'), ans=input.value.trim();
+  if(!ans) return;
+  const ok=ans.toLowerCase().replace(/\s+/g,'')===q.word.toLowerCase().replace(/\s+/g,'');
+  const fb=document.getElementById('s2feedback');
+  if(ok) {
+    s2Answered=true; input.disabled=true; fb.className='feedback show success'; fb.textContent='✓ 正確';
+    const btn=document.getElementById('s2submitBtn');
+    if(s2Index===s2Questions.length-1) { btn.textContent='完成第二關'; btn.onclick=finishGame; }
+    else { btn.textContent='下一題'; btn.onclick=()=>{s2Index++;showS2Question();}; }
+  } else {
+    fb.className='feedback show error'; fb.textContent='✗ 錯誤，再試一次'; input.value=''; input.focus();
+  }
+}
+function finishGame() {
+  clearInterval(timerInterval);
+  document.getElementById('finalTime').textContent=formatTime(Math.floor((Date.now()-stageStartTime)/1000));
+  document.getElementById('allCompleteOverlay').classList.add('show');
+}
+function showReview() {
+  document.getElementById('allCompleteOverlay').classList.remove('show');
+  document.getElementById('stage2').style.display='none';
+  document.getElementById('stageIndicator').style.display='none';
+  const list=document.getElementById('reviewList'); list.innerHTML='';
+  qaWords.forEach(w=>{
+    const item=document.createElement('div'); item.className='review-item';
+    item.innerHTML='<span class="rword">'+w.word+'</span><span class="rmeaning">'+w.meaning+'</span>';
+    list.appendChild(item);
+  });
+  document.getElementById('reviewContainer').classList.add('show');
+}
+document.getElementById('nextStageBtn').addEventListener('click',()=>{
+  document.getElementById('stageCompleteOverlay').classList.remove('show'); initStage2();
+});
+document.getElementById('reviewBtn').addEventListener('click',showReview);
+document.getElementById('s2input').addEventListener('keypress',e=>{
+  if(e.key==='Enter' && currentStage===2) {
+    if(s2Answered) document.getElementById('s2submitBtn').click();
+    else s2submit();
+  }
+});
+renderStageIndicator();
+initStage1();
+</script>
+</body>
+</html>
