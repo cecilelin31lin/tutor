@@ -50,7 +50,7 @@ h1 { text-align:center; font-size:28px; margin:0 0 8px; }
 .feedback.success { background:rgba(70,129,137,.14); border:.5px solid #468189; color:#468189; }
 .feedback.error { background:rgba(232,130,140,.16); border:.5px solid #E8828C; color:#E8828C; }
 .button-group { display:flex; justify-content:center; }
-.nav-btn { border:none; border-radius:8px; padding:10px 24px; font-size:14px; font-weight:500; cursor:pointer; background:#B0C4DE; color:#2B3A55; }
+.nav-btn { border:none; border-radius:8px; padding:10px 24px; font-size:14px; font-weight:500; cursor:pointer; background:#B0C4DE; color:#2B3A55; min-width:150px; }
 .nav-btn:hover { background:#9AB3D0; }
 .result-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.3); align-items:center; justify-content:center; z-index:1000; }
 .result-overlay.show { display:flex; }
@@ -127,6 +127,7 @@ h1 { text-align:center; font-size:28px; margin:0 0 8px; }
 
 <script>
 const shuffleSentences = 1;
+
 
 const pairs = [
   { word: 'toe', sentence: '腳趾' },
@@ -212,7 +213,6 @@ function s1submit() {
   const q = s1Questions[s1Index];
   const b = document.querySelector('#s1options .option-btn[data-selected="true"]');
   const f = document.getElementById('s1feedback');
-  f.classList.add('show');
 
   if (s1Selected === q.answer) {
     s1Answered = true;
@@ -220,8 +220,7 @@ function s1submit() {
     b.querySelector('.choice-mark').textContent = '✓ 正確';
     b.querySelector('.choice-mark').classList.add('ok');
     document.querySelectorAll('#s1options .option-btn').forEach(x => x.disabled = true);
-    f.className = 'feedback show success';
-    f.textContent = '✓ 正確';
+    f.className = 'feedback';
     const btn = document.getElementById('s1submitBtn');
     if (s1Index === s1Questions.length - 1) {
       btn.textContent = '完成第一關';
@@ -240,8 +239,7 @@ function s1submit() {
     b.removeAttribute('data-selected');
     b.querySelector('.choice-mark').textContent = '✗ 錯誤';
     b.querySelector('.choice-mark').classList.add('bad');
-    f.className = 'feedback show error';
-    f.textContent = '✗ 錯誤，再試一次';
+    f.className = 'feedback';
     s1Selected = null;
   }
 }
@@ -301,12 +299,27 @@ document.getElementById('nextStageBtn').addEventListener('click',()=>{
   document.getElementById('stageCompleteOverlay').classList.remove('show'); initStage2();
 });
 document.getElementById('reviewBtn').addEventListener('click',showReview);
-document.getElementById('s2input').addEventListener('keypress',e=>{
+document.addEventListener('keypress',e=>{
   if(e.key==='Enter' && currentStage===2) {
     if(s2Answered) document.getElementById('s2submitBtn').click();
     else s2submit();
   }
 });
+document.addEventListener('keydown', (e) => {
+  if (currentStage !== 1) return;
+  if (!['1', '2', '3', '4'].includes(e.key)) return;
+  const idx = Number(e.key) - 1;
+  const buttons = document.querySelectorAll('#s1options .option-btn');
+  if (buttons[idx] && !buttons[idx].disabled) {
+    e.preventDefault();
+    buttons[idx].click();
+  }
+});
+document.addEventListener('keypress', (e) => {
+  if (e.key !== 'Enter') return;
+  if (currentStage === 1) document.getElementById('s1submitBtn').click();
+});
+
 renderStageIndicator();
 initStage1();
 </script>
