@@ -1760,7 +1760,469 @@ const voc_B1_U2 = [
       {en:"I am heading downtown.", zh:'我要到市中心去。'}
     ] }
 ];
-const allWords = [].concat(voc_B1_U1, voc_B1_U2, voc_B1_U3, voc_B1_U4, voc_B1_U5);
+
+const voc_B1_U6 = [
+  // ===== Part 1 =====
+  { source:'VOC', book:'B1', unit:'U6', part:1, id:'1', word:'murder', pos:'vt., n.', meaning:'謀殺；謀殺案', note:'',
+    sentences:[
+      {en:"The man committed murder and was sentenced to thirty years in prison.", zh:'這個男子犯了殺人罪，被判 30 年有期徒刑。'},
+      {en:"Two suspects were arrested soon after that girl was murdered.", zh:'那個女孩遭到殺害沒多久，有兩名嫌犯就被逮捕了。'},
+      {en:"Although all of the evidence was against him, Frank still got away with murder.", zh:'雖然所有證據都對犯下謀殺案的法蘭克不利，但他仍逍遙法外。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:1, id:'2', word:'roast', pos:'vt., vi., a., n.', meaning:'烤（肉）；烘烤的；烤肉', note:'roasted 同 roast 作形容詞',
+    sentences:[
+      {en:"Mom roasted some lamb chops for dinner.", zh:'媽媽烤了一些羊排當晚餐。'},
+      {en:"One famous dish from Germany is roast / roasted pork knuckle.", zh:'烤豬腳是一道有名的德國菜。'},
+      {en:"Peter ate the entire roast by himself.", zh:'彼得一個人吃了一整塊烤肉。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:1, id:'3', word:'reasonable', pos:'a.', meaning:'合理的；講道理的', note:'',
+    sentences:[
+      {en:"I bought this piece of furniture at a reasonable price.", zh:'我以合理的價格買了這件傢俱。'},
+      {en:"I don't think Susan's being reasonable about this.", zh:'我認為蘇珊對這件事不講道理。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:1, id:'4', word:'missing', pos:'a.', meaning:'失蹤的；缺的', note:'',
+    sentences:[
+      {en:"The hiker was reported missing three days ago and was found this morning.", zh:'這名健行者於 3 天前據報失蹤，在今晨被尋獲。'},
+      {en:"Several pages of the first chapter were missing.", zh:'第一章缺了好幾頁。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:1, id:'5', word:'benefit', pos:'n., vt., vi.', meaning:'利益；有益於；獲益', note:'vi.與介詞 from 並用',
+    sentences:[
+      {en:"My trip to the US was a benefit of my job.", zh:'我的美國之旅是工作上的一項福利。'},
+      {en:"The doctor said a long rest would benefit the patient.", zh:'醫生說長時間休息將會有益於該病患。'},
+      {en:"Everyone will benefit from the new road.", zh:'那條新路會造福每個人。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:1, id:'5.1', word:'profit', pos:'n., vt., vi.', meaning:'利潤；對……有利；獲利', note:'',
+    sentences:[
+      {en:"Tom made a handsome profit from the sale.", zh:'湯姆從這次貿易中得到了可觀的利潤。'},
+      {en:"It will not profit you at all to do such a thing.", zh:'做這樣的事對你毫無益處。'},
+      {en:"A wise person profits from his mistakes.", zh:'聰明的人會從錯誤中獲益。'}
+    ] },
+
+  // ===== Part 2 =====
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'6', word:'muscle', pos:'n.', meaning:'肌肉', note:'可數名詞',
+    sentences:[
+      {en:"To tone up your muscles, you should exercise on a regular basis.", zh:'為了鍛鍊你的肌肉，你應該規律地運動。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'6.1', word:'flesh', pos:'n.', meaning:'（人或動物的）肉', note:'',
+    sentences:[
+      {en:"Eating human flesh is considered barbarous.", zh:'吃人肉被認為是很野蠻。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'7', word:'dust', pos:'n., vt.', meaning:'灰塵；除去……的灰塵', note:'',
+    sentences:[
+      {en:"There is so much dust on the table.", zh:'桌上有很多灰塵。'},
+      {en:"I used a feather duster to dust the table.", zh:'我用雞毛扢子把桌上的灰塵撣掉。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'7.1', word:'dirt', pos:'n.', meaning:'泥土；髒東西；灰塵', note:'',
+    sentences:[
+      {en:"I'm afraid your sneakers need to be washed because they're covered with dirt.", zh:'你的球鞋都是泥巴，恐怕得洗了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'8', word:'automobile', pos:'n.', meaning:'汽車', note:'= auto',
+    sentences:[
+      {en:"I can't afford a brand-new automobile, so I'm going to buy a used one.", zh:'我買不起全新的汽車，因此我打算買一臺中古的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'8.1', word:'vehicle', pos:'n.', meaning:'車輛；任何有輪子的運載工具', note:'',
+    sentences:[
+      {en:"The number of motor vehicles on the roads rose by 30% last year.", zh:'去年道路車輛的數量成長了 30%。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'9', word:'headquarters', pos:'n.', meaning:'總部', note:'單複數同形；縮寫為 HQ',
+    sentences:[
+      {en:"Gangsters surrounded the police headquarters last night.", zh:'幫派分子昨晚包圍警備總部。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'10', word:'vision', pos:'n.', meaning:'視力；影像；眼光，遠見', note:'',
+    sentences:[
+      {en:"I wear glasses to improve my vision.", zh:'我戴眼鏡以改善我的視力。'},
+      {en:"It is said that the children saw a vision of an angel here.", zh:'據說這些孩子在這裡看到天使的影像。'},
+      {en:"The mayor had a vision of changing this area into a lovely park.", zh:'這位市長很有眼光要把這個地區改建成一座美麗的公園。'},
+      {en:"A great leader must be a person of vision.", zh:'偉大的領袖必須是個有遠見的人。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'10.1', word:'visible', pos:'a.', meaning:'肉眼可見的；顯而易見的', note:'',
+    sentences:[
+      {en:"The building was visible through the trees.", zh:'從這片樹林望出去可看見那棟建築物。'},
+      {en:"There's been a visible change in Hank since he started exercising.", zh:'自從開始運動後，漢克有了明顯的改變。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'11', word:'exchange', pos:'vt., n.', meaning:'交換', note:'',
+    sentences:[
+      {en:"I love to exchange stamps with my friends.", zh:'我喜歡和朋友交換郵票。'},
+      {en:"Peter exchanged his toy car for a toy gun.", zh:'彼得用玩具車換了一把玩具槍。'},
+      {en:"I gave Allen a pen in exchange for his watch.", zh:'我用一支筆和艾倫換隻手錶。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:2, id:'12', word:'practical', pos:'a.', meaning:'實際的', note:'',
+    sentences:[
+      {en:"This job calls for at least five years of practical experience.", zh:'這份工作需要至少 5 年的實際經驗。'},
+      {en:"Tom is a practical person and never does things beyond his ability.", zh:'湯姆是很務實的人，超過自己能力的事他從不會去做。'}
+    ] },
+
+  // ===== Part 3 =====
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'12.1', word:'practically', pos:'adv.', meaning:'實際地；幾乎', note:'',
+    sentences:[
+      {en:"Practically speaking, Jason isn't cut out for the job.", zh:'講得實際一點，這份工作傑森不能勝任。'},
+      {en:"Ken comes here almost every single day.", zh:'肯幾乎每天都會來這裡。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'13', word:'mend', pos:'vt.', meaning:'修理，修補；改正', note:'',
+    sentences:[
+      {en:"The thrifty man mends his own clothes, including torn socks.", zh:'這個節儉的男子會修補自己的衣服，包括穿破的襪子。'},
+      {en:"Least said, soonest mended.", zh:'少說為妙，越描越黑。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'14', word:'constant', pos:'a., n.', meaning:'持續的；穩定的；恆久不變的事物；常數', note:'',
+    sentences:[
+      {en:"The constant noise of the machine is driving me crazy.", zh:'機器不斷發出的噪音快把我逼瘋了。'},
+      {en:"The weather has been constant this week.", zh:'這星期的天氣很穩定。'},
+      {en:"The temperature in the fish tank remains a constant.", zh:'水族箱裡的溫度維持恆溫。'},
+      {en:"No matter what life threw at them, their love for each other remained a constant.", zh:'不論遇到什麼困難，他們仍對彼此堅貞不移。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'15', word:'dramatic', pos:'a.', meaning:'戲劇的；戲劇性的；強烈的', note:'',
+    sentences:[
+      {en:"Would you like to read the dramatic piece I wrote recently?", zh:'你想看我最近寫的這個劇本嗎？'},
+      {en:"Peter made an impassioned and dramatic speech.", zh:'彼得用慷慨激昂且戲劇性的口吻發表了一段話。'},
+      {en:"Dramatic changes have swept Taiwan in the last twenty years.", zh:'臺灣在過去 20 年來經歷了強烈的改變。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'16', word:'warn', pos:'vt.', meaning:'警告；告誡', note:'warn sb. not to / warn against',
+    sentences:[
+      {en:"Our teacher warned us not to cheat on the test.", zh:'老師警告我們考試不可作弊。'},
+      {en:"Our teacher warned us against cheating on the test.", zh:'老師警告我們考試不可作弊。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'16.1', word:'warning', pos:'n.', meaning:'警告', note:'',
+    sentences:[
+      {en:"Thank you for your timely warning.", zh:'謝謝你適時的警告。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'17', word:'definition', pos:'n.', meaning:'定義；（錄音、電視等的）清晰度', note:'',
+    sentences:[
+      {en:"There are several definitions listed under the word.", zh:'這個字底下列有好幾個定義。'},
+      {en:"I want a TV with better definition.", zh:'我要一臺解析度較高的電視機。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'18', word:'afford', pos:'vt.', meaning:'買得起；負擔得起', note:'',
+    sentences:[
+      {en:"Being poor, I can't afford to take a trip to Thailand.", zh:'因為很窮，所以到泰國旅遊我玩不起。'},
+      {en:"I can't imagine how such a poor man could afford such an expensive car.", zh:'我無法想像那樣窮的人竟買得起那麼貴的車。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'19', word:'missile', pos:'n.', meaning:'飛彈', note:'',
+    sentences:[
+      {en:"They will launch the missile as scheduled.", zh:'他們會按既定時間發射飛彈。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'19.1', word:'rocket', pos:'n.', meaning:'火箭', note:'',
+    sentences:[
+      {en:"The scientists launched a rocket with a communications satellite on it.", zh:'這群科學家發射了一枚火箭，上面搭載了一顆通訊衛星。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:3, id:'20', word:'credit', pos:'n., vt.', meaning:'信譽；學分；將功勞歸因於', note:'信譽不可數；學分可數；vt.常用被動',
+    sentences:[
+      {en:"Buying on credit is getting popular in Taiwan.", zh:'在臺灣有越來越多的人使用信用卡購物。'},
+      {en:"How many credits are you planning to take this semester?", zh:'你這學期打算修幾學分？'},
+      {en:"Mr. Wang is credited with the success of this project.", zh:'這項計畫的成功是王先生的功勞。'},
+      {en:"The success of this project is credited to Mr. Wang.", zh:'這項計畫的成功是王先生的功勞。'}
+    ] },
+
+  // ===== Part 4 =====
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'21', word:'educate', pos:'vt.', meaning:'教育，栽培', note:'',
+    sentences:[
+      {en:"Peter was born in Taiwan but educated in the United States.", zh:'彼得在臺灣出生但在美國受教育。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'21.1', word:'educational', pos:'a.', meaning:'教育的；教育性的', note:'',
+    sentences:[
+      {en:"The educational / education system in the US is somewhat different from that in Taiwan.", zh:'美國的教育制度和臺灣的有些不同。'},
+      {en:"The family all watched an educational show on TV.", zh:'這家人一同觀賞一個教育性的節目。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'22', word:'preparation', pos:'n.', meaning:'準備，預備', note:'',
+    sentences:[
+      {en:"Education should be a preparation for life after graduation.", zh:'教育應是為畢業後的人生做準備。'},
+      {en:"Many students are studying in the library in preparation for the upcoming finals.", zh:'許多學生正在圖書館唸書以準備即將來臨的期末考。'},
+      {en:"They're making preparations for the prince's birthday party.", zh:'他們正在為王子生日派對的事宜做準備。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'23', word:'airline', pos:'n.', meaning:'航空公司', note:'',
+    sentences:[
+      {en:"Lufthansa is one of the most popular airlines in Europe.", zh:'德航是歐洲最著名的航空公司之一。'},
+      {en:"Which airline are you flying with tomorrow?", zh:'你明天搭哪家航空公司的飛機？'},
+      {en:"Who are you flying with tomorrow?", zh:'你明天搭哪家航空公司的飛機？'},
+      {en:"China Airlines.", zh:'華航。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'24', word:'anyhow', pos:'adv.', meaning:'無論如何', note:'',
+    sentences:[
+      {en:"We did our best, but the other team won anyhow.", zh:'我們全力以赴，但無論如何另一隊還是贏了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'25', word:'dinosaur', pos:'n.', meaning:'恐龍；古板的人', note:'',
+    sentences:[
+      {en:"Dinosaurs ruled the earth millions of years ago.", zh:'恐龍幾百萬年前曾主宰地球。'},
+      {en:"Johnny is a dinosaur! He doesn't even know how to take the MRT.", zh:'強尼真是老古板！他甚至不會搭捷運。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'26', word:'puppet', pos:'n.', meaning:'玩偶；木偶；傀儡', note:'',
+    sentences:[
+      {en:"The students made puppets out of socks in art class.", zh:'學生在美術課用襪子做玩偶。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:4, id:'27', word:'squirrel', pos:'n.', meaning:'松鼠', note:'',
+    sentences:[
+      {en:"City squirrels eat a variety of foods, including nuts, snacks, and insects.", zh:'城市的松鼠吃很多食物，包括核果、餅乾和昆蟲。'}
+    ] },
+
+  // ===== Part 5 =====
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.1', word:'koala', pos:'n.', meaning:'無尾熊', note:'= koala bear',
+    sentences:[
+      {en:"Children love koalas because they think these little animals are cute.", zh:'小孩喜歡無尾熊，因為他們認為這些小動物很可愛。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.2', word:'donkey', pos:'n.', meaning:'驢子', note:'',
+    sentences:[
+      {en:"Typically, donkeys are used as work animals.", zh:'驢子是很典型的勞役動物。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.3', word:'ox', pos:'n.', meaning:'（去勢的）公牛', note:'',
+    sentences:[
+      {en:"My sister was born in the Year of the Ox.", zh:'我妹妹是牛年出生的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.4', word:'leopard', pos:'n.', meaning:'豹', note:'',
+    sentences:[
+      {en:"Leopards are very good at climbing trees, but they rarely do so.", zh:'豹很擅長爬樹，但是牠們不常這麼做。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.5', word:'dolphin', pos:'n.', meaning:'海豚', note:'',
+    sentences:[
+      {en:"Dolphins have a very complicated communication system.", zh:'海豚有一套複雜的溝通系統。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.6', word:'penguin', pos:'n.', meaning:'企鵝', note:'',
+    sentences:[
+      {en:"Penguins are birds; however, they don't fly but they can swim like fish.", zh:'企鵝是鳥類；然而牠們不會飛但卻能像魚一樣游泳。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.7', word:'owl', pos:'n.', meaning:'貓頭鷹', note:'',
+    sentences:[
+      {en:"Owls have large eyes and hunt at night.", zh:'貓頭鷹有一雙大眼，在夜間獵食。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.8', word:'parrot', pos:'n., vt.', meaning:'鸚鵡；機械式地模仿', note:'',
+    sentences:[
+      {en:"The parrot likes to imitate my words.", zh:'這隻鸚鵡喜歡學我講話。'},
+      {en:"I have no idea why this little kid keeps parroting me.", zh:'我實在搞不懂這小子為何一直模仿我的一舉一動。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U6', part:5, id:'27.9', word:'pigeon', pos:'n.', meaning:'灰鴿，鴿子', note:'比 dove 大',
+    sentences:[
+      {en:"Can you tell the difference between a pigeon and a dove?", zh:'你能分辨灰鴿與白鴿的不同嗎？'}
+    ] }
+];
+
+const voc_B1_U7 = [
+  // ===== Part 1 =====
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'1', word:'trend', pos:'n.', meaning:'趨勢；潮流', note:'',
+    sentences:[
+      {en:"Business leaders have to keep track of the latest economic trends.", zh:'企業領袖必須隨時掌握最新的經濟趨勢。'},
+      {en:"Reading newspapers and watching TV enable you to keep up with the trends.", zh:'看報及看電視可以讓你趕上潮流。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'1.1', word:'tide', pos:'n., vt.', meaning:'潮汐，潮流；幫助（某人）渡過（難關）', note:'',
+    sentences:[
+      {en:"Time and tide wait for no man.", zh:'歲月不饒人。——諺語'},
+      {en:"I wonder if you could lend me $200 to tide me over until payday.", zh:'我想知道你是否可借我 200 美元，讓我撐到發薪水的那一天。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'2', word:'attract', pos:'vt.', meaning:'吸引；引起……的注意或興趣', note:'',
+    sentences:[
+      {en:"I must admit that I'm very attracted to David.", zh:'我必須承認我對大衛十分著迷。'},
+      {en:"The new policy attracted attention from minorities.", zh:'這項新政策引起弱勢族群的關切。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'2.1', word:'attractive', pos:'a.', meaning:'誘人的，有吸引力的', note:'',
+    sentences:[
+      {en:"Unlike her sister, Liz was extremely attractive.", zh:'和她姊姊不同的是，莉絲十分嫵媚動人。'},
+      {en:"I find the idea of rail travel attractive.", zh:'我發覺鐵道旅遊的構想頗具吸引力。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'3', word:'historic', pos:'a.', meaning:'有歷史性的；歷史上著名的', note:'',
+    sentences:[
+      {en:"This invention is of historic significance.", zh:'這件發明具有歷史性的意義。'},
+      {en:"It was on this historic spot that the battle was fought.", zh:'那場戰役就是在這歷史上著名的地方開打的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'3.1', word:'historian', pos:'n.', meaning:'歷史學家', note:'',
+    sentences:[
+      {en:"This historian wrote a book, revealing the mysteries of the dynasty.", zh:'這位歷史學家寫了一本書，揭開該王朝神秘的面紗。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'4', word:'avenue', pos:'n.', meaning:'大道；方法', note:'',
+    sentences:[
+      {en:"They established a branch office on Fifth Avenue.", zh:'他們在第五大道上開了一間分公司。'},
+      {en:"They explored every avenue to find a cure for the disease.", zh:'他們嘗試了各種方法，要找到這個疾病的療方。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'4.1', word:'alley', pos:'n.', meaning:'巷', note:'',
+    sentences:[
+      {en:"A car got stuck in the narrow alley.", zh:'有輛車困在這條狹窄巷裡。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:1, id:'5', word:'threat', pos:'n.', meaning:'威脅，恐嚇；惡兆，兆頭', note:'',
+    sentences:[
+      {en:"Poverty is a threat to society.", zh:'貧困對社會是一種威脅。'},
+      {en:"Global warming is posing a threat to human survival.", zh:'全球暖化對人類的生存構成威脅。'},
+      {en:"The dark clouds are a threat of heavy rain.", zh:'這些烏雲是大雨將至的前兆。'}
+    ] },
+
+  // ===== Part 2 =====
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'5.1', word:'threaten', pos:'vt.', meaning:'威脅……；有……的前兆', note:'',
+    sentences:[
+      {en:"Todd threatened his wife with divorce.", zh:'陶德以離婚威脅他老婆。'},
+      {en:"These clouds threaten rain.", zh:'這些雲是下雨的前兆。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'6', word:'paradise', pos:'n.', meaning:'天堂；樂園', note:'= heaven',
+    sentences:[
+      {en:"They say Singapore is a shopping paradise.", zh:'據說新加坡是個購物天堂。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'7', word:'remind', pos:'vt.', meaning:'提醒；使想起', note:'',
+    sentences:[
+      {en:"The lullaby reminds me of my childhood.", zh:'這首搖籃曲使我想起我的童年。'},
+      {en:"Please remind me to call Jason at seven.", zh:'請提醒我 7 點時打電話給傑森。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'8', word:'inner', pos:'a.', meaning:'內部的；內心的', note:'',
+    sentences:[
+      {en:"Beauty is only skin deep. It is inner beauty that counts.", zh:'美貌是膚淺的。重要的是內在美。'},
+      {en:"They believe the religious faith can bring them inner peace.", zh:'他們相信宗教信仰能帶給他們內心的平靜。'},
+      {en:"One figure in the dictator's inner circle was executed this morning.", zh:'該獨裁者身邊的核心人士其中一位今晨遭到處決。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'8.1', word:'outer', pos:'a.', meaning:'外在的；外面的', note:'',
+    sentences:[
+      {en:"Some people believe that there are intelligent beings like mankind in outer space.", zh:'有些人相信，在外太空有像人類一樣的智慧型生物。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'9', word:'hollow', pos:'a., n., vt.', meaning:'中空的；坑洞；陷落，挖洞', note:'',
+    sentences:[
+      {en:"Bamboo is light because it is hollow.", zh:'竹子因為是中空的所以很輕。'},
+      {en:"Their car got stuck in a muddy hollow in the middle of nowhere.", zh:'他們的車子卡在一個很荒涼的地方的泥巴坑洞裡。'},
+      {en:"Rex hollowed out a log to make a canoe.", zh:'雷克斯把一根木頭挖空做成獨木舟。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'10', word:'pilot', pos:'n., vt.', meaning:'飛行員；領航員；駕駛（飛機）', note:'',
+    sentences:[
+      {en:"Brian is a licensed pilot and owns his own plane.", zh:'布萊恩是位有執照的飛行駕駛，而且還有一架私人飛機。'},
+      {en:"I can drive a car and pilot a plane.", zh:'我會開車也會開飛機。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'11', word:'slave', pos:'n., vi.', meaning:'奴隸；像奴隸般地工作', note:'n.與介詞 to 並用',
+    sentences:[
+      {en:"Peter is a slave to his work and often works himself to exhaustion.", zh:'彼得是工作的奴隸，常工作到筋疲力盡。'},
+      {en:"Henry slaved away at the company for fifteen years, and then he got laid off.", zh:'亨利為公司賣命工作十五年後被裁員了。'},
+      {en:"I feel sorry for John because he is a slave to money.", zh:'我為約翰感到難過，因為他是金錢的奴隸。'},
+      {en:"I feel sorry for John because he is enslaved by money.", zh:'我為約翰感到難過，因為他是金錢的奴隸。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'12', word:'advise', pos:'vt.', meaning:'勸告，忠告；通知', note:'',
+    sentences:[
+      {en:"The doctor advised Grandfather not to climb too many stairs.", zh:'醫生建議爺爺別爬太多樓梯。'},
+      {en:"Travelers have been advised that they should avoid going out alone after dark.", zh:'遊客們已被告知天黑後要避免單獨外出。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:2, id:'12.1', word:'adviser', pos:'n.', meaning:'顧問', note:'= advisor',
+    sentences:[
+      {en:"I think you need a financial adviser to help you plan your investments.", zh:'我想你需要一位理財顧問來幫助你規劃你的投資。'}
+    ] },
+
+  // ===== Part 3 =====
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'13', word:'stare', pos:'vi., n.', meaning:'凝視；瞪視', note:'vi.與介詞 at 並用',
+    sentences:[
+      {en:"Why are you staring at me, John? Is there something wrong with me?", zh:'約翰，你為什麼這樣瞪著我？我有什麼不對勁嗎？'},
+      {en:"Alice gave Ted a long stare but didn't say anything.", zh:'艾莉絲一直凝視著泰德卻一語不發。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'13.1', word:'glance', pos:'vi., n.', meaning:'瞥視；一瞥', note:'',
+    sentences:[
+      {en:"I glanced at the girl one more time before I left.", zh:'我對那個女孩子匆匆再看了一眼便離開了。'},
+      {en:"At first glance, the painting was average. But the more I looked at it, the more I liked it.", zh:'乍看之下，這幅畫沒啥了不起。不過，我越看則越愛。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'14', word:'sum', pos:'n., vt.', meaning:'合計，總額；數目；金額；概述', note:'',
+    sentences:[
+      {en:"54 is the sum of 17, 18 and 19.", zh:'17、18 和 19 合計是 54。'},
+      {en:"Harry has a large sum of money in a bank account in Switzerland.", zh:'哈利在瑞士某家銀行戶頭內有大筆存款。'},
+      {en:"To sum up, the plan to raise taxes is a terrible idea.", zh:'總之，這項增稅計畫是個很差勁的想法。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'14.1', word:'summary', pos:'n.', meaning:'概述，概要', note:'',
+    sentences:[
+      {en:"Please give me a summary of what was decided at the meeting.", zh:'請就會議的決議事項給我一個概述。'},
+      {en:"In summary, the meeting last Friday was quite fruitful.", zh:'概括來說，上星期五的會議成果豐碩。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'15', word:'necessity', pos:'n.', meaning:'需要；必需品', note:'不可數指需要；可數指必需品',
+    sentences:[
+      {en:"Necessity is the mother of invention.", zh:'需要為發明之母。——諺語'},
+      {en:"Water is a basic necessity of life.", zh:'水是生命中不可或缺的基本要素。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'16', word:'sensible', pos:'a.', meaning:'明智的；顯著的', note:'',
+    sentences:[
+      {en:"That's a sensible approach to the problem.", zh:'那是一個解決問題的明智辦法。'},
+      {en:"There's a sensible difference between red and blue.", zh:'紅色和藍色之間有顯著的差別。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'17', word:'sufficient', pos:'a.', meaning:'充分的，足夠的', note:'',
+    sentences:[
+      {en:"Those poor children do not have sufficient food for the winter.", zh:'那些窮孩子沒有足夠的食物過冬。'},
+      {en:"This sum will be sufficient for our living expenses.", zh:'這筆金額將足夠應付我們的生活開銷。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'18', word:'crispy', pos:'a.', meaning:'脆的', note:'',
+    sentences:[
+      {en:"These crackers are crispy and tasty.", zh:'這些餅乾又脆又好吃。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:3, id:'19', word:'almond', pos:'n.', meaning:'杏仁', note:'',
+    sentences:[
+      {en:"Almond eyes are not unique to Asians.", zh:'杏眼並非亞洲人所獨有的特徵。'},
+      {en:"Eating a handful of almonds or walnuts can help control cholesterol levels.", zh:'吃點杏仁或核桃有助於控制膽固醇指數。'}
+    ] },
+
+  // ===== Part 4 =====
+  { source:'VOC', book:'B1', unit:'U7', part:4, id:'20', word:'crop', pos:'n., vt.', meaning:'農作物；（牛羊等）吃（草）；把（頭髮等）剪短', note:'',
+    sentences:[
+      {en:"Our crops are doing poorly because of the drought.", zh:'因為乾旱，我們的農產欠收。'},
+      {en:"A flock of sheep are cropping grass on the prairie.", zh:'有一群羊在草原上吃草。'},
+      {en:"Julie had her hair closely cropped yesterday.", zh:'茱莉昨天去剪了超級短髮。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:4, id:'21', word:'lettuce', pos:'n.', meaning:'生菜，萵苣', note:'',
+    sentences:[
+      {en:"Have some lettuce. It's good for your health.", zh:'吃點萵苣吧。對你的健康會有益的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:4, id:'21.1', word:'onion', pos:'n.', meaning:'洋蔥', note:'',
+    sentences:[
+      {en:"Do you know how to peel onions without shedding tears?", zh:'你知道怎麼剝洋蔥而不流眼淚嗎？'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:4, id:'21.2', word:'spinach', pos:'n.', meaning:'菠菜', note:'',
+    sentences:[
+      {en:"Popeye eats spinach every day to gain strength.", zh:'大力水手派生每天吃菠菜獲取體力。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:4, id:'22', word:'bamboo', pos:'n.', meaning:'竹子', note:'',
+    sentences:[
+      {en:"Pandas only eat a certain kind of bamboo.", zh:'貓熊隻吃某一種的竹子。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:4, id:'23', word:'widen', pos:'vt., vi.', meaning:'使變寬；變寬', note:'',
+    sentences:[
+      {en:"The construction crew spent several days widening the streets in town.", zh:'建築工人花了好幾天的時間拓寬鎮上的馬路。'},
+      {en:"The gap between rich and poor in this country has widened.", zh:'該國的貧富差距已變大了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:4, id:'24', word:'weaken', pos:'vt., vi.', meaning:'減弱，削弱', note:'',
+    sentences:[
+      {en:"Tina's absence has weakened my interest in attending the party tonight.", zh:'由於蒂娜不克出席，使得我對今晚的派對興致缺缺。'},
+      {en:"My grandfather's ability to beat anyone at chess has weakened over the last few years.", zh:'過去幾年來，爺爺打遍天下無敵手的棋藝漸趨退步。'}
+    ] },
+
+  // ===== Part 5 =====
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'25', word:'tent', pos:'n.', meaning:'帳篷', note:'',
+    sentences:[
+      {en:"We pitched our tent by the lake.", zh:'我們在湖邊搭帳篷。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'26', word:'purse', pos:'n.', meaning:'女用手提包；女用小錢包', note:'= handbag（手提包之意）',
+    sentences:[
+      {en:"Where did you get this purse? It looks absolutely fantastic.", zh:'妳這個包包是哪兒買的？看起來棒透了。'},
+      {en:"I left my purse in the taxi.", zh:'我把小錢包掉在計程車上了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'27', word:'observe', pos:'vt.', meaning:'觀察；遵守', note:'',
+    sentences:[
+      {en:"Have you observed any changes in Sam's behavior?", zh:'你觀察到山姆的行為有所改變嗎？'},
+      {en:"A good citizen should always observe the law.", zh:'好國民應始終守法。'},
+      {en:"A good citizen should always abide by the law.", zh:'好國民應始終守法。'},
+      {en:"A good citizen should always comply with the law.", zh:'好國民應始終守法。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'28', word:'junior', pos:'n., a.', meaning:'大三學生；年少者；資淺的', note:'',
+    sentences:[
+      {en:"All juniors have to take two science classes.", zh:'所有的大三學生都要上兩門理化課。'},
+      {en:"In my company, my wife is junior to me, but back home, she is my boss.", zh:'我太太在我公司的職位比我低，可是回家後，她卻是我的老闆。'},
+      {en:"Junior officers must salute senior officers when meeting or passing.", zh:'低階軍官在見到高階軍官或擦肩而過時，必須向他們敬禮。'},
+      {en:"Peter is my junior by five years.", zh:'彼得比我小 5 歲。'},
+      {en:"Peter is younger than I by five years.", zh:'彼得比我小 5 歲。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'28.1', word:'senior', pos:'n., a.', meaning:'大四學生；年長者；地位較高的', note:'',
+    sentences:[
+      {en:"During my first year in college, I dated a senior.", zh:'我大一的時候和一個大四學生約會。'},
+      {en:"Jane is my senior by five years.", zh:'珍比我大 5 歲。'},
+      {en:"Jane is older than I by five years.", zh:'珍比我大 5 歲。'},
+      {en:"Patty is a senior sales manager at Asia Motors.", zh:'派蒂是亞洲汽車的資深業務經理。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'29', word:'marker', pos:'n.', meaning:'奇異筆／馬克筆；標誌', note:'',
+    sentences:[
+      {en:"Dennis soiled the wall with a marker.", zh:'阿丹用奇異筆把牆弄髒。'},
+      {en:"Greg left a marker on the path so he would know the way back to the campsite.", zh:'葛瑞格在路上留下標誌，這樣他才認得出回營地的路。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'30', word:'pile', pos:'n., vi., vt.', meaning:'一堆；堆積；累積，堆積', note:'vi.與介詞 up 並用',
+    sentences:[
+      {en:"There is a pile of books in Lucy's study.", zh:'露西的書房有一堆書。'},
+      {en:"Peter had been on sick leave for two days, and his work at the office really piled up.", zh:'彼得請了兩天病假，結果辦公室的工作堆積如山。'},
+      {en:"Paul's desk is piled high with books.", zh:'保羅的桌子堆滿了書。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U7', part:5, id:'31', word:'steal', pos:'vt.', meaning:'偷竊', note:'',
+    sentences:[
+      {en:"The cop caught the thief stealing a car.", zh:'警察當場抓到小偷在偷車。'}
+    ] }
+];
+  
+const allWords = [].concat(voc_B1_U1, voc_B1_U2, voc_B1_U3, voc_B1_U4, voc_B1_U5, voc_B1_U6, voc_B1_U7);
 /* ============================================================
    小工具
    ============================================================ */
