@@ -2221,8 +2221,482 @@ const voc_B1_U7 = [
       {en:"The cop caught the thief stealing a car.", zh:'警察當場抓到小偷在偷車。'}
     ] }
 ];
-  
-const allWords = [].concat(voc_B1_U1, voc_B1_U2, voc_B1_U3, voc_B1_U4, voc_B1_U5, voc_B1_U6, voc_B1_U7);
+const voc_B1_U8 = [
+  // ===== Part 1 (9項) =====
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'1', word:'protection', pos:'n.', meaning:'保護', note:'',
+    sentences:[
+      {en:"Jack was wearing a heavy coat as protection against the cold.", zh:'傑克穿著一件厚外套禦寒。'},
+      {en:"These kittens ran to their mother for protection.", zh:'這些小貓跑去找母貓尋求保護。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'2', word:'stormy', pos:'a.', meaning:'暴風雨的；激烈的', note:'',
+    sentences:[
+      {en:"We had a blackout during the stormy night.", zh:'暴風雨夜晚我們停電了。'},
+      {en:"After a stormy argument, we finally reached an agreement.", zh:'經過一番激烈的爭論後我們終於達成了協議。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'3', word:'pure', pos:'a.', meaning:'純粹的；純潔的', note:'',
+    sentences:[
+      {en:"The pajamas are made of pure cotton.", zh:'這件睡衣是純棉製的。'},
+      {en:"The water is clean and pure. It has been tested over and over again.", zh:'這水清潔而純淨，它是經過一再測試的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'4', word:'native', pos:'a., n.', meaning:'祖國的；本地的，土生的；本地人；土著', note:'',
+    sentences:[
+      {en:"Chinese is Ken's native language, but he is more fluent in Spanish.", zh:'中文是肯的母語，但是他的西班牙文比較流利。'},
+      {en:"Kiwi birds are native to New Zealand.", zh:'鷸鴕是紐西蘭的原產。'},
+      {en:"The natives were required to relocate to a safer area.", zh:'當地的人被要求遷居到一處更安全的地區。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'5', word:'cattle', pos:'n.', meaning:'牛群', note:'',
+    sentences:[
+      {en:"In New Zealand, there are more than 13,000 sheep and cattle farms.", zh:'紐西蘭有 1 萬 3 千多座飼養綿羊和牛群的農場。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'5.1', word:'bull', pos:'n.', meaning:'公牛', note:'',
+    sentences:[
+      {en:"During the festival, many bulls will run through the narrow streets in the city.", zh:'在慶典期間，許多公牛會狂奔於該城市狹窄的街道。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'5.2', word:'buffalo', pos:'n.', meaning:'野牛；水牛', note:'',
+    sentences:[
+      {en:"The American buffalo is one of the largest land animals in North America.", zh:'美洲野牛是北美陸地上體型最大的動物之一。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'6', word:'lord', pos:'n.', meaning:'貴族；君主；（大寫）上帝', note:'',
+    sentences:[
+      {en:"A knight should pledge loyalty to his lord.", zh:'騎士應該向他的君主效忠。'},
+      {en:"If you feel lost, let the Lord guide you.", zh:'如果你很茫然，就讓上帝指示你方向。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:1, id:'7', word:'shadow', pos:'n., vt.', meaning:'陰影；以影籠罩', note:'',
+    sentences:[
+      {en:"Winnie sat in the shadows.", zh:'溫妮坐在暗處。'},
+      {en:"The cottage was shadowed by palm trees.", zh:'這間小屋被棕櫚樹的陰影遮蔽著。'}
+    ] },
+
+  // ===== Part 2 (9項) =====
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'7.1', word:'shade', pos:'n.', meaning:'陰涼處；（樹）蔭', note:'',
+    sentences:[
+      {en:"The tree cast a shadow on the wall.", zh:'這棵樹投影在牆上。'},
+      {en:"Not wanting to live in his father's shadow, Babe Ruth's son quit baseball.", zh:'貝比・魯斯的兒子不願活在父親的陰影下，便不再打棒球。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'8', word:'advertise', pos:'vt., vi.', meaning:'將……登廣告；登廣告', note:'',
+    sentences:[
+      {en:"You should advertise your car in the local newspaper if you want to sell it quickly.", zh:'你如果想快點把車賣掉，應該在地報紙登廣告。'},
+      {en:"On the wall there was a small poster advertising a new magazine.", zh:'牆上有張替新雜誌打廣告的小海報。'},
+      {en:"They advertised for someone to look after the garden.", zh:'他們登廣告徵人照顧花園。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'8.1', word:'advertiser', pos:'n.', meaning:'刊登廣告者；廣告商', note:'',
+    sentences:[
+      {en:"Super Bowl advertisers have to pay lots of money for their commercial time.", zh:'超級盃的廣告商要花很多錢來支付他們打廣告的時間。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'8.2', word:'advertisement', pos:'n.', meaning:'廣告', note:'',
+    sentences:[
+      {en:"No one replied to the advertisement Mary put in the paper.", zh:'瑪莉在報上登的廣告沒有回音。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'9', word:'liberty', pos:'n.', meaning:'自由', note:'',
+    sentences:[
+      {en:"Give me liberty, or give me death!", zh:'不自由，毋寧死！——諺語'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'10', word:'confuse', pos:'vt.', meaning:'使困惑；混淆，弄錯', note:'',
+    sentences:[
+      {en:"Please slow down—you are confusing me.", zh:'請說慢一點——你把我搞糊塗了。'},
+      {en:"Our teacher sometimes confuses John with Lee.", zh:'我們老師有時會把約翰當作是李。'},
+      {en:"Sophie saw the sign and got confused.", zh:'蘇菲看到這標示就搞不清楚了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'11', word:'suspect', pos:'vt., n., a.', meaning:'懷疑；猜想；嫌疑犯；可疑的', note:'',
+    sentences:[
+      {en:"The police suspected Bob of the crime.", zh:'警方懷疑鮑伯犯了這個罪行。'},
+      {en:"Ted was suspected of stealing Mary's watch.", zh:'泰德涉嫌偷了瑪莉的手錶。'},
+      {en:"Robert was one of the main suspects in the murder case.", zh:'羅伯特是這宗謀殺案的主嫌之一。'},
+      {en:"A suspect package was delivered to the government minister's office.", zh:'一件可疑的包裹被送到部長辦公室。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'11.1', word:'suspicion', pos:'n.', meaning:'嫌疑；疑心', note:'',
+    sentences:[
+      {en:"Daniel is under suspicion by the police for robbery.", zh:'警方懷疑丹尼爾犯下搶案。'},
+      {en:"I have a suspicion that Ben is somewhere around here.", zh:'我懷疑班就在這附近的某個地方。'},
+      {en:"I suspect that Ben is somewhere around here.", zh:'我懷疑班就在這附近的某個地方。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:2, id:'12', word:'beneath', pos:'prep., adv.', meaning:'在……正下方', note:'',
+    sentences:[
+      {en:"The money was hidden beneath a stack of newspapers.", zh:'錢藏在一堆報紙下面。'},
+      {en:"Beneath his inconspicuous appearance, Tom is a talented pianist.", zh:'在不起眼的外表下，湯姆其實是個很有才氣的鋼琴家。'}
+    ] },
+
+  // ===== Part 3 (9項) =====
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'13', word:'onto', pos:'prep.', meaning:'到／向……之上', note:'',
+    sentences:[
+      {en:"The chef squeezed some lemon juice onto the fish to bring out its flavor.", zh:'主廚把檸檬汁擠出滴到魚上頭，以帶出魚的風味。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'14', word:'comfort', pos:'n., vt.', meaning:'舒適；安慰', note:'',
+    sentences:[
+      {en:"Despite all the material comforts, the rich man isn't happy.", zh:'這個富翁儘管有種種的物質享受，卻仍不快樂。'},
+      {en:"I find comfort in listening to music whenever I feel troubled.", zh:'每當我心煩時就會在聽音樂中找到慰藉。'},
+      {en:"We comforted the woman when her child was killed in a car accident.", zh:'這位的婦人的孩子在車禍中喪生，我們便安慰她。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'15', word:'comparison', pos:'n.', meaning:'比較；相比', note:'',
+    sentences:[
+      {en:"A comparison of the two teams indicates that the game should be close.", zh:'兩隊實力相較，可預見那場比賽會勝負難分。'},
+      {en:"In comparison with my old one, my new motorcycle is really fast.", zh:'與我那臺舊摩托車比起來，新的跑得真是快。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'16', word:'chest', pos:'n.', meaning:'胸', note:'',
+    sentences:[
+      {en:"Don't keep the secret to yourself. You should tell me and get it off your chest.", zh:'別把秘密藏在自己心裡，你應告訴我，心中一吐為快。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'16.1', word:'breast', pos:'n.', meaning:'胸部；乳房', note:'',
+    sentences:[
+      {en:"Breast cancer can be cured if detected early.", zh:'乳癌若能及早診斷出來是可以治癒的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'17', word:'scale', pos:'n.', meaning:'規模；等級；磅秤', note:'',
+    sentences:[
+      {en:"Pollution has caused changes to weather patterns on a large scale.", zh:'污染已經大幅造成天氣型態的改變。'},
+      {en:"We should start out testing on a small scale before we move on to a larger one.", zh:'我們應該先做小規模的測試，再做較大型的實驗。'},
+      {en:"Nuclear weapons cause destruction on a massive scale.", zh:'核武造成大規模的破壞。'},
+      {en:"The scale determined the weight of the package.", zh:'磅秤測出包裹的重量。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'18', word:'conscious', pos:'a.', meaning:'有所察覺的；清醒的', note:'',
+    sentences:[
+      {en:"Conscious of the dangers of smoking, Benny decided to give up the bad habit.", zh:'班尼察覺到抽菸的危險，決定要戒掉這個壞習慣。'},
+      {en:"The soldier was wounded but still conscious.", zh:'這士兵受了傷，但仍然清醒。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'18.1', word:'consciousness', pos:'n.', meaning:'知覺；了解，知道', note:'',
+    sentences:[
+      {en:"The patient regained consciousness shortly after treatment.", zh:'這個病人經過治療後不久就恢復了意識。'},
+      {en:"My consciousness of their suffering urged me to offer help.", zh:'我知道他們的痛苦遭遇後，就有股伸出援手的衝動。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:3, id:'19', word:'troop', pos:'n.', meaning:'軍隊', note:'恆用複數',
+    sentences:[
+      {en:"The commander gave his troops a pep talk to boost their morale.", zh:'指揮官對他的部隊做精神喊話以提振他們的士氣。'}
+    ] },
+
+  // ===== Part 4 (9項) =====
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'20', word:'cricket', pos:'n.', meaning:'蟋蟀；板球（運動）', note:'',
+    sentences:[
+      {en:"Do you hear a cricket? It's keeping me awake.", zh:'你有沒有聽到蟋蟀在叫？它讓我睡不著。'},
+      {en:"Let's play cricket this afternoon at the park.", zh:'咱們今天下午去公園玩板球吧。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'20.1', word:'grasshopper', pos:'n.', meaning:'蚱蜢', note:'',
+    sentences:[
+      {en:"Did you know that a grasshopper can leap 20 times the length of its own body?", zh:'你知道蚱蜢一跳可跳過多達自身長 20 倍的高度嗎？'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'21', word:'fairly', pos:'adv.', meaning:'相當地，蠻', note:'',
+    sentences:[
+      {en:"It's fairly difficult to tell the difference between Sandy and her twin sister.", zh:'要區分珊蒂跟她的雙胞胎姊妹相當困難。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'22', word:'substance', pos:'n.', meaning:'物質', note:'',
+    sentences:[
+      {en:"This colorless, odorless substance is actually quite toxic.", zh:'這種無色無味的物質事實上有劇毒。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'23', word:'pour', pos:'vt., vi.', meaning:'傾注；下大雨', note:'',
+    sentences:[
+      {en:"Please pour water into the jug and then place it on the table.", zh:'請把水倒到罐子裡，然後把罐子放在桌上。'},
+      {en:"It's pouring now. You may as well stay here for the night.", zh:'現在正在下大雨，你不妨留下來過夜。'},
+      {en:"It's raining hard now. You may as well stay here for the night.", zh:'現在正在下大雨，你不妨留下來過夜。'},
+      {en:"It's raining cats and dogs. You may as well stay here for the night.", zh:'現在正在下大雨，你不妨留下來過夜。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'24', word:'promote', pos:'vt.', meaning:'促進，提倡；升遷', note:'',
+    sentences:[
+      {en:"Our company promotes education by offering scholarships to the poor.", zh:'本公司提供窮困的人獎學金，以提倡教育。'},
+      {en:"Peter was promoted to general manager last week.", zh:'彼得上星期晉升總經理一職。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'25', word:'pad', pos:'n., vt.', meaning:'襯墊；（用柔軟物質）填塞', note:'',
+    sentences:[
+      {en:"There is a pad on every corner of the table so that you won't get hurt if you bump into one.", zh:'桌角都有安全護墊，所以如果你撞到其中之一就不會受傷。'},
+      {en:"The pillow is padded with duck feathers to make it extra soft.", zh:'這枕頭使用鴨毛填塞來增加柔軟度。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'26', word:'cinema', pos:'n.', meaning:'電影院', note:'',
+    sentences:[
+      {en:"They are building a cinema in our town.", zh:'我們鎮上正在蓋一座電影院。'},
+      {en:"I've been working too long. I need to go to the cinema tonight for a change.", zh:'我工作太久了。今晚我得看場電影調適一下。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:4, id:'27', word:'clay', pos:'n.', meaning:'黏土', note:'',
+    sentences:[
+      {en:"My daughter made me a flower with clay.", zh:'我的女兒用黏土做了一朵花給我。'}
+    ] },
+
+  // ===== Part 5 (9項) =====
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'28', word:'fence', pos:'vt., n.', meaning:'圍起來；籬笆，柵欄', note:'',
+    sentences:[
+      {en:"The farmer fenced in all his cattle.", zh:'那個農夫把他的牛都圍了起來。'},
+      {en:"I want to live in a house with white fences.", zh:'我想要住在有白色籬笆的房子裡。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'29', word:'garage', pos:'n.', meaning:'車庫；汽車修理廠', note:'',
+    sentences:[
+      {en:"My garage can only accommodate one car.", zh:'我的車庫只容得下一輛車。'},
+      {en:"I have to ride my motorcycle because my car is in the garage.", zh:'我的車在修理廠，所以我必須騎摩托車。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'30', word:'fuel', pos:'n., vt., vi.', meaning:'燃料；填加燃料；激起（憤怒等）', note:'',
+    sentences:[
+      {en:"Your criticism will only add fuel to the fire.", zh:'你的批評只會火上加油而已。'},
+      {en:"We're running out of gas, so we have to fuel up at the next gas station.", zh:'我們汽油快用完了，因此我們得在下個加油站加油了。'},
+      {en:"Stop talking! Your remarks will only fuel Paul's anger.", zh:'別再說了！你的話隻會激起保羅的憤怒。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'31', word:'decorate', pos:'vt.', meaning:'裝飾', note:'',
+    sentences:[
+      {en:"Ken decorated his bedroom with his favorite band's posters.", zh:'肯用他最喜歡的樂團的海報佈置他的房間。'},
+      {en:"The small table was decorated with roses.", zh:'這張小桌子以玫瑰花裝飾著。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'32', word:'decrease', pos:'vt., vi., n.', meaning:'減少；下降', note:'',
+    sentences:[
+      {en:"Mary's fear decreased as she calmed down.", zh:'瑪莉鎮定下來時，就不那麼害怕了。'},
+      {en:"The company has decreased the number of its staff members because of the recession.", zh:'因為經濟不景氣，公司已裁減了員工人數。'},
+      {en:"The birthrate in Taiwan has been on the decrease in recent years.", zh:'近年來臺灣的出生率都在下降。'},
+      {en:"There has been a decrease in the unemployment rate ever since the new policy was carried out.", zh:'自從新政策開始執行後，失業率已經降低了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'33', word:'emotional', pos:'a.', meaning:'感情激動的；情緒的', note:'',
+    sentences:[
+      {en:"My mom became emotional upon reading the card I sent her.", zh:'我媽看了我寄給她的卡片深受感動。'},
+      {en:"A person with a high EQ usually gets along with other people well.", zh:'情商高的人通常都能和別人處得很好。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'34', word:'lick', pos:'vt., n.', meaning:'舔', note:'',
+    sentences:[
+      {en:"My dog jumped onto the sofa and licked my face.", zh:'我的狗跳到沙發上並舔了我的臉。'},
+      {en:"Sammy wants to have a lick of my ice cream.", zh:'珊米想要舔一口我的冰淇淋。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'35', word:'nest', pos:'n.', meaning:'巢，窩', note:'',
+    sentences:[
+      {en:"There's a bird's nest in the tree.", zh:'樹上有個鳥巢。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U8', part:5, id:'36', word:'element', pos:'n.', meaning:'要素', note:'',
+    sentences:[
+      {en:"The book has all the elements of a good suspense novel.", zh:'這本書具備所有懸疑小說的成功要素。'}
+    ] }
+]; 
+
+const voc_B1_U9 = [
+  // ===== Part 1 (10項) =====
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'1', word:'bang', pos:'n., vt., adv.', meaning:'砰的一聲；猛烈撞擊；準確地', note:'adv.為英式用法',
+    sentences:[
+      {en:"The police officer heard a loud bang and quickly grabbed his gun.", zh:'這名警官聽到一聲砰然巨響，便迅速掏槍。'},
+      {en:"The angry man shut the door with a bang.", zh:'這名生氣的男子砰地一聲把門關上。'},
+      {en:"The meeting went off with a bang.", zh:'會議開得很成功。'},
+      {en:"The little boy cried when he banged his head against the table.", zh:'那個小男孩頭撞到桌子哭了起來。'},
+      {en:"The little boy cried when he bumped his head against the table.", zh:'那個小男孩頭撞到桌子哭了起來。'},
+      {en:"Kelly always arrives at work bang on time.", zh:'凱莉總是準時上班。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'2', word:'quote', pos:'vt., n.', meaning:'引用；引文', note:'',
+    sentences:[
+      {en:"The newspaper quoted the mayor as saying, \"Two more parks will be built in this city next year.\"", zh:'該報引用市長的話稱：「明年本市將再興建兩座公園。」'},
+      {en:"I like this famous quote, \"As you sow, so shall you reap.\"", zh:'我喜歡這句名言：「一分耕耘，一分收穫。」'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'3', word:'raw', pos:'a.', meaning:'生的；未加工的', note:'',
+    sentences:[
+      {en:"Some vegetables can be eaten raw.", zh:'有些蔬菜可以生吃。'},
+      {en:"Indonesia used to export a lot of raw materials to Japan, including rubber and timber.", zh:'印尼過去曾輸出許多原料到日本，包括橡膠及木材。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'4', word:'freeze', pos:'vi., n.', meaning:'結冰，凝固；（暫時）停止', note:'',
+    sentences:[
+      {en:"The water froze on the road, making it dangerous to drive.", zh:'水在馬路上結成冰，因此在上面開車很危險。'},
+      {en:"The lake freezes in winter.", zh:'這座湖在冬天都會結冰。'},
+      {en:"It was so cold on the hilltop that I nearly froze to death.", zh:'山頂好冷，我幾乎快凍死了。'},
+      {en:"The struggling company is considering a pay freeze for its staff.", zh:'那間陷入財務困難的公司正考慮暫時停發員工薪水。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'4.1', word:'freezer', pos:'n.', meaning:'冷凍庫；冷凍櫃', note:'',
+    sentences:[
+      {en:"Put the beef in the freezer.", zh:'把牛肉存放在冷凍庫內。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'4.2', word:'freezing', pos:'a.', meaning:'冷到快要結冰似的；極冷的', note:'',
+    sentences:[
+      {en:"The freezing weather during the holiday kept most people indoors.", zh:'假日時天寒地凍，大部分的人只好待在家裡。'},
+      {en:"It's freezing cold today.", zh:'今天實在冷極了。'},
+      {en:"Water becomes ice when the temperature drops below the freezing point.", zh:'溫度降至冰點以下時，水就會結冰。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'4.3', word:'frozen', pos:'a.', meaning:'冷凍的', note:'',
+    sentences:[
+      {en:"Mom took the frozen fish from the freezer, so it would defrost.", zh:'媽媽把冷凍魚肉從冰箱拿出來解凍。'},
+      {en:"The girl was frozen with fear at the sight of the bandit.", zh:'這女孩子看到匪徒時嚇得動彈不得。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:1, id:'5', word:'request', pos:'n., vt.', meaning:'請求；要求', note:'',
+    sentences:[
+      {en:"My boss thought my report was too lengthy, so I had to cut it short at his request.", zh:'老闆認為我的報告過於冗長，所以我只好應他要求把報告裁短一些。'},
+      {en:"For those who are interested in this investment, we have a lot of booklets on request.", zh:'對於本投資有興趣的人，我們準備了許多小冊子備索。'},
+      {en:"May we request the honor of your presence at our gathering?", zh:'我們可否有此榮幸邀請您出席我們的聚會？'},
+      {en:"Since the holiday is drawing near, I request that the meeting (should) be put off until sometime next month.", zh:'由於假期在即，我要求會議延到下個月其他時間另行召開。'}
+    ] },
+
+  // ===== Part 2 (9項) =====
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'6', word:'mental', pos:'a.', meaning:'心理的', note:'',
+    sentences:[
+      {en:"Lucy is said to have some mental problems. She is a little bit weird.", zh:'據說露西有些精神方面的問題。她有點怪怪的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'7', word:'victim', pos:'n.', meaning:'受害者', note:'',
+    sentences:[
+      {en:"Many teenagers fall victim to drugs.", zh:'許多青少年成了毒品的受害者。'},
+      {en:"I hope there are no victims of racial discrimination in our company.", zh:'我希望我們公司沒有任何種族歧視的受害者。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'8', word:'republic', pos:'n.', meaning:'共和國', note:'',
+    sentences:[
+      {en:"ROK stands for the Republic of Korea, which is commonly known as South Korea.", zh:'ROK 是『大韓民國』的縮寫，也就是我們一般所知的『南韓』。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'9', word:'opposite', pos:'prep., a., n., adv.', meaning:'在……的對面；相對的；相反的情形；在對面', note:'',
+    sentences:[
+      {en:"I live next to the bank opposite the train station.", zh:'我住在火車站對面的銀行旁邊。'},
+      {en:"Everyone says that Jane is a nice girl, but I hold the opposite view.", zh:'每個人都說珍是好女孩，不過我卻持相反的看法。'},
+      {en:"I didn't mean to hurt you — quite the opposite. I was trying to help you.", zh:'我並非故意要傷害你——事實正好相反。我一直想幫你。'},
+      {en:"Ted finally told the woman sitting opposite to put out her cigarette.", zh:'泰德最後要坐在對面的女子把菸熄掉。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'10', word:'superior', pos:'a., n.', meaning:'較優的；上等的；上級長官', note:'',
+    sentences:[
+      {en:"This car is far superior to that one in terms of comfort.", zh:'就舒適性而言，這輛車要比那一輛棒多了。'},
+      {en:"Judy's winery stored a wide range of superior wines.", zh:'茱蒂的釀酒廠收藏了許多上等好酒。'},
+      {en:"Larry was fired for being rude to his superiors.", zh:'賴瑞因為對長官無禮而被開除。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'10.1', word:'inferior', pos:'a., n.', meaning:'較差的；下屬', note:'',
+    sentences:[
+      {en:"Confucius once said, \"Do not make friends with those who are inferior to us.\"", zh:'孔子曾說：『無友不如己者。』'},
+      {en:"Kent is the kind of person who is nice to all of his inferiors.", zh:'肯特是一個對所有下屬都好的人。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'11', word:'emergency', pos:'n.', meaning:'緊急事件；緊急狀況', note:'',
+    sentences:[
+      {en:"In Taiwan, in case of emergency, please dial 119.", zh:'在臺灣，如遇緊急狀況，請撥打 119。'},
+      {en:"Because of the bad weather, the pilot had to make an emergency landing.", zh:'由於天候不佳，飛行員不得不緊急降落。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'12', word:'creative', pos:'a.', meaning:'有創造力的', note:'',
+    sentences:[
+      {en:"A creative advertisement requires intelligence and imagination.", zh:'有創意的廣告需要智力與想像力。'},
+      {en:"Mr. Brown is a creative and prolific writer.", zh:'布朗先生是個有創意且多產的作家。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'12.1', word:'creature', pos:'n.', meaning:'生物', note:'',
+    sentences:[
+      {en:"Humans are creatures of habit.", zh:'人類是慣性動物。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:2, id:'12.2', word:'creator', pos:'n.', meaning:'創造者', note:'',
+    sentences:[
+      {en:"Walt Disney was the creator of Mickey Mouse.", zh:'華德・迪士尼是創造米老鼠的人。'}
+    ] },
+
+  // ===== Part 3 (9項) =====
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'13', word:'media', pos:'n.', meaning:'媒體', note:'複數形',
+    sentences:[
+      {en:"The political party accused the media of being biased.", zh:'該政黨指控媒體是偏頗的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'14', word:'extreme', pos:'a., n.', meaning:'極度的；極端', note:'',
+    sentences:[
+      {en:"You should handle the problem with extreme caution.", zh:'你應極為謹慎地來處理這個問題。'},
+      {en:"Work and play are both important. But in either case, do not go to extremes.", zh:'工作和娛樂都很重要，但兩樣都不能過頭。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'14.1', word:'extremely', pos:'adv.', meaning:'極端地；非常地', note:'',
+    sentences:[
+      {en:"I was extremely happy upon hearing the good news.", zh:'我一聽到這個好消息便很高興得不得了。'},
+      {en:"Street violence is an extremely common problem in big cities.", zh:'在各大城市，街頭暴力是非常普遍的問題。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'15', word:'plenty', pos:'pron., n., adv.', meaning:'充分；富足；非常地', note:'與介詞 of 並用',
+    sentences:[
+      {en:"There are plenty of activities to do on the beach during the summertime.", zh:'夏天在海灘可做很多的活動。'},
+      {en:"In times of plenty, you should remember to save for a rainy day.", zh:'你應該在富足之時未雨綢繆。'},
+      {en:"There are plenty more fish in the sea. You can find someone better than your ex-boyfriend.", zh:'天涯何處無芳草。你會找到比你前男友更好的人。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'16', word:'wagon', pos:'n.', meaning:'運貨馬車', note:'',
+    sentences:[
+      {en:"Tom plans to journey across America in a covered wagon.", zh:'湯姆計劃要駕著遮篷馬車周遊美國。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'16.1', word:'van', pos:'n.', meaning:'廂型車；麵包車', note:'',
+    sentences:[
+      {en:"I'm moving to my new apartment this Sunday. Would you lend me your van?", zh:'我要在這星期天搬到新公寓。你的廂型車可以借我嗎？'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'17', word:'dare', pos:'aux., vi., vt.', meaning:'膽敢；向……挑戰', note:'',
+    sentences:[
+      {en:"I dare not tell my parents that I'm getting married soon.", zh:'我不敢跟我爸媽說我快結婚了。'},
+      {en:"Though Jerry wants to ask Holly to the prom, he doesn't dare.", zh:'雖然傑瑞想邀荷莉參加舞會，他卻不敢行動。'},
+      {en:"I dare you to swim across the river.", zh:'我向你挑戰，諒你不敢游過這條河。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'18', word:'scholar', pos:'n.', meaning:'學者', note:'',
+    sentences:[
+      {en:"The author of this book is also a famous scholar in his country.", zh:'在他的國家裡，本書的作者同時也是一位知名的學者。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'18.1', word:'scholarship', pos:'n.', meaning:'獎學金', note:'',
+    sentences:[
+      {en:"The intelligent young girl is studying at Harvard on a government scholarship.", zh:'那位聰明的女孩正在哈佛公費留學。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:3, id:'19', word:'risk', pos:'n., vt.', meaning:'風險；冒……的風險', note:'',
+    sentences:[
+      {en:"Parents shouldn't run the risk of leaving their children alone.", zh:'父母不應冒讓小孩獨處的風險。'},
+      {en:"The soldier risked his life trying to save his friend.", zh:'那位士兵冒著生命危險，企圖拯救他的朋友。'},
+      {en:"Jane's father warns her not to risk traveling alone.", zh:'珍的爸爸警告她不要冒險獨自去旅行。'}
+    ] },
+
+  // ===== Part 4 (9項) =====
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'20', word:'loose', pos:'a.', meaning:'寬鬆的；鬆脫的；不受控制的', note:'',
+    sentences:[
+      {en:"My brother likes to wear loose clothes and pants.", zh:'我弟弟喜歡穿寬鬆的衣褲。'},
+      {en:"The air crash took place because a screw on the plane's wing came loose.", zh:'空難發生的原因是機翼上的一支螺絲鬆脫了。'},
+      {en:"Minnie's dog is running loose in the park.", zh:'米妮的狗在公園裡四處亂跑。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'21', word:'persuade', pos:'vt.', meaning:'說服', note:'',
+    sentences:[
+      {en:"Try to persuade Jerry to apologize to the teacher.", zh:'試著說服傑瑞向老師道歉。'},
+      {en:"Could you dissuade Tom from talking so loudly?", zh:'你能否說服阿湯哥別說話那麼大聲？'},
+      {en:"Could you persuade Kurt not to cancel the pop concert?", zh:'你可以說服柯特不要取消這場流行音樂演唱會嗎？'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'22', word:'cone', pos:'n.', meaning:'圓錐體', note:'',
+    sentences:[
+      {en:"I set a warning cone behind the car to avoid further accidents.", zh:'我在車後放了一個警示圓錐，以防意外再度發生。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'23', word:'odd', pos:'a.', meaning:'奇怪的；奇數的；不成對的', note:'',
+    sentences:[
+      {en:"Paul looks odd today. What's wrong with him?", zh:'保羅今天看起來怪怪的。他怎麼了？'},
+      {en:"One and three are odd numbers, while two and four are even numbers.", zh:'1 和 3 是奇數，2 及 4 則是偶數。'},
+      {en:"Maggie overslept and rushed to work this morning. She wasn't aware that she was wearing odd socks.", zh:'瑪姬早上睡過頭又趕著上班。她沒發現自己穿著不成對的襪子。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'24', word:'breath', pos:'n.', meaning:'呼吸；一絲（微風）', note:'',
+    sentences:[
+      {en:"I always take a deep breath before going on the stage.", zh:'我每次上臺前都會深呼吸。'},
+      {en:"I could hardly catch my breath after trying to catch up with you.", zh:'我為了要追上你，幾乎快喘不過氣了。'},
+      {en:"There is not a breath of wind here at all.", zh:'這裡連一絲風也沒有。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'24.1', word:'breathe', pos:'vi., vt.', meaning:'呼吸', note:'',
+    sentences:[
+      {en:"Breathe in. Breathe out. Try to relax yourself.", zh:'吸氣。吐氣。設法讓自己放鬆。'},
+      {en:"Upon hearing the good news, everyone breathed a sigh of relief.", zh:'一聽到這個好消息，大家都鬆了口氣，如釋重負。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'25', word:'release', pos:'vt., n.', meaning:'釋出，釋放；發行，發布', note:'= let go of',
+    sentences:[
+      {en:"After ten years in prison, the prisoner was released this morning.", zh:'坐了 10 年牢後，那名囚犯今早獲釋。'},
+      {en:"The authorities concerned have released the names of those killed in the crash.", zh:'有關當局已發布這次空難的罹難者名單。'},
+      {en:"Simon's good behavior earned him early release from prison.", zh:'賽門表現良好，因此可以提早出獄。'},
+      {en:"Marilyn Manson's latest release again topped the charts.", zh:'瑪莉蓮・曼森發行的最新專輯再次橫掃排行榜冠軍。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:4, id:'26', word:'temper', pos:'n.', meaning:'脾氣', note:'',
+    sentences:[
+      {en:"I've never seen Victoria lose her temper.", zh:'我從來沒看過維多莉亞發脾氣。'}
+    ] },
+
+  // ===== Part 5 (9項) =====
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'27', word:'cotton', pos:'n.', meaning:'棉', note:'',
+    sentences:[
+      {en:"All of our T-shirts are made of pure cotton.", zh:'我們所有的 T 恤都是純棉製的。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'28', word:'lily', pos:'n.', meaning:'百合', note:'',
+    sentences:[
+      {en:"The lilies in the garden are in full bloom.", zh:'花園裡的百合花正盛開。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'29', word:'straw', pos:'n.', meaning:'稻草；吸管', note:'稻草不可數；吸管可數',
+    sentences:[
+      {en:"You look very charming when you wear that straw hat.", zh:'妳戴著那頂草帽時模樣真迷人。'},
+      {en:"The little boy used a straw to drink his juice.", zh:'小男孩用一根吸管來喝果汁。'},
+      {en:"When the boss asked him to work overtime again, John said, \"That's the last straw! I quit!\"", zh:'老闆要他再加班時，約翰便說：『我已到了忍無可忍的地步了！老子不幹了！』'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'30', word:'flour', pos:'n., vt.', meaning:'麵粉；撒麵粉', note:'',
+    sentences:[
+      {en:"To make a cake, you need flour and eggs.", zh:'做蛋糕需要麵粉和雞蛋。'},
+      {en:"Flour the bottom of the bowl before you put in the meat.", zh:'先將麵粉撒在碗底再把肉放進去。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'31', word:'tunnel', pos:'n.', meaning:'隧道', note:'',
+    sentences:[
+      {en:"A tunnel is being built between the two cities.", zh:'兩座城市間正在興建一條隧道。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'32', word:'quit', pos:'vt., vi.', meaning:'停止；戒除；辭職', note:'vi.＝resign',
+    sentences:[
+      {en:"Paula announced that she will quit show business next year.", zh:'寶拉宣布明年將退出演藝圈。'},
+      {en:"The old man quit smoking at last.", zh:'這位老先生終於戒菸了。'},
+      {en:"I quit my job because I have to take care of my sick father.", zh:'為了照顧生病的父親，我把工作辭掉了。'},
+      {en:"John no longer works here. He quit two years ago.", zh:'約翰已不在這兒工作了。他兩年前就辭職了。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'33', word:'intelligent', pos:'a.', meaning:'聰明的', note:'',
+    sentences:[
+      {en:"Lisa is intelligent and hardworking, which is why all her teachers like her.", zh:'莉莎既聰明又用功，難怪她的老師們都喜歡她。'}
+    ] },
+  { source:'VOC', book:'B1', unit:'U9', part:5, id:'34', word:'exhibition', pos:'n.', meaning:'展覽會', note:'',
+    sentences:[
+      {en:"There will be an exhibition of modern sculpture next month.", zh:'下個月將有一場現代雕塑展覽會。'},
+      {en:"All the works of the artist are currently on exhibition at the gallery.", zh:'那位藝術家的全部作品正在畫廊展出中。'}
+    ] }
+];
+
+const allWords = [].concat(voc_B1_U1, voc_B1_U2, voc_B1_U3, voc_B1_U4, voc_B1_U5, voc_B1_U6, voc_B1_U7, voc_B1_U8, voc_B1_U9);
 /* ============================================================
    小工具
    ============================================================ */
